@@ -3,6 +3,8 @@ import os
 
 
 from .SASMacro import SASMacro
+from .SASLibname import SASLibname
+from .SASInclude import SASInclude
 
 class SASProgram(object):
     '''
@@ -33,6 +35,8 @@ class SASProgram(object):
         self.LastUpdated = st[8]
 
         self.macros = []
+        self.libnames = []
+        self.includes = []
 
         with open(self.filePath) as f:
             self.rawProgram = f.read()
@@ -41,12 +45,28 @@ class SASProgram(object):
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
 
+        rawLibnames = re.findall('libname.*?;',self.rawProgram,reFlags)
+        if len(rawLibnames) > 0:
+            self.readLibnames(rawLibnames)
+        
+        rawIncludes= re.findall('%include.*?;',self.rawProgram,reFlags)
+        if len(rawIncludes) > 0:
+            self.readIncludes(rawIncludes)
+
     def readMacros(self,rawMacros):
         for macroStr in rawMacros:
             self.macros.append(SASMacro(macroStr))
 
+    def readLibnames(self, rawLibnames):
+        for libnameStr in rawLibnames:
+            self.libnames.append(SASLibname(libnameStr))
+    
+    def readIncludes(self, rawIncludes):
+        for includeStr in rawIncludes:
+            self.includes.append(SASInclude(includeStr))
+
     def __str__(self):
-        _ = '{}\n - {} macro(s)'.format(self.fileName,len(self.macros))
+        _ = '{}\n - {} macro(s)\n - {} libnames\n - {} includes'.format(self.fileName,len(self.macros),len(self.libnames),len(self.includes))
         return _
 
     def __repr__(self):

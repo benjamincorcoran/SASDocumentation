@@ -1,4 +1,9 @@
 
+libname test 'thisisatest';
+libname test2 "thisisanothertest";
+
+%include 'path-to-a-test';
+
 /*MacroName doctstring*/
 %macro macro1(
     argument1 /*argument 1 docstring*/,

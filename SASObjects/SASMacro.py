@@ -51,7 +51,7 @@ class SASMacro(object):
         self.docString=docString
 
     def getHelp(self, helpString):
-        helpString = '\n'.join(re.findall('%put(.*?);',helpString))
+        helpString = '\n'.join(re.findall('%put(.*?);',helpString,flags=re.IGNORECASE))
         self.help=helpString
 
 
