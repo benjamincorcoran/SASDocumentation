@@ -11,6 +11,7 @@ class SASMacro(object):
         Name: Name of the Macro given
         Arguments: List of SASArgument Objects
         DocString: Documentation String for the argument.
+        Help: Help statement if present in the macro 
     '''
 
     def __init__(self,rawStr):
@@ -29,20 +30,30 @@ class SASMacro(object):
             self.getArgs(argsLine[0])
 
         docString = re.findall('((?:\/\*.*?\*\/\s*)+)',body,reFlags)
-
         if len(docString) > 0:
             self.getDocString(docString[0])
         else:
             self.docString='No doc string'
 
+        helpString = re.findall('%if.*?help.*?;(.*?)%end',body,reFlags)
+        if len(helpString) > 0:
+            self.getHelp(helpString[0])
+        else:
+            self.help='No help defined'
+
     def getArgs(self, argStr):
-        args = re.findall('(.*?(?:\/\*.*?\*\/)?)(?:,|\s*\))',argStr)
+        args = re.findall('(.*?(?:\/\*.*?\*\/)?)(?:\s*,\s*|\s*\))',argStr)
         for arg in args:
             self.arguments.append(SASArgument(arg))
     
     def getDocString(self,docString):
         docString = re.sub('\/|\*','',docString)
         self.docString=docString
+
+    def getHelp(self, helpString):
+        helpString = '\n'.join(re.findall('%put(.*?);',helpString))
+        self.help=helpString
+
 
     def __str__(self):
         _ = '{}\n - About: {}\n - {} Arguments: {}'.format(self.name,self.docString,len(self.arguments),self.arguments)
