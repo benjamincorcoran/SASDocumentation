@@ -17,18 +17,18 @@ class SASMacro(object):
         
         reFlags = re.DOTALL|re.IGNORECASE
 
-        initLine = re.findall('(%macro.*?;)',rawStr,reFlags)[0]
-        codeBody = re.findall('%macro.*?;(.*)',rawStr,reFlags)[0]
+        head = re.findall('(%macro.*?;)',rawStr,reFlags)[0]
+        body = re.findall('%macro.*?;(.*)',rawStr,reFlags)[0]
 
-        self.name = re.findall('%macro ([^\(;]*)',initLine,reFlags)[0]
+        self.name = re.findall('%macro ([^\(;]*)',head,reFlags)[0]
 
         self.arguments = []
-        argsLine = re.findall('\((.*\))',initLine,reFlags)  
+        argsLine = re.findall('\((.*\))',head,reFlags)  
         
         if len(argsLine)>0:
             self.getArgs(argsLine[0])
 
-        docString = re.findall('((?:\/\*.*?\*\/\s*)+)',codeBody,reFlags)
+        docString = re.findall('((?:\/\*.*?\*\/\s*)+)',body,reFlags)
 
         if len(docString) > 0:
             self.getDocString(docString[0])
