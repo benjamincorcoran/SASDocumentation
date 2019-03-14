@@ -16,7 +16,9 @@
 ## Macros(s):
 ### macro1
 *No doc string*
+
 #### Argument(s):
+
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- | --- |
 | argument1 | Required | None | argument 1 docstring |
@@ -27,7 +29,9 @@
 *MacroName doctstring
 
 *
+
 #### Argument(s):
+
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- | --- |
 | argument1 | Required | None | argument 1 docstring |
@@ -36,6 +40,7 @@
 
 ## Full code:
 ~~~~
+
 libname test 'thisisatest';
 libname test2 "thisisanothertest";
 
@@ -61,4 +66,5 @@ libname test2 "thisisanothertest";
     /*MacroName doctstring*/
 
 %mend;
+    
 ~~~~

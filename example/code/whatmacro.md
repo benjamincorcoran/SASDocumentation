@@ -3,8 +3,7 @@
 ## Libname(s):
 | Name | Location |
 | --- | --- |
-| MacTemp |  |
-| MacTemp |  |
+| MacTemp | &workDir./MacroTemp |
 
 
 ## Include(s):
@@ -18,7 +17,9 @@
 *Macro to identify other macros with a name similar to macroName
 	turn off logging and notes
 	*
+
 #### Argument(s):
+
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- | --- |
 | macroName | Required | None | No docstring provided for argument |
@@ -27,7 +28,8 @@
 
 
 ## Full code:
-~~~~%macro WhatMacro(macroName,Catalog=sasmac1, HELP=NO) /des='Macro to search for other macros. Default assumes that the SAS macro catalog is work.sasmac1' ;
+~~~~
+%macro WhatMacro(macroName,Catalog=sasmac1, HELP=NO) /des='Macro to search for other macros. Default assumes that the SAS macro catalog is work.sasmac1' ;
 	/*Macro to identify other macros with a name similar to macroName*/
 	/*turn off logging and notes*/
 	%changeMLog(OFF);
@@ -175,4 +177,5 @@
 
 	%changeMLog(ON);
 	options notes;
-%mend;~~~~
+%mend;
+~~~~
