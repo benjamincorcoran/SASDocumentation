@@ -1,5 +1,6 @@
 import sys
 import os 
+import re
 
 from SASObjects.SASProgram import SASProgram
 
@@ -13,14 +14,14 @@ def writeMD(SASProgram):
 			out.write('| Name | Location |\n')
 			out.write('| --- | --- |\n')
 			for libname in SASProgram.libnames:
-				out.write('| {} | {} |\n'.format(libname.name,libname.path))
+				out.write('| {} | [{}]({}) |\n'.format(libname.name,libname.path,libname.posixPath))
 			out.write('\n\n')
 		if len(SASProgram.includes) > 0:
 			out.write('## Include(s):\n')
 			out.write('| Path |\n')
 			out.write('| --- |\n')
 			for include in SASProgram.includes:
-				out.write('| {} |\n'.format(include.path))
+				out.write('| [{}]({}) |\n'.format(include.path,include.posixPath))
 			out.write('\n\n')
 		if len(SASProgram.macros)> 0:
 			out.write('## Macros(s):\n')
@@ -42,6 +43,6 @@ def writeMD(SASProgram):
 
 if __name__ == "__main__":
 
-	pm1 = SASProgram('example/code/macro.sas')
+	pm1 = SASProgram('example/code/whatmacro.sas')
 
 	writeMD(pm1)

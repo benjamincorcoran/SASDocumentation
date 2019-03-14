@@ -3,13 +3,13 @@
 ## Libname(s):
 | Name | Location |
 | --- | --- |
-| MacTemp | &workDir./MacroTemp |
+| MacTemp | [&workDir.\MacroTemp](&workDir./MacroTemp) |
 
 
 ## Include(s):
 | Path |
 | --- |
-| &fname. |
+| [&fname.](&fname.) |
 
 
 ## Macros(s):

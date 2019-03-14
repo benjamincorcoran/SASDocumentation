@@ -3,14 +3,14 @@
 ## Libname(s):
 | Name | Location |
 | --- | --- |
-| test | thisisatest |
-| test2 | thisisanothertest |
+| test | [thisisatest](thisisatest) |
+| test2 | [thisisanothertest](thisisanothertest) |
 
 
 ## Include(s):
 | Path |
 | --- |
-| path-to-a-test |
+| [path-to-a-test](path-to-a-test) |
 
 
 ## Macros(s):
