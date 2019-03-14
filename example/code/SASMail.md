@@ -47,7 +47,7 @@
 
 
 ## Full code:
-~~~~
+~~~~.sas
 *Macro to split space separated parameters and return a global
 variable of them in quotes, all incased by brackets;
 %Macro _SplitEmailParams(In=/*Input macro var*/, Out=/*Output macro var*/,Bracket=YES);

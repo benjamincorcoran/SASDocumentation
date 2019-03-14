@@ -34,7 +34,7 @@ def writeMD(SASProgram):
 					out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 				out.write('\n\n')
 		out.write('## Full code:\n')
-		out.write('~~~~\n')
+		out.write('~~~~.sas\n')
 		out.write(SASProgram.rawProgram)
 		out.write('\n~~~~')
 
@@ -42,6 +42,6 @@ def writeMD(SASProgram):
 
 if __name__ == "__main__":
 
-	pm1 = SASProgram('example/code/whatmacro.sas')
+	pm1 = SASProgram('example/code/macro.sas')
 
 	writeMD(pm1)

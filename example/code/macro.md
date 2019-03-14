@@ -39,7 +39,7 @@
 
 
 ## Full code:
-~~~~
+~~~~.sas
 
 libname test 'thisisatest';
 libname test2 "thisisanothertest";
