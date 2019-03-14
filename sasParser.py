@@ -29,7 +29,7 @@ def writeMD(SASProgram):
 				out.write('*{}*\n\n'.format(macro.docString))
 				out.write('#### Argument(s):\n\n')
 				out.write('| Name | Type | Default Value | About |\n')
-				out.write('| --- | --- | --- | --- | --- |\n')
+				out.write('| --- | --- | --- | --- |\n')
 				for arg in macro.arguments:
 					out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 				out.write('\n\n')
@@ -42,6 +42,6 @@ def writeMD(SASProgram):
 
 if __name__ == "__main__":
 
-	pm1 = SASProgram('example/code/writexl.sas')
+	pm1 = SASProgram('example/code/whatmacro.sas')
 
 	writeMD(pm1)

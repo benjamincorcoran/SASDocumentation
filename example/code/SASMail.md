@@ -7,7 +7,7 @@
 #### Argument(s):
 
 | Name | Type | Default Value | About |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | In | Optional | None | Input macro var |
 | Out | Optional | None | Output macro var |
 | Bracket | Optional | YES | No docstring provided for argument |
@@ -19,7 +19,7 @@
 #### Argument(s):
 
 | Name | Type | Default Value | About |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | In | Optional | None | Macro var containing attachment locations |
 | Out | Optional | None | Output macro var |
 
@@ -31,7 +31,7 @@
 #### Argument(s):
 
 | Name | Type | Default Value | About |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | To | Optional | None | Recipient(s), separated by spaces if mulitple |
 | Subject | Optional | None | Subject of the email |
 | From | Optional | NONE  | Defaults to your user@hefce account, this is also where replys will go if no Reply= is specified |

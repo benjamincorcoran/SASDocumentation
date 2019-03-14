@@ -20,7 +20,7 @@
 #### Argument(s):
 
 | Name | Type | Default Value | About |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | argument1 | Required | None | argument 1 docstring |
 | argument2 | Required | None | argument 2 docstring |
 
@@ -33,7 +33,7 @@
 #### Argument(s):
 
 | Name | Type | Default Value | About |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | argument1 | Required | None | argument 1 docstring |
 | argument2 | Required | None | argument 2 docstring |
 
