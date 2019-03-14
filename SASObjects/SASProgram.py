@@ -5,6 +5,7 @@ import datetime
 from .SASMacro import SASMacro
 from .SASLibname import SASLibname
 from .SASInclude import SASInclude
+from .SASDatastep import SASDatastep
 
 class SASProgram(object):
     '''
@@ -37,14 +38,15 @@ class SASProgram(object):
         self.macros = []
         self.libnames = []
         self.includes = []
+        self.datasets = []
 
 
         with open(self.filePath) as f:
             self.rawProgram = f.read()
 
-        rawAbout = re.findall('(\/\*.*?\*\/(?!\s*[\/\*]))',self.rawProgram,reFlags)
-        if len(rawAbout) > 0:
-            self.about=re.sub('\*|\t|\/','',rawAbout[0])
+        self.rawComments = re.findall('(\/\*.*?\*\/(?!\s*[\/\*]))',self.rawProgram,reFlags)
+        if len(self.rawComments) > 0:
+            self.about=re.sub('\*|\t|\/','',self.rawComments[0])
         else:
             self.about=None
 
@@ -56,9 +58,13 @@ class SASProgram(object):
         if len(rawLibnames) > 0:
             self.readLibnames(rawLibnames)
         
-        rawIncludes= re.findall(r"include ['\"].*?['\"]",self.rawProgram,reFlags)
+        rawIncludes = re.findall(r"include ['\"].*?['\"]",self.rawProgram,reFlags)
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
+
+        rawDatasteps = re.findall(r"data.*?run;",self.rawProgram,reFlags)
+        if len(rawDatasteps) > 0:
+            self.readDatasteps(rawDatasteps)
 
     def readMacros(self,rawMacros):
         for macroStr in rawMacros:
@@ -71,6 +77,13 @@ class SASProgram(object):
     def readIncludes(self, rawIncludes):
         for includeStr in rawIncludes:
             self.includes.append(SASInclude(includeStr))
+    
+    def readDatasteps(self, rawDatasteps):
+        for datastepStr in rawDatasteps:
+            datastep = (SASDatastep(datastepStr))
+            for dataset in datastep.dataObjects:
+                self.datasets.append(dataset)
+
 
     def __str__(self):
         _ = '{}\n - {} macro(s)\n - {} libnames\n - {} includes'.format(self.fileName,len(self.macros),len(self.libnames),len(self.includes))

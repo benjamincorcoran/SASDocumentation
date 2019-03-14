@@ -52,7 +52,16 @@ No doc string
 | ContentType | Optional | text | Not set |
 
 
-<details><summary>## Full code:</summary>
+## Datasets(s):
+| Library | Name |
+| --- | --- |
+|  | _FmtOut |
+
+
+## Full code:
+
+<details><summary>Show/Hide</summary>
+
 ~~~~.sas
 *Macro to split space separated parameters and return a global
 variable of them in quotes, all incased by brackets;
@@ -253,8 +262,13 @@ run;
 	%If %upcase("&Attach.") ne "NONE" %then %symDel _Attach;
 %MEnd SASMail;
 ~~~~
-</details>| Meta | Property |
+
+</details>
+
+## Properties
+
+| Meta | Property |
 | --- | --- |
 | **Author:** | |
-| **Path:** | *W:\SASDocumentation\example\code\SASMail.sas* |
-| **Last updated:** | *2019-03-14 10:33:11* |
+| **Path:** | */home/ben/Documents/SASDocumentation/example/code/SASMail.sas* |
+| **Last updated:** | *2019-03-13 10:56:50* |

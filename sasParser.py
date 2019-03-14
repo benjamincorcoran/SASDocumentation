@@ -4,6 +4,7 @@ import re
 
 from SASObjects.SASProgram import SASProgram
 
+
 def writeMD(SASProgram):
 
 	mdPath = re.sub('.sas$','.md',SASProgram.filePath,flags=re.IGNORECASE)
@@ -42,13 +43,20 @@ def writeMD(SASProgram):
 					for arg in macro.arguments:
 						out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 				out.write('\n\n')
-		
-		out.write('<details><summary>## Full code:</summary>\n')
+		if len(SASProgram.datasets) > 0:
+			out.write('## Datasets(s):\n')
+			out.write('| Library | Name |\n')
+			out.write('| --- | --- |\n')
+			for dataset in SASProgram.datasets:
+				out.write('| {} | {} |\n'.format(dataset.library,dataset.name))
+			out.write('\n\n')
+
+		out.write('## Full code:\n\n<details><summary>Show/Hide</summary>\n\n')
 		out.write('~~~~.sas\n')
 		out.write(SASProgram.rawProgram)
-		out.write('\n~~~~\n')
-		out.write('</details>')
-		
+		out.write('\n~~~~\n\n')
+		out.write('</details>\n\n')
+		out.write('## Properties\n\n')
 		out.write('| Meta | Property |\n| --- | --- |\n')
 		out.write('| **Author:** | |\n')
 		out.write('| **Path:** | *{}* |\n'.format(SASProgram.filePath))

@@ -58,7 +58,17 @@ turn off logging and notes
 | HELP | Optional | NO | Not set |
 
 
-<details><summary>## Full code:</summary>
+## Datasets(s):
+| Library | Name |
+| --- | --- |
+| MacTemp | sasAutoLocs |
+| mactemp | filelist |
+
+
+## Full code:
+
+<details><summary>Show/Hide</summary>
+
 ~~~~.sas
 %macro WhatMacro(macroName,Catalog=sasmac1, HELP=NO) /des='Macro to search for other macros. Default assumes that the SAS macro catalog is work.sasmac1' ;
 	/*Macro to identify other macros with a name similar to macroName*/
@@ -210,8 +220,13 @@ turn off logging and notes
 	options notes;
 %mend;
 ~~~~
-</details>| Meta | Property |
+
+</details>
+
+## Properties
+
+| Meta | Property |
 | --- | --- |
 | **Author:** | |
-| **Path:** | *W:\SASDocumentation\example\code\whatmacro.sas* |
-| **Last updated:** | *2019-03-14 10:33:11* |
+| **Path:** | */home/ben/Documents/SASDocumentation/example/code/whatmacro.sas* |
+| **Last updated:** | *2019-03-12 17:15:53* |
