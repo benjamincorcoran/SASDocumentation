@@ -39,7 +39,7 @@ class SASMacro(object):
         if len(helpString) > 0:
             self.getHelp(helpString[0])
         else:
-            self.help='No help defined'
+            self.help=''
 
     def getArgs(self, argStr):
         args = re.findall('(.*?(?:\/\*.*?\*\/)?)(?:\s*,\s*|\s*\))',argStr)
@@ -52,7 +52,7 @@ class SASMacro(object):
 
     def getHelp(self, helpString):
         helpString = '\n'.join(re.findall('%put(.*?);',helpString,flags=re.IGNORECASE))
-        self.help=helpString
+        self.help=re.sub('\t',' ',helpString)
 
 
     def __str__(self):

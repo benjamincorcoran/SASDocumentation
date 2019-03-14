@@ -28,11 +28,15 @@ def writeMD(SASProgram):
 			for macro in SASProgram.macros:
 				out.write('### {}\n'.format(macro.name))
 				out.write('*{}*\n\n'.format(macro.docString))
-				out.write('#### Argument(s):\n\n')
-				out.write('| Name | Type | Default Value | About |\n')
-				out.write('| --- | --- | --- | --- |\n')
-				for arg in macro.arguments:
-					out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
+				if len(macro.help)>0:
+					out.write('#### Help:\n')
+					out.write('{}'.format(macro.help))
+				if len(macro.arguments)>0:
+					out.write('#### Argument(s):\n\n')
+					out.write('| Name | Type | Default Value | About |\n')
+					out.write('| --- | --- | --- | --- |\n')
+					for arg in macro.arguments:
+						out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 				out.write('\n\n')
 		out.write('## Full code:\n')
 		out.write('~~~~.sas\n')

@@ -18,7 +18,33 @@
 	turn off logging and notes
 	*
 
-#### Argument(s):
+#### Help:
+
+
+ Overview
+ --------
+ This macro searches the macro catalog and sasautos for macros whose name matches any part of the search
+ It will retunrn any macros with a similar name, and a description (if they have one)
+ By default it searches for the SASMAC1 catalog. if it is erroring / not working, please do a proc contents on your work library.
+ Then, make sure that the catalog=option is set correctly.
+
+     Parameters
+     ----------
+
+ macroName - name of amcro to be searched for
+
+ Catalog - name of SAS macro catalog. Default is sasmac1
+ If this code errors, this is probably the reason.
+ run a proc contents on the work library to identify the macro catalog if required
+
+ help - put YES to call help
+
+     Example
+     ----------
+
+ %nrstr(%%)WhatMacro(macroname,Catalog=sasMac1,HELP=NO)%str(%
+ 
+ #### Argument(s):
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
