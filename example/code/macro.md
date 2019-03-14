@@ -44,7 +44,7 @@ MacroName doctstring
 | argument2 | Required | Not set | argument 2 docstring |
 
 
-## Full code:
+<details><summary>## Full code:</summary>
 ~~~~.sas
 
 libname test 'thisisatest';
@@ -74,7 +74,7 @@ libname test2 "thisisanothertest";
 %mend;
     
 ~~~~
-| Meta | Property |
+</details>| Meta | Property |
 | --- | --- |
 | **Author:** | |
 | **Path:** | *W:\SASDocumentation\example\code\macro.sas* |

@@ -52,7 +52,7 @@ No doc string
 | ContentType | Optional | text | Not set |
 
 
-## Full code:
+<details><summary>## Full code:</summary>
 ~~~~.sas
 *Macro to split space separated parameters and return a global
 variable of them in quotes, all incased by brackets;
@@ -253,7 +253,7 @@ run;
 	%If %upcase("&Attach.") ne "NONE" %then %symDel _Attach;
 %MEnd SASMail;
 ~~~~
-| Meta | Property |
+</details>| Meta | Property |
 | --- | --- |
 | **Author:** | |
 | **Path:** | *W:\SASDocumentation\example\code\SASMail.sas* |

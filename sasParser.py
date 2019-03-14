@@ -42,10 +42,12 @@ def writeMD(SASProgram):
 					for arg in macro.arguments:
 						out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 				out.write('\n\n')
-		out.write('## Full code:\n')
+		
+		out.write('<details><summary>## Full code:</summary>\n')
 		out.write('~~~~.sas\n')
 		out.write(SASProgram.rawProgram)
 		out.write('\n~~~~\n')
+		out.write('</details>')
 		
 		out.write('| Meta | Property |\n| --- | --- |\n')
 		out.write('| **Author:** | |\n')
@@ -53,9 +55,6 @@ def writeMD(SASProgram):
 		out.write('| **Last updated:** | *{}* |\n'.format(SASProgram.LastUpdated))
 
 		
-
-		
-
 if __name__ == "__main__":
 
 	for root, dirs,files in os.walk('example/code'):

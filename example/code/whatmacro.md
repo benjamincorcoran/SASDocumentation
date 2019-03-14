@@ -58,7 +58,7 @@ turn off logging and notes
 | HELP | Optional | NO | Not set |
 
 
-## Full code:
+<details><summary>## Full code:</summary>
 ~~~~.sas
 %macro WhatMacro(macroName,Catalog=sasmac1, HELP=NO) /des='Macro to search for other macros. Default assumes that the SAS macro catalog is work.sasmac1' ;
 	/*Macro to identify other macros with a name similar to macroName*/
@@ -210,7 +210,7 @@ turn off logging and notes
 	options notes;
 %mend;
 ~~~~
-| Meta | Property |
+</details>| Meta | Property |
 | --- | --- |
 | **Author:** | |
 | **Path:** | *W:\SASDocumentation\example\code\whatmacro.sas* |
