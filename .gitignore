@@ -1,4 +1,5 @@
 sasdoc*
+example/donottrack
 .vscode
 *.pyc
 __pycache__/

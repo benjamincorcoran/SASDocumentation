@@ -1,6 +1,6 @@
 import re 
 import os 
-
+import datetime
 
 from .SASMacro import SASMacro
 from .SASLibname import SASLibname
@@ -32,24 +32,31 @@ class SASProgram(object):
         st = os.stat(file)
 
         self.fileSize = st[6]
-        self.LastUpdated = st[8]
+        self.LastUpdated = datetime.datetime.fromtimestamp(st[8])
 
         self.macros = []
         self.libnames = []
         self.includes = []
 
+
         with open(self.filePath) as f:
             self.rawProgram = f.read()
 
-        rawMacros = re.findall('(%macro.*?%mend)',self.rawProgram,reFlags)
+        rawAbout = re.findall('(\/\*.*?\*\/(?!\s*[\/\*]))',self.rawProgram,reFlags)
+        if len(rawAbout) > 0:
+            self.about=re.sub('\*|\t|\/','',rawAbout[0])
+        else:
+            self.about=None
+
+        rawMacros = re.findall('(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.rawProgram,reFlags)
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
 
-        rawLibnames = re.findall(r"libname .*? ['\"].*?['\"]",self.rawProgram,reFlags)
+        rawLibnames = re.findall(r"libname .{0,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.rawProgram,reFlags)
         if len(rawLibnames) > 0:
             self.readLibnames(rawLibnames)
         
-        rawIncludes= re.findall('%include.*?;',self.rawProgram,reFlags)
+        rawIncludes= re.findall(r"include ['\"].*?['\"]",self.rawProgram,reFlags)
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 

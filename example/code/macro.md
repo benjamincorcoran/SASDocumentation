@@ -1,5 +1,8 @@
 # macro
 
+## About:
+MacroName doctstring
+
 ## Libname(s):
 | Name | Location |
 | --- | --- |
@@ -13,29 +16,32 @@
 | [path-to-a-test](path-to-a-test) |
 
 
-## Macros(s):
+## Macro(s):
 ### macro1
-*No doc string*
+#### About:
+MacroName doctstring
+
 
 #### Argument(s):
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
-| argument1 | Required | None | argument 1 docstring |
-| argument2 | Required | None | argument 2 docstring |
+| argument1 | Required | Not set | argument 1 docstring |
+| argument2 | Required | Not set | argument 2 docstring |
 
 
 ### macro3
-*MacroName doctstring
+#### About:
+MacroName doctstring
 
-*
+
 
 #### Argument(s):
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
-| argument1 | Required | None | argument 1 docstring |
-| argument2 | Required | None | argument 2 docstring |
+| argument1 | Required | Not set | argument 1 docstring |
+| argument2 | Required | Not set | argument 2 docstring |
 
 
 ## Full code:
@@ -68,3 +74,8 @@ libname test2 "thisisanothertest";
 %mend;
     
 ~~~~
+| Meta | Property |
+| --- | --- |
+| **Author:** | |
+| **Path:** | *W:\SASDocumentation\example\code\macro.sas* |
+| **Last updated:** | *2019-03-14 10:33:11* |

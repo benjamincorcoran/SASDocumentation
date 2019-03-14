@@ -1,5 +1,9 @@
 # whatmacro
 
+## About:
+Macro to identify other macros with a name similar to macroName
+turn off logging and notes
+
 ## Libname(s):
 | Name | Location |
 | --- | --- |
@@ -12,11 +16,12 @@
 | [&fname.](&fname.) |
 
 
-## Macros(s):
+## Macro(s):
 ### WhatMacro
-*Macro to identify other macros with a name similar to macroName
-	turn off logging and notes
-	*
+#### About:
+Macro to identify other macros with a name similar to macroName
+turn off logging and notes
+
 
 #### Help:
 
@@ -28,8 +33,8 @@
  By default it searches for the SASMAC1 catalog. if it is erroring / not working, please do a proc contents on your work library.
  Then, make sure that the catalog=option is set correctly.
 
-     Parameters
-     ----------
+ Parameters
+ ----------
 
  macroName - name of amcro to be searched for
 
@@ -39,8 +44,8 @@
 
  help - put YES to call help
 
-     Example
-     ----------
+ Example
+ ----------
 
  %nrstr(%%)WhatMacro(macroname,Catalog=sasMac1,HELP=NO)%str(%
  
@@ -48,9 +53,9 @@
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
-| macroName | Required | None | No docstring provided for argument |
-| Catalog | Optional | sasmac1 | No docstring provided for argument |
-| HELP | Optional | NO | No docstring provided for argument |
+| macroName | Required | Not set | Not set |
+| Catalog | Optional | sasmac1 | Not set |
+| HELP | Optional | NO | Not set |
 
 
 ## Full code:
@@ -205,3 +210,8 @@
 	options notes;
 %mend;
 ~~~~
+| Meta | Property |
+| --- | --- |
+| **Author:** | |
+| **Path:** | *W:\SASDocumentation\example\code\whatmacro.sas* |
+| **Last updated:** | *2019-03-14 10:33:11* |

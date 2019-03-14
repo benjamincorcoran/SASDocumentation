@@ -6,9 +6,12 @@ from SASObjects.SASProgram import SASProgram
 
 def writeMD(SASProgram):
 
-	mdPath = SASProgram.filePath.replace('.sas','.md')
+	mdPath = re.sub('.sas$','.md',SASProgram.filePath,flags=re.IGNORECASE)
 	with open(mdPath, 'w+') as out:
 		out.write('# {}\n\n'.format(SASProgram.name))
+		if SASProgram.about is not None:
+			out.write('## About:\n')
+			out.write('{}\n\n'.format(SASProgram.about))
 		if len(SASProgram.libnames) > 0:
 			out.write('## Libname(s):\n')
 			out.write('| Name | Location |\n')
@@ -24,10 +27,11 @@ def writeMD(SASProgram):
 				out.write('| [{}]({}) |\n'.format(include.path,include.posixPath))
 			out.write('\n\n')
 		if len(SASProgram.macros)> 0:
-			out.write('## Macros(s):\n')
+			out.write('## Macro(s):\n')
 			for macro in SASProgram.macros:
 				out.write('### {}\n'.format(macro.name))
-				out.write('*{}*\n\n'.format(macro.docString))
+				out.write('#### About:\n')
+				out.write('{}\n\n'.format(macro.docString))
 				if len(macro.help)>0:
 					out.write('#### Help:\n')
 					out.write('{}'.format(macro.help))
@@ -41,12 +45,21 @@ def writeMD(SASProgram):
 		out.write('## Full code:\n')
 		out.write('~~~~.sas\n')
 		out.write(SASProgram.rawProgram)
-		out.write('\n~~~~')
+		out.write('\n~~~~\n')
+		
+		out.write('| Meta | Property |\n| --- | --- |\n')
+		out.write('| **Author:** | |\n')
+		out.write('| **Path:** | *{}* |\n'.format(SASProgram.filePath))
+		out.write('| **Last updated:** | *{}* |\n'.format(SASProgram.LastUpdated))
+
+		
 
 		
 
 if __name__ == "__main__":
 
-	pm1 = SASProgram('example/code/whatmacro.sas')
-
-	writeMD(pm1)
+	for root, dirs,files in os.walk('example/code'):
+		for name in files:
+			if len(re.findall('\.sas$',name,flags=re.IGNORECASE))>0:
+				sp = SASProgram(os.path.join(root,name))
+				writeMD(sp)

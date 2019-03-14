@@ -18,6 +18,7 @@ class SASMacro(object):
         
         reFlags = re.DOTALL|re.IGNORECASE
 
+        predoc = re.findall('((?:\/\*.*\*\/\s*))?%macro.*?%mend',rawStr,reFlags)
         head = re.findall('(%macro.*?;)',rawStr,reFlags)[0]
         body = re.findall('%macro.*?;(.*)',rawStr,reFlags)[0]
 
@@ -29,11 +30,15 @@ class SASMacro(object):
         if len(argsLine)>0:
             self.getArgs(argsLine[0])
 
-        docString = re.findall('((?:\/\*.*?\*\/\s*)+)',body,reFlags)
-        if len(docString) > 0:
-            self.getDocString(docString[0])
+        if len(predoc) > 0 and len(predoc[0])>0:
+            self.docString=re.sub('\*|\t|\/','',predoc[0])
         else:
-            self.docString='No doc string'
+            docString = re.findall('((?:\/\*.*?\*\/\s*)+)',body,reFlags)
+            if len(docString) > 0:
+                self.getDocString(docString[0])
+            else:
+                self.docString='No doc string'
+            
 
         helpString = re.findall('%if.*?help.*?;(.*?)%end',body,reFlags)
         if len(helpString) > 0:
@@ -47,12 +52,12 @@ class SASMacro(object):
             self.arguments.append(SASArgument(arg))
     
     def getDocString(self,docString):
-        docString = re.sub('\/|\*','',docString)
+        docString = re.sub('\/|\*|\t| {2,}','',docString)
         self.docString=docString
 
     def getHelp(self, helpString):
         helpString = '\n'.join(re.findall('%put(.*?);',helpString,flags=re.IGNORECASE))
-        self.help=re.sub('\t',' ',helpString)
+        self.help=re.sub('\t| {2,}',' ',helpString)
 
 
     def __str__(self):

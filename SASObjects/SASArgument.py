@@ -24,16 +24,16 @@ class SASArgument(object):
             if defaultValue is not None and len(defaultValue[0])>0:
                 self.defaultValue=defaultValue[0]
             else:
-                self.defaultValue='None'
+                self.defaultValue='Not set'
         else:
             self.type='Required'
-            self.defaultValue='None'
+            self.defaultValue='Not set'
 
         if re.search('\*',rawStr) is not None:
             
             self.docString = re.findall('.*?\*(.*)\*',rawStr,reFlags)[0]
         else:
-            self.docString='No docstring provided for argument'
+            self.docString='Not set'
 
     def __str__(self):
         _ = '{}\n - Type: {}\n - DefaultValue: {}\n - About: {}'.format(self.name,self.type,self.defaultValue,self.docString)
