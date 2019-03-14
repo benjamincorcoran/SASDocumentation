@@ -1,28 +1,30 @@
 # macro
 
-## About:
+## About
 MacroName doctstring
 
-## Libname(s):
+## Libname(s)
+
 | Name | Location |
 | --- | --- |
 | test | [thisisatest](thisisatest) |
 | test2 | [thisisanothertest](thisisanothertest) |
 
 
-## Include(s):
+## Include(s)
+
 | Path |
 | --- |
 | [path-to-a-test](path-to-a-test) |
 
 
-## Macro(s):
+## Macro(s)
 ### macro1
-#### About:
+#### About
 MacroName doctstring
 
 
-#### Argument(s):
+#### Argument(s)
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
@@ -31,12 +33,12 @@ MacroName doctstring
 
 
 ### macro3
-#### About:
+#### About
 MacroName doctstring
 
 
 
-#### Argument(s):
+#### Argument(s)
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
@@ -48,7 +50,8 @@ MacroName doctstring
 
 <details><summary>Show/Hide</summary>
 
-~~~~.sas
+~~~~sas
+
 
 libname test 'thisisatest';
 libname test2 "thisisanothertest";
@@ -76,6 +79,7 @@ libname test2 "thisisanothertest";
 
 %mend;
     
+
 ~~~~
 
 </details>

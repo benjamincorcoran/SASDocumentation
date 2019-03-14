@@ -1,29 +1,31 @@
 # whatmacro
 
-## About:
+## About
 Macro to identify other macros with a name similar to macroName
 turn off logging and notes
 
-## Libname(s):
+## Libname(s)
+
 | Name | Location |
 | --- | --- |
 | MacTemp | [&workDir.\MacroTemp](&workDir./MacroTemp) |
 
 
-## Include(s):
+## Include(s)
+
 | Path |
 | --- |
 | [&fname.](&fname.) |
 
 
-## Macro(s):
+## Macro(s)
 ### WhatMacro
-#### About:
+#### About
 Macro to identify other macros with a name similar to macroName
 turn off logging and notes
 
 
-#### Help:
+#### Help
 
 
  Overview
@@ -49,7 +51,7 @@ turn off logging and notes
 
  %nrstr(%%)WhatMacro(macroname,Catalog=sasMac1,HELP=NO)%str(%
  
- #### Argument(s):
+ #### Argument(s)
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
@@ -58,7 +60,8 @@ turn off logging and notes
 | HELP | Optional | NO | Not set |
 
 
-## Datasets(s):
+## Datasets(s)
+
 | Library | Name |
 | --- | --- |
 | MacTemp | sasAutoLocs |
@@ -69,7 +72,8 @@ turn off logging and notes
 
 <details><summary>Show/Hide</summary>
 
-~~~~.sas
+~~~~sas
+
 %macro WhatMacro(macroName,Catalog=sasmac1, HELP=NO) /des='Macro to search for other macros. Default assumes that the SAS macro catalog is work.sasmac1' ;
 	/*Macro to identify other macros with a name similar to macroName*/
 	/*turn off logging and notes*/
@@ -219,6 +223,7 @@ turn off logging and notes
 	%changeMLog(ON);
 	options notes;
 %mend;
+
 ~~~~
 
 </details>

@@ -1,14 +1,14 @@
 # SASMail
 
-## About:
+## About
 Input macro var
 
-## Macro(s):
+## Macro(s)
 ### _SplitEmailParams
-#### About:
+#### About
 No doc string
 
-#### Argument(s):
+#### Argument(s)
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
@@ -18,10 +18,10 @@ No doc string
 
 
 ### _SplitAttachments
-#### About:
+#### About
 No doc string
 
-#### Argument(s):
+#### Argument(s)
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
@@ -30,11 +30,11 @@ No doc string
 
 
 ### SASMail
-#### About:
+#### About
 << strip the spaces
 
 
-#### Argument(s):
+#### Argument(s)
 
 | Name | Type | Default Value | About |
 | --- | --- | --- | --- |
@@ -52,7 +52,8 @@ No doc string
 | ContentType | Optional | text | Not set |
 
 
-## Datasets(s):
+## Datasets(s)
+
 | Library | Name |
 | --- | --- |
 |  | _FmtOut |
@@ -62,7 +63,8 @@ No doc string
 
 <details><summary>Show/Hide</summary>
 
-~~~~.sas
+~~~~sas
+
 *Macro to split space separated parameters and return a global
 variable of them in quotes, all incased by brackets;
 %Macro _SplitEmailParams(In=/*Input macro var*/, Out=/*Output macro var*/,Bracket=YES);
@@ -261,6 +263,7 @@ run;
 	%SymDel _To _CC _BCC;
 	%If %upcase("&Attach.") ne "NONE" %then %symDel _Attach;
 %MEnd SASMail;
+
 ~~~~
 
 </details>
