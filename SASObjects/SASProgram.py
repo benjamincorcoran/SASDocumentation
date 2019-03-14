@@ -45,7 +45,7 @@ class SASProgram(object):
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
 
-        rawLibnames = re.findall('libname.*?;',self.rawProgram,reFlags)
+        rawLibnames = re.findall(r"libname .*? ['\"].*?['\"]",self.rawProgram,reFlags)
         if len(rawLibnames) > 0:
             self.readLibnames(rawLibnames)
         
