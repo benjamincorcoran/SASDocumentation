@@ -36,7 +36,7 @@ variable of them in quotes, all incased by brackets;
 
 %Macro SASMail(To=/*Recipient(s), separated by spaces if mulitple*/,
 				Subject =/*Subject of the email*/,
-				From=NONE /*Defaults to your user@hefce account, this is also where replys will go if no Reply= is specified*/,
+				From=NONE /*Defaults to your account, this is also where replys will go if no Reply= is specified*/,
 				Reply=NONE /*Where replies will go, default is the From= address*/,
 				CC=/*Recipient(s), separated by spaces if mulitple*/,
 				BCC=NONE/*Recipient(s), separated by spaces if mulitple. The from account will always be BCC*/,
@@ -94,7 +94,7 @@ run;
 	*If email address couldnt be worked out (maybe multiples or no last name) and from=NONE
 	then end the program;
 	%If "&UserEmail." = "NONE" and "&From." = "NONE" %then %do;
-		%Put &Err. Your @hefce email address could not be resolved from your username;
+		%Put &Err. Your email address could not be resolved from your username;
 		%Put &Err. Check Work._UserEmail;
 		%Put &Err. Please specify a "from" address using From=;
 		%Abort Cancel;
@@ -166,7 +166,7 @@ run;
 	%Let _Importance = "&Importance";
 
 	*Create the FileName statement;
-	*Sender added to create consistent From: message in email. Masks username@hefce-sasX.ac.uk. A. Olsen - 03.04.2018;
+	*Sender added to create consistent From: message in email. Masks;
 	FileName SASMail Email To=&_To. Subject=&_Subject. From=&_From. Sender=&_From. Replyto=&_Reply.
 							CC=&_CC. BCC=&_BCC.
 							Importance=&_Importance.
