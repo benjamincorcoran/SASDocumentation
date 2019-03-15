@@ -1,16 +1,24 @@
 
 
-@echo off
+
 pushd %~dp0
+
+if [%2] == [] (
+	set out=%1\docs
+) else (
+    set out=%2\docs
+)
+
 
 pip install sphinx recommonmark sphinx-markdown-tables
 
-call sphinx-quickstart -q --project=%1 --author=%username% --batchfile --template=sphinxTemplate %1/docs
-python SASParser.py %1
 
-xcopy sphinxStatic %1\docs\_static\ /s/e/y
+call sphinx-quickstart -q --project=%1 --author=%username% --batchfile --template=sphinxTemplate %out%
+python SASParser.py %1 %out%
 
-%1/docs/make.bat html
+xcopy sphinxStatic %out%\_static\ /s/e/y
+
+%out%\make.bat html
 
 
 :end

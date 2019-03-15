@@ -90,6 +90,9 @@ class SASParser(object):
 
 		
 if __name__ == "__main__":
-	path = sys.argv[1]
-	parser = SASParser(path,path+'/docs')
+	if len(sys.argv)>2:
+		path = sys.argv[1]
+		out = sys.argv[2]
+		parser = SASParser(path,out)
+
 
