@@ -56,7 +56,7 @@ No doc string
 
 | Library | Name |
 | --- | --- |
-|  | _FmtOut |
+| work | _FmtOut |
 
 
 ## Full code:
@@ -273,5 +273,5 @@ run;
 | Meta | Property |
 | --- | --- |
 | **Author:** | |
-| **Path:** | */home/ben/Documents/SASDocumentation/example/code/SASMail.sas* |
-| **Last updated:** | *2019-03-13 10:56:50* |
+| **Path:** | *W:\SASDocumentation\example\code\SASMail.sas* |
+| **Last updated:** | *2019-03-14 10:33:11* |

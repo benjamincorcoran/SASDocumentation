@@ -233,5 +233,5 @@ turn off logging and notes
 | Meta | Property |
 | --- | --- |
 | **Author:** | |
-| **Path:** | */home/ben/Documents/SASDocumentation/example/code/whatmacro.sas* |
-| **Last updated:** | *2019-03-12 17:15:53* |
+| **Path:** | *W:\SASDocumentation\example\code\whatmacro.sas* |
+| **Last updated:** | *2019-03-14 10:33:11* |

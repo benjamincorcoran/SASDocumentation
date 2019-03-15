@@ -89,5 +89,5 @@ libname test2 "thisisanothertest";
 | Meta | Property |
 | --- | --- |
 | **Author:** | |
-| **Path:** | */home/ben/Documents/SASDocumentation/example/code/macro.sas* |
-| **Last updated:** | *2019-03-13 16:41:29* |
+| **Path:** | *W:\SASDocumentation\example\code\macro.sas* |
+| **Last updated:** | *2019-03-14 10:33:11* |

@@ -1,6 +1,6 @@
 sasdoc*
-example/donottrack
+donottrack
 .vscode
 *.pyc
 __pycache__/
-build/
+_build/

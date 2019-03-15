@@ -50,6 +50,8 @@ class SASProgram(object):
         else:
             self.about=None
 
+        self.unCommentedProgram = re.sub('(\/\*.*?\*\/(?!\s*[\/\*]))','',self.rawProgram)
+
         rawMacros = re.findall('(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.rawProgram,reFlags)
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
@@ -62,7 +64,7 @@ class SASProgram(object):
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 
-        rawDatasteps = re.findall(r"data.*?run;",self.rawProgram,reFlags)
+        rawDatasteps = re.findall(r"data [^=]*?;.*?run;",self.unCommentedProgram,reFlags)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
