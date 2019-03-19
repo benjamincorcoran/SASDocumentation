@@ -17,21 +17,21 @@ libname LIB2 "path-to-library-two";
 					arg2= /*This describes the keyword argument*/,
 					arg3=True /*This describes the keyword argument with a default value*/,
 					help=False /*This describes the optional help argument*/)
-					/des='This is an optional, short, descriptive sentence about the macro'
+					/des='This is an optional, short, descriptive sentence about the macro';
 	
 	/*This is the macros documentation string (DocString). This details the purpose*/
 	/*of the macro. This should also include information on how to use the macro */
 	/*and any considerations that should be made when using the macro. */
 
 	%if &help ^= False %then %do;
-		%put This is an optional structure which will print a series of 
-		%put strings into the log. These will detail how to use the macro
-		%put what arguments the macro takes, and the purpose of the macro
+		%put This is an optional structure which will print a series of ;
+		%put strings into the log. These will detail how to use the macro;
+		%put what arguments the macro takes, and the purpose of the macro;
 		%put ;
-		%put This will allow users to receive help directly from SASEG
+		%put This will allow users to receive help directly from SASEG;
 		%put ;
-		%put These help statements will be parsed into documentation however
-		%put the DocString is considered complete documentation for the macro.
+		%put These help statements will be parsed into documentation however;
+		%put the DocString is considered complete documentation for the macro.;
 	%end;
 
 	data LIB1.dataset0;

@@ -9,8 +9,8 @@ class SASDatastep(object):
         reFlags = re.DOTALL|re.IGNORECASE
         
         self.dataObjects = []
-       
-        rawObjects = re.findall(r'data ([A-Za-z0-9\_\-\. \&]*?);',rawStr,reFlags)[0].split(' ')
+ 
+        rawObjects = re.findall(r'data ([^=].*?);',rawStr,reFlags)[0].split(' ')
 
         for dataObject in rawObjects:
             

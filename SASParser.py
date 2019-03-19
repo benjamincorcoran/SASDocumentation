@@ -61,7 +61,7 @@ class SASParser(object):
 					out.write('{}\n\n'.format(macro.docString))
 					if len(macro.help)>0:
 						out.write('#### Help\n')
-						out.write('{}'.format(macro.help))
+						out.write('{}\n\n'.format(macro.help))
 					if len(macro.arguments)>0:
 						out.write('#### Argument(s)\n\n')
 						out.write('| Name | Type | Default Value | About |\n')
