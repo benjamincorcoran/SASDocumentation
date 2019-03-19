@@ -29,8 +29,7 @@ class SASArgument(object):
             self.type='Required'
             self.defaultValue='Not set'
 
-        if re.search('\*',rawStr) is not None:
-            
+        if re.search('.*?\*(.*)\*',rawStr) is not None:
             self.docString = re.findall('.*?\*(.*)\*',rawStr,reFlags)[0]
         else:
             self.docString='Not set'

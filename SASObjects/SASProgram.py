@@ -64,7 +64,7 @@ class SASProgram(object):
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 
-        rawDatasteps = re.findall(r"data [^=]*?;.*?run;",self.unCommentedProgram,reFlags)
+        rawDatasteps = re.findall(r"data [A-Za-z0-9\_\-\. \&]*?;.*?run;",self.unCommentedProgram,reFlags)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
