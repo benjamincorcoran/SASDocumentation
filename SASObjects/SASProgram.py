@@ -66,7 +66,6 @@ class SASProgram(SASBaseObject):
             self.readIncludes(rawIncludes)
 
         rawDatasteps = self.parseSASObject('datastep',self.unCommentedProgram)
-        print(rawDatasteps)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
