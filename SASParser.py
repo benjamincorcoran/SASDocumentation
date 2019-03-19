@@ -26,6 +26,10 @@ class SASParser(object):
 		for program in self.SASPrograms:
 			self.writeMD(program,self.outDir)
 
+		with open(os.path.join(self.outDir,'code.rst'),'w+') as codeRST:
+			codeRST.write('Code\n====\n\n.. toctree::\n   :maxdepth: 2\n   :glob:\n\n   *')
+		
+
 
 	def writeMD(self,SASProgram,outpath):
 
@@ -86,6 +90,9 @@ class SASParser(object):
 
 		
 if __name__ == "__main__":
-	
-	parser = SASParser('example','example/docs')
+	if len(sys.argv)>2:
+		path = sys.argv[1]
+		out = sys.argv[2]
+		parser = SASParser(path,out)
+
 

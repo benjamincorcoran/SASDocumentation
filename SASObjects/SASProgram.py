@@ -51,6 +51,8 @@ class SASProgram(SASBaseObject):
         else:
             self.about=None
 
+        self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub('',self.rawProgram)
+
         rawMacros = self.parseSASObject('macro',self.rawProgram)
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
@@ -63,7 +65,7 @@ class SASProgram(SASBaseObject):
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 
-        rawDatasteps = self.parseSASObject('datastep',self.rawProgram)
+        rawDatasteps = self.parseSASObject('datastep',self.unCommentedProgram)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
