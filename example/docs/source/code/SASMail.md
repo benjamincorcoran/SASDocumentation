@@ -1,4 +1,4 @@
-# SASMail
+# SASMail.sas
 
 ## About
 Input macro var
@@ -50,13 +50,6 @@ No doc string
 | ReadRcpt | Optional | N  | Specify Y to receive a read reciept, defaults to no |
 | Importance | Optional | NORMAL  | Specify importance, defaults to normal |
 | ContentType | Optional | text | Not set |
-
-
-## Datasets(s)
-
-| Library | Name |
-| --- | --- |
-|  | _FmtOut |
 
 
 ## Full code:

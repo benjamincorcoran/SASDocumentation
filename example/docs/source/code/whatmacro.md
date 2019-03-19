@@ -1,4 +1,4 @@
-# whatmacro
+# whatmacro.sas
 
 ## About
 Macro to identify other macros with a name similar to macroName
@@ -58,14 +58,6 @@ turn off logging and notes
 | macroName | Required | Not set | Not set |
 | Catalog | Optional | sasmac1 | Not set |
 | HELP | Optional | NO | Not set |
-
-
-## Datasets(s)
-
-| Library | Name |
-| --- | --- |
-| MacTemp | sasAutoLocs |
-| mactemp | filelist |
 
 
 ## Full code:

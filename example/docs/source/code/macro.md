@@ -1,4 +1,4 @@
-# macro
+# macro.sas
 
 ## About
 MacroName doctstring
