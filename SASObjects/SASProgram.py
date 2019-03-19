@@ -2,12 +2,13 @@ import re
 import os 
 import datetime
 
+from .SASBaseObject import SASBaseObject
 from .SASMacro import SASMacro
 from .SASLibname import SASLibname
 from .SASInclude import SASInclude
 from .SASDatastep import SASDatastep
 
-class SASProgram(object):
+class SASProgram(SASBaseObject):
     '''
     SAS Macro Class
     
@@ -23,10 +24,10 @@ class SASProgram(object):
     '''
 
     def __init__(self,file):
-        
-        reFlags = re.DOTALL|re.IGNORECASE
 
-        self.name = os.path.basename(file).replace('.sas','')
+        SASBaseObject.__init__(self)
+        
+        self.name = os.path.basename(file)
         self.fileName = os.path.basename(file)
         self.filePath = os.path.abspath(file)
 
@@ -44,27 +45,27 @@ class SASProgram(object):
         with open(self.filePath) as f:
             self.rawProgram = f.read()
 
-        self.rawComments = re.findall('(\/\*.*?\*\/(?!\s*[\/\*]))',self.rawProgram,reFlags)
+        self.rawComments = self.parseSASObject('commentBlock',self.rawProgram)
         if len(self.rawComments) > 0:
             self.about=re.sub('\*|\t|\/','',self.rawComments[0])
         else:
             self.about=None
 
-        self.unCommentedProgram = re.sub('(\/\*.*?\*\/(?!\s*[\/\*]))','',self.rawProgram)
+        self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub('',self.rawProgram)
 
-        rawMacros = re.findall('(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.rawProgram,reFlags)
+        rawMacros = self.parseSASObject('macro',self.rawProgram)
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
 
-        rawLibnames = re.findall(r"libname .{0,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.rawProgram,reFlags)
+        rawLibnames = self.parseSASObject('libname',self.rawProgram)
         if len(rawLibnames) > 0:
             self.readLibnames(rawLibnames)
         
-        rawIncludes = re.findall(r"include ['\"].*?['\"]",self.rawProgram,reFlags)
+        rawIncludes = self.parseSASObject('include',self.rawProgram)
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 
-        rawDatasteps = re.findall(r"data [A-Za-z0-9\_\-\. \&]*?;.*?run;",self.unCommentedProgram,reFlags)
+        rawDatasteps = self.parseSASObject('datastep',self.unCommentedProgram)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
