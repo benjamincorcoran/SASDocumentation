@@ -1,7 +1,7 @@
 import re
 
-from SASBaseObject import SASBaseObject
-from SASDataObject import SASDataObject
+from .SASBaseObject import SASBaseObject
+from .SASDataObject import SASDataObject
 
 class SASDatastep(SASBaseObject):
     
@@ -44,18 +44,10 @@ class SASDatastep(SASBaseObject):
 
         return objectList
 
-            
 
+    def __str__(self):
+        return ','.join(self.outputs)
 
-    # def __str__(self):
-    #     return self.dataObjects
+    def __repr__(self):
+        return ','.join(self.outputs)
 
-    # def __repr__(self):
-    #     return self.dataObjects
-
-if __name__ == "__main__":
-    test = '''data a.d b e.c(where=);
-    set d e(where=) f;
-    run;'''
-
-    SASDatastep(test)

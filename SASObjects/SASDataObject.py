@@ -17,10 +17,10 @@ class SASDataObject(object):
         else:
             self.condition = condition
 
-        self._str = '{}.{}'.format(self.library,self.dataset)
+        self.id = '{}.{}'.format(self.library,self.dataset)
    
     def __str__(self):
-        return self._str
+        return self.id
     
     def __repr__(self):
-        return self._str
+        return self.id
