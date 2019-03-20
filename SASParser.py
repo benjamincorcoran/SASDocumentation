@@ -28,12 +28,6 @@ class SASParser(object):
 					self.writeMD(parsedSASFile,self.outDir)
 		
 		
-		
-
-
-		
-
-
 	def writeMD(self,SASProgram,outpath):
 
 		mdPath = os.path.join(outpath,re.sub('.sas$','.md',SASProgram.fileName,flags=re.IGNORECASE))

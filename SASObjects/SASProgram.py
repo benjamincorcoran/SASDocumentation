@@ -39,7 +39,7 @@ class SASProgram(SASBaseObject):
         self.macros = []
         self.libnames = []
         self.includes = []
-        self.datasets = []
+        self.datasteps = []
 
 
         with open(self.filePath) as f:
@@ -83,9 +83,9 @@ class SASProgram(SASBaseObject):
     
     def readDatasteps(self, rawDatasteps):
         for datastepStr in rawDatasteps:
-            datastep = (SASDatastep(datastepStr))
-            for dataset in datastep.dataObjects:
-                self.datasets.append(dataset)
+            self.datasteps.append(SASDatastep(datastepStr))
+
+
 
 
     def __str__(self):
