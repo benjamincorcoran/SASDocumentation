@@ -5,7 +5,7 @@ from SASObjects.SASProgram import SASProgram
 if __name__=='__main__':
 
     G = nx.DiGraph()
-    path = 'W:\SASDocumentation\donottrack\\TEFmaps - TEF Pilot 2018-19 - Subject_Level.sas'
+    path = r'modelSASCode/modelCode.sas'
     parsedSASFile = SASProgram(path)
 
     for ds in parsedSASFile.datasteps:
@@ -17,5 +17,5 @@ if __name__=='__main__':
                     G.add_node(output.dataset)
                 G.add_edge(input.dataset,output.dataset)
     
-    nx.draw_spring(G, with_labels=True)
+    nx.draw(G, with_labels=True)
     plt.show()
