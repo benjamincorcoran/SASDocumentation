@@ -13,10 +13,12 @@ class SASBaseObject(object):
             'include':re.compile(r"include ['\"].*?['\"]",self.regexFlags),              
             'datastep':re.compile(r"\s*data [^=].*?;.*?run;",self.regexFlags),
             'dataObject':re.compile(r'\s*(.*?\(.*?[^(]*\))\s*;',self.regexFlags),
+            'procedure':re.compile(r'proc .*?(?:run|quit);',self.regexFlags),
         
             'datastepHead':re.compile(r"(data .*?;)",self.regexFlags),
             'datastepBody':re.compile(r"data .*?;(.*?run;)",self.regexFlags)   
         }
+
 
     def splitDataObjects(self, str):
         objects = []

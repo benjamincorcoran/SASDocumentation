@@ -3,18 +3,18 @@ import re
 from .SASBaseObject import SASBaseObject
 from .SASDataObject import SASDataObject
 
-class SASDatastep(SASBaseObject):
+class SASProcedure(SASBaseObject):
     
     def __init__(self,rawStr):
   
         SASBaseObject.__init__(self)
 
-        self.head = self.parse('datastepHead',rawStr)[0]
-        self.body = self.parse('datastepBody',rawStr)[0]
+        self.rawStr = rawStr
+        self.procedure = re.findall(r'proc (.*?) ',self.rawStr)[0]
 
-        rawOutputs = re.findall(r'data (.*?;)',self.head,self.regexFlags)
-        rawInputs = re.findall(r'(?:set |merge )(.*?;)',self.body,self.regexFlags)
-           
+        rawOutputs = re.findall(r'out=(.*?[\s;])',self.rawStr,self.regexFlags)
+        rawInputs = re.findall(r'data=(.*?[\s;])',self.rawStr,self.regexFlags)
+        
         if len(rawInputs)>0:   
             self.inputs = self.parseDataObjects(rawInputs[0])
         else:
@@ -23,6 +23,7 @@ class SASDatastep(SASBaseObject):
             self.outputs = self.parseDataObjects(rawOutputs[0])
         else:
             self.inputs = []
+  
 
     def parseDataObjects(self,objectText):
         rawObjectList = self.splitDataObjects(objectText)
@@ -47,7 +48,7 @@ class SASDatastep(SASBaseObject):
             objectList.append(SASDataObject(library,dataset,condition))
 
         return objectList
-        
+
     # def __str__(self):
     #     return ','.join([_.__str__ for _ in self.outputs])
 

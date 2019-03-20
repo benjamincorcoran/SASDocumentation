@@ -7,6 +7,7 @@ from .SASMacro import SASMacro
 from .SASLibname import SASLibname
 from .SASInclude import SASInclude
 from .SASDatastep import SASDatastep
+from .SASProcedure import SASProcedure
 
 class SASProgram(SASBaseObject):
     '''
@@ -40,6 +41,7 @@ class SASProgram(SASBaseObject):
         self.libnames = []
         self.includes = []
         self.datasteps = []
+        self.procedures = []
 
 
         with open(self.filePath) as f:
@@ -69,6 +71,12 @@ class SASProgram(SASBaseObject):
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
+        rawProcedures = self.parse('procedure',self.unCommentedProgram)
+        if len(rawProcedures) > 0:
+            self.readProcedures(rawProcedures)
+
+
+
     def readMacros(self,rawMacros):
         for macroStr in rawMacros:
             self.macros.append(SASMacro(macroStr))
@@ -85,7 +93,9 @@ class SASProgram(SASBaseObject):
         for datastepStr in rawDatasteps:
             self.datasteps.append(SASDatastep(datastepStr))
 
-
+    def readProcedures(self, rawProcedures):
+        for procedureStr in rawProcedures:
+            self.procedures.append(SASProcedure(procedureStr))
 
 
     def __str__(self):
