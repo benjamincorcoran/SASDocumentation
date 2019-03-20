@@ -9,12 +9,18 @@ class SASBaseObject(object):
         self.SASRegexDict = {
             'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])',self.regexFlags),
             'macro':re.compile(r'(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.regexFlags),
-            'libname':re.compile(r"libname .{0,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.regexFlags),
+            'libname':re.compile(r"libname .{1,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.regexFlags),
             'include':re.compile(r"include ['\"].*?['\"]",self.regexFlags),              
-            'datastep':re.compile(r"\s*data [^=].*?;.*?run;",self.regexFlags)
+            'datastep':re.compile(r"\s*data [^=].*?;.*?run;",self.regexFlags),
+            'dataObject':re.compile(r'(.*?(?:\s*\(.*?\))?)\s+',self.regexFlags),
+        
+            'datastepHead':re.compile(r"(data .*?;)",self.regexFlags),
+            'datastepBody':re.compile(r"data .*?;(.*?run;)",self.regexFlags)
+
+            
         }
 
-    def parseSASObject(self,SASObject,str):
+    def parse(self,SASObject,str):
         if SASObject in self.SASRegexDict.keys():
             return re.findall(self.SASRegexDict[SASObject],str)
         else:

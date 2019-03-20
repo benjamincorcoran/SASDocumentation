@@ -45,7 +45,7 @@ class SASProgram(SASBaseObject):
         with open(self.filePath) as f:
             self.rawProgram = f.read()
 
-        self.rawComments = self.parseSASObject('commentBlock',self.rawProgram)
+        self.rawComments = self.parse('commentBlock',self.rawProgram)
         if len(self.rawComments) > 0:
             self.about=re.sub('\*|\t|\/','',self.rawComments[0])
         else:
@@ -53,19 +53,19 @@ class SASProgram(SASBaseObject):
 
         self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub('',self.rawProgram)
 
-        rawMacros = self.parseSASObject('macro',self.rawProgram)
+        rawMacros = self.parse('macro',self.rawProgram)
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
 
-        rawLibnames = self.parseSASObject('libname',self.rawProgram)
+        rawLibnames = self.parse('libname',self.rawProgram)
         if len(rawLibnames) > 0:
             self.readLibnames(rawLibnames)
         
-        rawIncludes = self.parseSASObject('include',self.rawProgram)
+        rawIncludes = self.parse('include',self.rawProgram)
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 
-        rawDatasteps = self.parseSASObject('datastep',self.unCommentedProgram)
+        rawDatasteps = self.parse('datastep',self.unCommentedProgram)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
