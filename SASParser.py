@@ -11,23 +11,26 @@ class SASParser(object):
 		self.codepath = codepath
 		self.docpath = docpath 
 
-		self.SASPrograms = []
+		self.outDir = os.path.join(docpath,'source','code')
+
+		if not os.path.exists(self.outDir):
+			os.makedirs(self.outDir)
+
+		with open(os.path.join(self.outDir,'code.rst'),'w+') as codeRST:
+			codeRST.write('Code\n====\n\n.. toctree::\n   :maxdepth: 2\n   :glob:\n\n   *')
 
 		for root, dirs, files in os.walk(self.codepath):
 			for name in files:
 				if len(re.findall('\.sas$',name,flags=re.IGNORECASE))>0:
 					SASfile = os.path.join(root,name)
-					self.SASPrograms.append(SASProgram(SASfile))
+					print("Parsing {}\r".format(SASfile))
+					parsedSASFile = SASProgram(SASfile)
+					self.writeMD(parsedSASFile,self.outDir)
 		
-		self.outDir = os.path.join(docpath,'source','code')
 		
-		if not os.path.exists(self.outDir):
-			os.makedirs(self.outDir)
-		for program in self.SASPrograms:
-			self.writeMD(program,self.outDir)
+		
 
-		with open(os.path.join(self.outDir,'code.rst'),'w+') as codeRST:
-			codeRST.write('Code\n====\n\n.. toctree::\n   :maxdepth: 2\n   :glob:\n\n   *')
+
 		
 
 
