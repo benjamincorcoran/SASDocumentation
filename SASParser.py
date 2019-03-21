@@ -26,6 +26,9 @@ class SASParser(object):
 					SASfile = os.path.join(root,name)
 					print("Parsing {}\r".format(SASfile))
 					parsedSASFile = SASProgram(SASfile)
+
+					SASFlowChart(parsedSASFile)
+
 					self.writeMD(parsedSASFile,self.outDir)
 		
 		
@@ -67,12 +70,14 @@ class SASParser(object):
 						for arg in macro.arguments:
 							out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 					out.write('\n\n')
-			if len(SASProgram.datasets) > 0:
+			if len(SASProgram.inputs)+len(SASProgram.outputs) > 0:
 				out.write('## Datasets(s)\n\n')
 				out.write('| Library | Name |\n')
 				out.write('| --- | --- |\n')
-				for dataset in SASProgram.datasets:
-					out.write('| {} | {} |\n'.format(dataset.library,dataset.name))
+				for input in SASProgram.inputs:
+					out.write('| {} | {} |\n'.format(input.library,input.dataset))
+				for output in SASProgram.outputs:
+					out.write('| {} | {} |\n'.format(output.library,output.dataset))
 				out.write('\n\n')
 
 			out.write('## Full code:\n\n<details><summary>Show/Hide</summary>\n\n')

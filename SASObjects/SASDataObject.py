@@ -1,11 +1,14 @@
 import re
 
-class SASDataObject(object):
+from .SASBaseObject import SASBaseObject
+
+class SASDataObject(SASBaseObject):
     
     def __init__(self,library,dataset,condition):
 
+        SASBaseObject.__init__(self)
        
-        self.dataset = re.sub('\s','',dataset)
+        self.dataset = re.sub('\s','',dataset).upper()
     
         if library is None:
             self.library = 'work'
@@ -19,6 +22,12 @@ class SASDataObject(object):
 
         self.id = '{}.{}'.format(self.library,self.dataset)
    
+    def isNull(self):
+        if len(re.findall(r'_null_',self.dataset,self.regexFlags)) > 0:
+            return True
+        else:
+            return False
+
     def __str__(self):
         return self.id
     

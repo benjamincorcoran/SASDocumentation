@@ -43,6 +43,9 @@ class SASProgram(SASBaseObject):
         self.datasteps = []
         self.procedures = []
 
+        self.inputs = []
+        self.outputs = []
+
 
         with open(self.filePath) as f:
             self.rawProgram = f.read()
@@ -75,7 +78,8 @@ class SASProgram(SASBaseObject):
         if len(rawProcedures) > 0:
             self.readProcedures(rawProcedures)
 
-
+        self.getInputs()
+        self.getOutputs()
 
     def readMacros(self,rawMacros):
         for macroStr in rawMacros:
@@ -96,6 +100,22 @@ class SASProgram(SASBaseObject):
     def readProcedures(self, rawProcedures):
         for procedureStr in rawProcedures:
             self.procedures.append(SASProcedure(procedureStr))
+
+    def getInputs(self):
+        for datastep in self.datasteps:
+            for input in datastep.inputs:
+                self.inputs.append(input)
+        for proc in self.procedures:
+            for input in proc.inputs:
+                self.inputs.append(input)
+    
+    def getOutputs(self):
+        for datastep in self.datasteps:
+            for output in datastep.outputs:
+                self.outputs.append(output)
+        for proc in self.procedures:
+            for output in proc.outputs:
+                self.outputs.append(output)
 
 
     def __str__(self):

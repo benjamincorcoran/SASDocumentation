@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from SASObjects.SASProgram import SASProgram
 
-class SASDataFlowChart(object):
+class SASFlowChart(object):
 
     def __init__(self, SASProgram):
 
@@ -21,6 +21,7 @@ class SASDataFlowChart(object):
             if len(list(self.G.predecessors(node))) == 0:
                 self.G.add_edge('start',node)
 
+
         self.pos = self._hierarchy_pos(self.G,'start')
         self.G.remove_node('start')
         nx.draw(self.G,pos=self.pos,with_labels=True)
@@ -31,19 +32,25 @@ class SASDataFlowChart(object):
         for _,lab in self.edge_labels.items():
             lab.set_rotation('horizontal')
 
+        plt.show()
+
     def addDataNodes(self,SASObject):
         for obj in SASObject:
             for input in obj.inputs:
-                if self.G.has_node(input.dataset) is False:
-                    self.G.add_node(input.dataset,lib=input.library)
+                if not input.isNull():
+                    if self.G.has_node(input.dataset) is False:
+                        self.G.add_node(input.dataset,lib=input.library)
 
                 for output in obj.outputs:
-                    if self.G.has_node(output.dataset) is False:
-                        self.G.add_node(output.dataset,lib=input.library)
-                    if hasattr(obj,'procedure'):
-                        self.G.add_edge(input.dataset,output.dataset,label=obj.procedure)
-                    else:
-                        self.G.add_edge(input.dataset,output.dataset)
+                    if not output.isNull():
+                        if self.G.has_node(output.dataset) is False:
+                            self.G.add_node(output.dataset,lib=input.library)
+                        if hasattr(obj,'procedure'):
+                            if input.dataset != output.dataset:
+                                self.G.add_edge(input.dataset,output.dataset,label=obj.procedure)
+                        else:
+                            if input.dataset != output.dataset:
+                                self.G.add_edge(input.dataset,output.dataset)
 
 
     def _hierarchy_pos(self, G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5, pos = None, parent = None):
@@ -52,7 +59,6 @@ class SASDataFlowChart(object):
         else:
             pos[root] = (xcenter, vert_loc)
         children = list(G.successors(root))
-    
         if len(children)>0:
             dx = width/len(children) 
             nextx = xcenter - width/2 - dx/2

@@ -10,7 +10,7 @@ class SASProcedure(SASBaseObject):
         SASBaseObject.__init__(self)
 
         self.rawStr = rawStr
-        self.procedure = re.findall(r'proc (.*?) ',self.rawStr)[0]
+        self.procedure = re.findall(r'proc (.*?)[\s;]',self.rawStr,self.regexFlags)[0]
 
         rawOutputs = re.findall(r'out=(.*?[\s;])',self.rawStr,self.regexFlags)
         rawInputs = re.findall(r'data=(.*?[\s;])',self.rawStr,self.regexFlags)
@@ -22,7 +22,7 @@ class SASProcedure(SASBaseObject):
         if len(rawOutputs)>0:
             self.outputs = self.parseDataObjects(rawOutputs[0])
         else:
-            self.inputs = []
+            self.outputs = []
   
 
     def parseDataObjects(self,objectText):

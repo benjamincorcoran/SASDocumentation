@@ -15,8 +15,9 @@ class SASDatastep(SASBaseObject):
         rawOutputs = re.findall(r'data (.*?;)',self.head,self.regexFlags)
         rawInputs = re.findall(r'(?:set |merge )(.*?;)',self.body,self.regexFlags)
            
-        if len(rawInputs)>0:   
-            self.inputs = self.parseDataObjects(rawInputs[0])
+        if len(rawInputs)>0:
+            rawInputs = re.sub(r'end=.*?[\s;]','',rawInputs[0],self.regexFlags)   
+            self.inputs = self.parseDataObjects(rawInputs)
         else:
             self.inputs = []
         if len(rawOutputs)>0:
