@@ -51,16 +51,16 @@ class SASFlowChart(object):
                     if self.G.has_node(input.dataset) is False:
                         self.G.add_node(input.dataset,lib=input.library)
 
-                for output in obj.outputs:
-                    if not output.isNull():
-                        if self.G.has_node(output.dataset) is False:
-                            self.G.add_node(output.dataset,lib=input.library)
-                        if hasattr(obj,'procedure'):
-                            if input.dataset != output.dataset:
-                                self.G.add_edge(input.dataset,output.dataset,label=obj.procedure)
-                        else:
-                            if input.dataset != output.dataset:
-                                self.G.add_edge(input.dataset,output.dataset)
+                    for output in obj.outputs:
+                        if not output.isNull():
+                            if self.G.has_node(output.dataset) is False:
+                                self.G.add_node(output.dataset,lib=input.library)
+                            if hasattr(obj,'procedure'):
+                                if input.dataset != output.dataset:
+                                    self.G.add_edge(input.dataset,output.dataset,label=obj.procedure)
+                            else:
+                                if input.dataset != output.dataset:
+                                    self.G.add_edge(input.dataset,output.dataset)
 
 
     def _hierarchy_pos(self, G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5, pos = None, parent = None):
@@ -76,7 +76,7 @@ class SASFlowChart(object):
                 if child != root:
                     nextx += dx
                     pos = self._hierarchy_pos(G, child, width = dx, vert_gap = vert_gap, 
-                                        vert_loc = vert_loc-vert_gap-0.01*i, xcenter=nextx,
+                                        vert_loc = vert_loc-vert_gap - 0.02*i, xcenter=nextx,
                                         pos=pos, parent = root)
         return pos
 

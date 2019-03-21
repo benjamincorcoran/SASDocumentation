@@ -48,7 +48,7 @@ class SASBaseObject(object):
         if not len(re.sub('\s','',obj))>0:
             return False
         
-        if not re.match('end=|out=|^nway$',obj,self.regexFlags) is None:
+        if not re.match('end=|out=|^nway$|^noprint$',obj,self.regexFlags) is None:
             return False
         
         return True

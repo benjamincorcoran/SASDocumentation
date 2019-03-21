@@ -28,7 +28,7 @@ class SASParser(object):
 					
 					parsedSASFile = SASProgram(SASfile)
 					flowChart = SASFlowChart(parsedSASFile)
-					flowChartImg = os.path.join(self.outDir,re.sub('.sas$','.png',flowChart.SASProgram.fileName,flags=re.IGNORECASE))
+					flowChartImg = re.sub('\s','',os.path.join(self.outDir,re.sub('.sas$','.png',flowChart.SASProgram.fileName,flags=re.IGNORECASE)))
 					flowChart.saveFig(flowChartImg)
 
 					self.writeMD(parsedSASFile,self.outDir,flowChartImg=flowChartImg)
@@ -43,7 +43,7 @@ class SASParser(object):
 				out.write('## About\n')
 				out.write('{}\n\n'.format(SASProgram.about))
 			if flowChartImg is not None:
-				out.write('## Program Struture\n')
+				out.write('## Program Struture\n\n')
 				out.write('![Program Structure]({})\n\n'.format(os.path.basename(flowChartImg)))
 			if len(SASProgram.libnames) > 0:
 				out.write('## Libname(s)\n\n')
