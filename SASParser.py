@@ -3,6 +3,7 @@ import os
 import re
 
 from SASObjects.SASProgram import SASProgram
+from SASAnalysis.SASFlowChart import SASFlowChart
 
 class SASParser(object):
 
@@ -11,26 +12,26 @@ class SASParser(object):
 		self.codepath = codepath
 		self.docpath = docpath 
 
-		self.SASPrograms = []
+		self.outDir = os.path.join(docpath,'source','code')
+
+		if not os.path.exists(self.outDir):
+			os.makedirs(self.outDir)
+
+		with open(os.path.join(self.outDir,'code.rst'),'w+') as codeRST:
+			codeRST.write('Code\n====\n\n.. toctree::\n   :maxdepth: 2\n   :glob:\n\n   *')
 
 		for root, dirs, files in os.walk(self.codepath):
 			for name in files:
 				if len(re.findall('\.sas$',name,flags=re.IGNORECASE))>0:
 					SASfile = os.path.join(root,name)
-					self.SASPrograms.append(SASProgram(SASfile))
-		
-		self.outDir = os.path.join(docpath,'source','code')
-		
-		if not os.path.exists(self.outDir):
-			os.makedirs(self.outDir)
-		for program in self.SASPrograms:
-			self.writeMD(program,self.outDir)
+					print("Parsing {}\r".format(SASfile))
+					parsedSASFile = SASProgram(SASfile)
 
-		with open(os.path.join(self.outDir,'code.rst'),'w+') as codeRST:
-			codeRST.write('Code\n====\n\n.. toctree::\n   :maxdepth: 2\n   :glob:\n\n   *')
+					SASFlowChart(parsedSASFile)
+
+					self.writeMD(parsedSASFile,self.outDir)
 		
-
-
+		
 	def writeMD(self,SASProgram,outpath):
 
 		mdPath = os.path.join(outpath,re.sub('.sas$','.md',SASProgram.fileName,flags=re.IGNORECASE))
@@ -69,12 +70,14 @@ class SASParser(object):
 						for arg in macro.arguments:
 							out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 					out.write('\n\n')
-			if len(SASProgram.datasets) > 0:
+			if len(SASProgram.inputs)+len(SASProgram.outputs) > 0:
 				out.write('## Datasets(s)\n\n')
 				out.write('| Library | Name |\n')
 				out.write('| --- | --- |\n')
-				for dataset in SASProgram.datasets:
-					out.write('| {} | {} |\n'.format(dataset.library,dataset.name))
+				for input in SASProgram.inputs:
+					out.write('| {} | {} |\n'.format(input.library,input.dataset))
+				for output in SASProgram.outputs:
+					out.write('| {} | {} |\n'.format(output.library,output.dataset))
 				out.write('\n\n')
 
 			out.write('## Full code:\n\n<details><summary>Show/Hide</summary>\n\n')

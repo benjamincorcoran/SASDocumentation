@@ -1,19 +1,35 @@
 import re
 
-class SASDataObject(object):
-    
-    def __init__(self,library,name):
-  
-        self.name = name
-        self.library = library
+from .SASBaseObject import SASBaseObject
 
-        if self.library != '':
-            self._str = '{}.{}'.format(self.library,self.name)
+class SASDataObject(SASBaseObject):
+    
+    def __init__(self,library,dataset,condition):
+
+        SASBaseObject.__init__(self)
+       
+        self.dataset = re.sub('\s','',dataset).upper()
+    
+        if library is None:
+            self.library = 'work'
         else:
-            self._str = self.name
+            self.library = re.sub('\s','',library)
+
+        if condition is None:
+            self.condition = ''
+        else:
+            self.condition = condition
+
+        self.id = '{}.{}'.format(self.library,self.dataset)
+   
+    def isNull(self):
+        if len(re.findall(r'_null_',self.dataset,self.regexFlags)) > 0:
+            return True
+        else:
+            return False
 
     def __str__(self):
-        return self._str
+        return self.id
     
     def __repr__(self):
-        return 
+        return self.id

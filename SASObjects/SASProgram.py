@@ -7,6 +7,7 @@ from .SASMacro import SASMacro
 from .SASLibname import SASLibname
 from .SASInclude import SASInclude
 from .SASDatastep import SASDatastep
+from .SASProcedure import SASProcedure
 
 class SASProgram(SASBaseObject):
     '''
@@ -39,13 +40,17 @@ class SASProgram(SASBaseObject):
         self.macros = []
         self.libnames = []
         self.includes = []
-        self.datasets = []
+        self.datasteps = []
+        self.procedures = []
+
+        self.inputs = []
+        self.outputs = []
 
 
         with open(self.filePath) as f:
             self.rawProgram = f.read()
 
-        self.rawComments = self.parseSASObject('commentBlock',self.rawProgram)
+        self.rawComments = self.parse('commentBlock',self.rawProgram)
         if len(self.rawComments) > 0:
             self.about=re.sub('\*|\t|\/','',self.rawComments[0])
         else:
@@ -53,21 +58,28 @@ class SASProgram(SASBaseObject):
 
         self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub('',self.rawProgram)
 
-        rawMacros = self.parseSASObject('macro',self.rawProgram)
+        rawMacros = self.parse('macro',self.rawProgram)
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
 
-        rawLibnames = self.parseSASObject('libname',self.rawProgram)
+        rawLibnames = self.parse('libname',self.rawProgram)
         if len(rawLibnames) > 0:
             self.readLibnames(rawLibnames)
         
-        rawIncludes = self.parseSASObject('include',self.rawProgram)
+        rawIncludes = self.parse('include',self.rawProgram)
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 
-        rawDatasteps = self.parseSASObject('datastep',self.unCommentedProgram)
+        rawDatasteps = self.parse('datastep',self.unCommentedProgram)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
+
+        rawProcedures = self.parse('procedure',self.unCommentedProgram)
+        if len(rawProcedures) > 0:
+            self.readProcedures(rawProcedures)
+
+        self.getInputs()
+        self.getOutputs()
 
     def readMacros(self,rawMacros):
         for macroStr in rawMacros:
@@ -83,9 +95,27 @@ class SASProgram(SASBaseObject):
     
     def readDatasteps(self, rawDatasteps):
         for datastepStr in rawDatasteps:
-            datastep = (SASDatastep(datastepStr))
-            for dataset in datastep.dataObjects:
-                self.datasets.append(dataset)
+            self.datasteps.append(SASDatastep(datastepStr))
+
+    def readProcedures(self, rawProcedures):
+        for procedureStr in rawProcedures:
+            self.procedures.append(SASProcedure(procedureStr))
+
+    def getInputs(self):
+        for datastep in self.datasteps:
+            for input in datastep.inputs:
+                self.inputs.append(input)
+        for proc in self.procedures:
+            for input in proc.inputs:
+                self.inputs.append(input)
+    
+    def getOutputs(self):
+        for datastep in self.datasteps:
+            for output in datastep.outputs:
+                self.outputs.append(output)
+        for proc in self.procedures:
+            for output in proc.outputs:
+                self.outputs.append(output)
 
 
     def __str__(self):

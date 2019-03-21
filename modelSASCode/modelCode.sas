@@ -58,3 +58,15 @@ proc sort data=LIB2.dataset3 out=LIB2.dataset4;
 	by A B C;
 run;
 
+proc transpose data=LIB2.dataset4 out=dataset5;
+	by a b c;
+run;
+
+proc summary data=dataset5 nway;
+	class A B C;
+	output out=dataset6;
+run;
+
+data dataset7;
+	merge dataset6 LIB1.dataset2;
+run;
