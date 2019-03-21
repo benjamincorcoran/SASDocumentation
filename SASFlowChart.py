@@ -10,7 +10,7 @@ def _hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.
         pos = {root:(xcenter,vert_loc)}
     else:
         pos[root] = (xcenter, vert_loc)
-    children = list(G.neighbors(root))
+    children = list(G.successors(root))
  
     if len(children)>0:
         dx = width/len(children) 
@@ -38,7 +38,7 @@ if __name__=='__main__':
         for input in ds.inputs:
             if G.has_node(input.dataset) is False:
                 G.add_node(input.dataset,lib=input.library)
-                G.add_edge('start',input.dataset)
+
             for output in ds.outputs:
                 if G.has_node(output.dataset) is False:
                     G.add_node(output.dataset,lib=input.library)
@@ -54,9 +54,12 @@ if __name__=='__main__':
                     G.add_node(output.dataset,lib=input.library)
                 G.add_edge(input.dataset,output.dataset,label=pc.procedure)
 
+    for node in G.nodes():
+        if len(list(G.predecessors(node))) == 0:
+            G.add_edge('start',node)
 
-    
-    pos = _hierarchy_pos(G,'start') 
+    pos = _hierarchy_pos(G,'start')
+    G.remove_node('start')
     nx.draw(G,pos=pos,with_labels=True)
 
 
