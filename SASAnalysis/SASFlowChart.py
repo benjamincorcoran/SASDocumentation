@@ -33,31 +33,33 @@ class SASFlowChart(object):
             if len(list(self.G.predecessors(node))) == 0:
                 self.G.add_edge('start',node)
 
-        self.pos = self._hierarchy_pos(self.G,'start')
-        self.G.remove_node('start')
+        try:
+            self.pos = self._hierarchy_pos(self.G,'start')
+            self.G.remove_node('start')
 
-        self.nodeColors = list(set([value for key,value in dict(nx.get_node_attributes(self.G,'lib')).items()]))
-        cmap = plt.get_cmap('Pastel2')
-        colors = cmap(np.linspace(0, 1, len(self.nodeColors)))
-        self.nodeColors = dict(zip(self.nodeColors, colors))
+            self.nodeColors = list(set([value for key,value in dict(nx.get_node_attributes(self.G,'lib')).items()]))
+            cmap = plt.get_cmap('Pastel2')
+            colors = cmap(np.linspace(0, 1, len(self.nodeColors)))
+            self.nodeColors = dict(zip(self.nodeColors, colors))
 
-        colorList = [self.nodeColors[value] for key,value in dict(nx.get_node_attributes(self.G,'lib')).items()]
+            colorList = [self.nodeColors[value] for key,value in dict(nx.get_node_attributes(self.G,'lib')).items()]
 
-        nx.draw_networkx_nodes(self.G,pos=self.pos,alpha=0.8,node_size=100,node_color=colorList)
-        nx.draw_networkx_edges(self.G,pos=self.pos,alpha=0.4)
-        nx.draw_networkx_labels(self.G,pos=self.pos,labels=self.nodeLabels,font_size=8)
-   
-        self.edge_labels = nx.get_edge_attributes(self.G,'label')
-        self.edge_labels = nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels =self.edge_labels,font_size=8,alpha=0.4)
-        
-        for _,lab in self.edge_labels.items():
-            lab.set_rotation('horizontal')
+            nx.draw_networkx_nodes(self.G,pos=self.pos,alpha=0.8,node_size=100,node_color=colorList)
+            nx.draw_networkx_edges(self.G,pos=self.pos,alpha=0.4)
+            nx.draw_networkx_labels(self.G,pos=self.pos,labels=self.nodeLabels,font_size=8)
+    
+            self.edge_labels = nx.get_edge_attributes(self.G,'label')
+            self.edge_labels = nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels =self.edge_labels,font_size=8,alpha=0.4)
+            
+            for _,lab in self.edge_labels.items():
+                lab.set_rotation('horizontal')
 
-        legendHandles = [mpatches.Patch(color=value, label=key) for key, value in self.nodeColors.items()]
+            legendHandles = [mpatches.Patch(color=value, label=key) for key, value in self.nodeColors.items()]
 
-        plt.legend(handles=legendHandles)
-        plt.axis('off')
-        plt.show()
+            plt.legend(handles=legendHandles,fontsize=8)
+            plt.axis('off')
+        except RecursionError:
+            print("Failed to produce diagram, recursive loop detected.")
 
     def saveFig(self,path):
         self.figure.savefig(path,format='PNG')
