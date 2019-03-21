@@ -3,6 +3,7 @@ import os
 import re
 
 from SASObjects.SASProgram import SASProgram
+from SASAnalysis.SASFlowChart import SASFlowChart
 
 class SASParser(object):
 
