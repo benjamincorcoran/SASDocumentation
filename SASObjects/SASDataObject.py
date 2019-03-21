@@ -8,7 +8,7 @@ class SASDataObject(SASBaseObject):
 
         SASBaseObject.__init__(self)
        
-        self.dataset = re.sub('\s','',dataset).upper()
+        self.dataset = re.sub('\s','',dataset)
     
         if library is None:
             self.library = 'work'
