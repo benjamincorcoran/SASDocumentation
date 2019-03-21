@@ -37,7 +37,7 @@ class SASProcedure(SASBaseObject):
             dataObject = re.sub('&.*?\.','',dataObject)
             
             library = re.findall(r'(.*?)\.',dataObject,self.regexFlags)
-            dataset = re.findall(r'(?:.*?\.)?([^(]+)[.]*',dataObject,self.regexFlags)
+            dataset = re.findall(r'(?:[^&]*?\.)?([^(]+)[.]*',dataObject,self.regexFlags)
             condition = re.findall(r'\((.*)\)',dataObject,self.regexFlags)
             
             if len(library) > 0:

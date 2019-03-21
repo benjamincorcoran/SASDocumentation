@@ -19,6 +19,8 @@ class SASBaseObject(object):
             'datastepBody':re.compile(r"data .*?;(.*?run;)",self.regexFlags)   
         }
 
+        self.SASKeywords = ['nway','noprint','nodup','nodupkey']
+
 
     def splitDataObjects(self, str):
         objects = []
@@ -48,9 +50,11 @@ class SASBaseObject(object):
         if not len(re.sub('\s','',obj))>0:
             return False
         
-        if not re.match('end=|out=|^nway$|^noprint$',obj,self.regexFlags) is None:
+        if not re.match('end=|out=',obj,self.regexFlags) is None:
             return False
-        
+        for keyword in self.SASKeywords:
+            if not re.match('^{}$'.format(keyword),obj,self.regexFlags) is None:
+                return False
         return True
 
 

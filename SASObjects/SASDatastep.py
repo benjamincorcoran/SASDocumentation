@@ -32,8 +32,9 @@ class SASDatastep(SASBaseObject):
         objectList = []
 
         for dataObject in rawObjectList:
+            
             library = re.findall(r'(.*?)\.',dataObject,self.regexFlags)
-            dataset = re.findall(r'(?:.*?\.)?([^(]+)[.]*',dataObject,self.regexFlags)[0]
+            dataset = re.findall(r'(?:[^&]*?\.)?([^(]+)[.]*',dataObject,self.regexFlags)[0]
             condition = re.findall(r'\((.*)\)',dataObject,self.regexFlags)
             
             if len(library) > 0:
