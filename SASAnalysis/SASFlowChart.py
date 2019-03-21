@@ -9,6 +9,8 @@ class SASFlowChart(object):
 
     def __init__(self, SASProgram):
 
+        self.figure=plt.figure(figsize=(8,5))
+
         self.G = nx.DiGraph()
         self.G.add_node('start')
 
@@ -17,22 +19,30 @@ class SASFlowChart(object):
         self.addDataNodes(self.SASProgram.datasteps)
         self.addDataNodes(self.SASProgram.procedures)
 
+        # for obj in self.SASProgram.datasteps:
+        #     print('Datastep: ',obj.inputs, obj.outputs)
+        
+        # for obj in self.SASProgram.procedures:
+        #     print('Procedure: ',obj.procedure,obj.inputs, obj.outputs)
+
         for node in self.G.nodes():
+            
             if len(list(self.G.predecessors(node))) == 0:
                 self.G.add_edge('start',node)
 
 
         self.pos = self._hierarchy_pos(self.G,'start')
         self.G.remove_node('start')
-        nx.draw(self.G,pos=self.pos,with_labels=True)
+        nx.draw(self.G,pos=self.pos,with_labels=True,font_size=8,alpha=0.4,node_size=100)
 
         self.edge_labels = nx.get_edge_attributes(self.G,'label')
-        self.edge_labels = nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels =self.edge_labels)
+        self.edge_labels = nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels =self.edge_labels,font_size=8,alpha=0.4 )
         
         for _,lab in self.edge_labels.items():
             lab.set_rotation('horizontal')
 
-        plt.show()
+    def saveFig(self,path):
+        self.figure.savefig(path,format='PNG')
 
     def addDataNodes(self,SASObject):
         for obj in SASObject:
@@ -62,11 +72,11 @@ class SASFlowChart(object):
         if len(children)>0:
             dx = width/len(children) 
             nextx = xcenter - width/2 - dx/2
-            for child in children:
+            for i,child in enumerate(children):
                 if child != root:
                     nextx += dx
                     pos = self._hierarchy_pos(G, child, width = dx, vert_gap = vert_gap, 
-                                        vert_loc = vert_loc-vert_gap, xcenter=nextx,
+                                        vert_loc = vert_loc-vert_gap-0.01*i, xcenter=nextx,
                                         pos=pos, parent = root)
         return pos
 

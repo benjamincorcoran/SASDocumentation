@@ -10,10 +10,11 @@ class SASProcedure(SASBaseObject):
         SASBaseObject.__init__(self)
 
         self.rawStr = rawStr
-        self.procedure = re.findall(r'proc (.*?)[\s;]',self.rawStr,self.regexFlags)[0]
 
-        rawOutputs = re.findall(r'out=(.*?[\s;])',self.rawStr,self.regexFlags)
-        rawInputs = re.findall(r'data=(.*?[\s;])',self.rawStr,self.regexFlags)
+        self.procedure = re.findall(r'proc (.*?)[\s;]',self.rawStr,self.regexFlags)[0]
+        
+        rawOutputs = re.findall(r'out=(.*?[;\(/])',self.rawStr,self.regexFlags)
+        rawInputs = re.findall(r'data=(.*?(?:;|out=))',self.rawStr,self.regexFlags)
         
         if len(rawInputs)>0:   
             self.inputs = self.parseDataObjects(rawInputs[0])
@@ -30,10 +31,13 @@ class SASProcedure(SASBaseObject):
         rawObjectList = [ _ for _ in rawObjectList if len(_)>0]
 
         objectList = []
-
+        
         for dataObject in rawObjectList:
+            dataObject = re.sub('/.*[\s;]','',dataObject)
+            dataObject = re.sub('&.*?\.','',dataObject)
+            
             library = re.findall(r'(.*?)\.',dataObject,self.regexFlags)
-            dataset = re.findall(r'(?:.*?\.)?([^(]+)[.]*',dataObject,self.regexFlags)[0]
+            dataset = re.findall(r'(?:.*?\.)?([^(]+)[.]*',dataObject,self.regexFlags)
             condition = re.findall(r'\((.*)\)',dataObject,self.regexFlags)
             
             if len(library) > 0:
@@ -44,8 +48,8 @@ class SASProcedure(SASBaseObject):
                 condition = condition[0]
             else:
                 condition = None
-
-            objectList.append(SASDataObject(library,dataset,condition))
+            if len(dataset) > 0:
+                objectList.append(SASDataObject(library,dataset[0],condition))
 
         return objectList
 
