@@ -1,5 +1,4 @@
-
-
+@echo off
 
 pushd %~dp0
 
@@ -10,8 +9,7 @@ if [%2] == [] (
 )
 
 
-pip install sphinx recommonmark sphinx-markdown-tables
-
+call pip install sphinx recommonmark sphinx-markdown-tables matplotlib numpy networkx
 
 call sphinx-quickstart -q --project=%1 --author=%username% --batchfile --template=sphinxTemplate %out%
 python SASParser.py %1 %out%
