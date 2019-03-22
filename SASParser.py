@@ -28,7 +28,7 @@ class SASParser(object):
 					
 					parsedSASFile = SASProgram(SASfile)
 					flowChart = SASFlowChart(parsedSASFile)
-					flowChartImg = re.sub('\s','',os.path.join(self.outDir,re.sub('.sas$','.png',flowChart.SASProgram.fileName,flags=re.IGNORECASE)))
+					flowChartImg = os.path.join(self.outDir,re.sub('\s','',re.sub('.sas$','.png',flowChart.SASProgram.fileName,flags=re.IGNORECASE)))
 					flowChart.saveFig(flowChartImg)
 
 					self.writeMD(parsedSASFile,self.outDir,flowChartImg=flowChartImg)
