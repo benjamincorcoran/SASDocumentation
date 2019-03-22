@@ -46,18 +46,20 @@ class SASBaseObject(object):
             objects.append(current)
 
         validObjects =  [obj for obj in objects if self.validateSplitDataObjects(obj) is True]
+        
         libSplitObjects = []
 
         for obj in validObjects:
             library = ''
             dataObject = ''
             macroLev = 0
+            current=''
             for c in obj:
                 if c == '&':
-                    blev += 1
+                    macroLev += 1
                     current += c
                 elif c == '.' and macroLev > 0:
-                    blev -= 1
+                    macroLev -= 1
                     current += c
                 elif c == '.' and macroLev == 0:
                     library = current
@@ -89,4 +91,27 @@ class SASBaseObject(object):
             raise TypeError('SAS Object not found int SASRegexDict')
     
     
-                
+    def parseDataObjects(self,objectText):
+        rawObjectList = self.splitDataObjects(objectText)
+
+        objectList = []
+        
+        for dataObject in rawObjectList:            
+            
+            library = dataObject[0]
+            dataset = re.findall(r'([^(]+)[.]*',dataObject[1],self.regexFlags)[0]
+            condition = re.findall(r'\((.*)\)',dataObject[1],self.regexFlags)
+            
+            print(objectText,dataObject,library,dataset,condition)
+            if len(library) > 0:
+                library = library
+            else:
+                library = None
+            if len(condition) > 0:
+                condition = condition[0]
+            else:
+                condition = None
+            if len(dataset) > 0:
+                objectList.append(SASDataObject(library,dataset,condition))
+
+        return objectList
