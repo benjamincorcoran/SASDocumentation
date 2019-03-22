@@ -1,7 +1,9 @@
 import random
 
 import networkx as nx
+import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 from SASObjects.SASProgram import SASProgram
 
@@ -16,6 +18,7 @@ class SASFlowChart(object):
 
         self.SASProgram = SASProgram
 
+        self.nodeLabels = {}
         self.addDataNodes(self.SASProgram.datasteps)
         self.addDataNodes(self.SASProgram.procedures)
 
@@ -30,16 +33,33 @@ class SASFlowChart(object):
             if len(list(self.G.predecessors(node))) == 0:
                 self.G.add_edge('start',node)
 
+        try:
+            self.pos = self._hierarchy_pos(self.G,'start')
+            self.G.remove_node('start')
 
-        self.pos = self._hierarchy_pos(self.G,'start')
-        self.G.remove_node('start')
-        nx.draw(self.G,pos=self.pos,with_labels=True,font_size=8,alpha=0.4,node_size=100)
+            self.nodeColors = list(set([value for key,value in dict(nx.get_node_attributes(self.G,'lib')).items()]))
+            cmap = plt.get_cmap('Pastel2')
+            colors = cmap(np.linspace(0, 1, len(self.nodeColors)))
+            self.nodeColors = dict(zip(self.nodeColors, colors))
 
-        self.edge_labels = nx.get_edge_attributes(self.G,'label')
-        self.edge_labels = nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels =self.edge_labels,font_size=8,alpha=0.4 )
-        
-        for _,lab in self.edge_labels.items():
-            lab.set_rotation('horizontal')
+            colorList = [self.nodeColors[value] for key,value in dict(nx.get_node_attributes(self.G,'lib')).items()]
+
+            nx.draw_networkx_nodes(self.G,pos=self.pos,alpha=0.8,node_size=100,node_color=colorList)
+            nx.draw_networkx_edges(self.G,pos=self.pos,alpha=0.4)
+            nx.draw_networkx_labels(self.G,pos=self.pos,labels=self.nodeLabels,font_size=8)
+    
+            self.edge_labels = nx.get_edge_attributes(self.G,'label')
+            self.edge_labels = nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels =self.edge_labels,font_size=8,alpha=0.4)
+            
+            for _,lab in self.edge_labels.items():
+                lab.set_rotation('horizontal')
+
+            legendHandles = [mpatches.Patch(color=value, label=key) for key, value in self.nodeColors.items()]
+
+            plt.legend(handles=legendHandles,fontsize=8)
+            plt.axis('off')
+        except RecursionError:
+            print("Failed to produce diagram, recursive loop detected.")
 
     def saveFig(self,path):
         self.figure.savefig(path,format='PNG')
@@ -47,20 +67,24 @@ class SASFlowChart(object):
     def addDataNodes(self,SASObject):
         for obj in SASObject:
             for input in obj.inputs:
+                inputNode = input.library.upper()+'.'+input.dataset.upper()
                 if not input.isNull():
-                    if self.G.has_node(input.dataset) is False:
-                        self.G.add_node(input.dataset,lib=input.library)
+                    if self.G.has_node(inputNode) is False:
+                        self.G.add_node(inputNode,lib=input.library.upper())
+                        self.nodeLabels[inputNode]=input.dataset
 
                     for output in obj.outputs:
+                        outputNode = output.library.upper()+'.'+output.dataset.upper()
                         if not output.isNull():
-                            if self.G.has_node(output.dataset) is False:
-                                self.G.add_node(output.dataset,lib=input.library)
+                            if self.G.has_node(outputNode) is False:
+                                self.G.add_node(outputNode,lib=output.library.upper())
+                                self.nodeLabels[outputNode]=output.dataset
                             if hasattr(obj,'procedure'):
                                 if input.dataset != output.dataset:
-                                    self.G.add_edge(input.dataset,output.dataset,label=obj.procedure)
+                                    self.G.add_edge(inputNode,outputNode,label=obj.procedure)
                             else:
                                 if input.dataset != output.dataset:
-                                    self.G.add_edge(input.dataset,output.dataset)
+                                    self.G.add_edge(inputNode,outputNode)
 
 
     def _hierarchy_pos(self, G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5, pos = None, parent = None):
@@ -76,7 +100,7 @@ class SASFlowChart(object):
                 if child != root:
                     nextx += dx
                     pos = self._hierarchy_pos(G, child, width = dx, vert_gap = vert_gap, 
-                                        vert_loc = vert_loc-vert_gap - 0.02*i, xcenter=nextx,
+                                        vert_loc = vert_loc-vert_gap - 0.025*i, xcenter=nextx,
                                         pos=pos, parent = root)
         return pos
 

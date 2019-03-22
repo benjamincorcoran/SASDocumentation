@@ -75,14 +75,12 @@ class SASParser(object):
 						for arg in macro.arguments:
 							out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 					out.write('\n\n')
-			if len(SASProgram.inputs)+len(SASProgram.outputs) > 0:
+			if len(SASProgram.uniqueDataItems) > 0:
 				out.write('## Datasets(s)\n\n')
 				out.write('| Library | Name |\n')
 				out.write('| --- | --- |\n')
-				for input in SASProgram.inputs:
-					out.write('| {} | {} |\n'.format(input.library,input.dataset))
-				for output in SASProgram.outputs:
-					out.write('| {} | {} |\n'.format(output.library,output.dataset))
+				for dataItem in SASProgram.uniqueDataItems:
+					out.write('| {} | {} |\n'.format(dataItem[0],dataItem[1]))
 				out.write('\n\n')
 
 			out.write('## Full code:\n\n<details><summary>Show/Hide</summary>\n\n')

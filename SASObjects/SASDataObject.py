@@ -8,7 +8,7 @@ class SASDataObject(SASBaseObject):
 
         SASBaseObject.__init__(self)
        
-        self.dataset = re.sub('\s','',dataset).upper()
+        self.dataset = re.sub('\s','',dataset)
     
         if library is None:
             self.library = 'work'
@@ -21,6 +21,7 @@ class SASDataObject(SASBaseObject):
             self.condition = condition
 
         self.id = '{}.{}'.format(self.library,self.dataset)
+        
    
     def isNull(self):
         if len(re.findall(r'_null_',self.dataset,self.regexFlags)) > 0:
