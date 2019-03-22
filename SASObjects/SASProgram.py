@@ -81,6 +81,8 @@ class SASProgram(SASBaseObject):
         self.getInputs()
         self.getOutputs()
 
+        self.uniqueDataItems = [x.split('#/#') for x in list(set([ds.library.upper()+'#/#'+ds.dataset.upper() for ds in self.inputs+self.outputs]))]
+
     def readMacros(self,rawMacros):
         for macroStr in rawMacros:
             self.macros.append(SASMacro(macroStr))
@@ -116,6 +118,7 @@ class SASProgram(SASBaseObject):
         for proc in self.procedures:
             for output in proc.outputs:
                 self.outputs.append(output)
+        
 
 
     def __str__(self):
