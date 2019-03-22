@@ -28,20 +28,18 @@ class SASProcedure(SASBaseObject):
 
     def parseDataObjects(self,objectText):
         rawObjectList = self.splitDataObjects(objectText)
-        rawObjectList = [ _ for _ in rawObjectList if len(_)>0]
 
         objectList = []
         
-        for dataObject in rawObjectList:
-            dataObject = re.sub('/.*[\s;]','',dataObject)
-            dataObject = re.sub('&.*?\.','',dataObject)
+        for dataObject in rawObjectList:            
             
-            library = re.findall(r'(.*?)\.',dataObject,self.regexFlags)
-            dataset = re.findall(r'(?:[^&]*?\.)?([^(]+)[.]*',dataObject,self.regexFlags)
-            condition = re.findall(r'\((.*)\)',dataObject,self.regexFlags)
+            library = dataObject[0]
+            dataset = re.findall(r'([^(]+)[.]*',dataObject[1],self.regexFlags)[0]
+            condition = re.findall(r'\((.*)\)',dataObject[1],self.regexFlags)
             
+            print(library,dataset,condition)
             if len(library) > 0:
-                library = library[0]
+                library = library
             else:
                 library = None
             if len(condition) > 0:

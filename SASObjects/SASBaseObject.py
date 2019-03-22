@@ -44,7 +44,31 @@ class SASBaseObject(object):
 
         if len(current)>0:
             objects.append(current)
-        return [obj for obj in objects if self.validateSplitDataObjects(obj) is True]
+
+        validObjects =  [obj for obj in objects if self.validateSplitDataObjects(obj) is True]
+        libSplitObjects = []
+
+        for obj in validObjects:
+            library = ''
+            dataObject = ''
+            macroLev = 0
+            for c in obj:
+                if c == '&':
+                    blev += 1
+                    current += c
+                elif c == '.' and macroLev > 0:
+                    blev -= 1
+                    current += c
+                elif c == '.' and macroLev == 0:
+                    library = current
+                    current = ''
+                else:
+                    current += c
+            dataObject = current
+            libSplitObjects.append([library,dataObject])
+        
+        return libSplitObjects
+
     
     def validateSplitDataObjects(self,obj):
         if not len(re.sub('\s','',obj))>0:
