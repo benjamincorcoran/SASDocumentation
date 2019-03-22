@@ -19,6 +19,8 @@ class SASBaseObject(object):
             'datastepBody':re.compile(r"data .*?;(.*?run;)",self.regexFlags)   
         }
 
+        self.SASKeywords = ['nway','noprint','nodup','nodupkey']
+
 
     def splitDataObjects(self, str):
         objects = []
@@ -27,25 +29,34 @@ class SASBaseObject(object):
         for i,c in enumerate(str):
             if c == '(':
                 blev += 1
+                current += c
             elif c == ')':
                 blev -= 1
+                current += c
             elif re.match('\s',c) is not None and blev == 0 and len(current)>0 and re.match('\s*\(',str[i:]) is None:
                 objects.append(current)
                 current=''
             elif c == ';':
                 objects.append(current)
                 current=''
-            current += c
+            else:
+                current += c
+
+        if len(current)>0:
+            objects.append(current)
         return [obj for obj in objects if self.validateSplitDataObjects(obj) is True]
     
     def validateSplitDataObjects(self,obj):
-        if len(re.sub('\s','',obj))>0:
-            if re.match('end=',obj,self.regexFlags) is None:
-                return True
-            else:
-                return False
-        else:
+        if not len(re.sub('\s','',obj))>0:
             return False
+        
+        if not re.match('end=|out=',obj,self.regexFlags) is None:
+            return False
+        for keyword in self.SASKeywords:
+            if not re.match('^{}$'.format(keyword),obj,self.regexFlags) is None:
+                return False
+        return True
+
 
     def parse(self,SASObject,str):
         if SASObject in self.SASRegexDict.keys():

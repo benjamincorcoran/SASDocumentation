@@ -25,14 +25,16 @@ class SASParser(object):
 				if len(re.findall('\.sas$',name,flags=re.IGNORECASE))>0:
 					SASfile = os.path.join(root,name)
 					print("Parsing {}\r".format(SASfile))
+					
 					parsedSASFile = SASProgram(SASfile)
+					flowChart = SASFlowChart(parsedSASFile)
+					flowChartImg = re.sub('\s','',os.path.join(self.outDir,re.sub('.sas$','.png',flowChart.SASProgram.fileName,flags=re.IGNORECASE)))
+					flowChart.saveFig(flowChartImg)
 
-					SASFlowChart(parsedSASFile)
-
-					self.writeMD(parsedSASFile,self.outDir)
+					self.writeMD(parsedSASFile,self.outDir,flowChartImg=flowChartImg)
 		
 		
-	def writeMD(self,SASProgram,outpath):
+	def writeMD(self,SASProgram,outpath,flowChartImg=None):
 
 		mdPath = os.path.join(outpath,re.sub('.sas$','.md',SASProgram.fileName,flags=re.IGNORECASE))
 		with open(mdPath, 'w+') as out:
@@ -40,6 +42,9 @@ class SASParser(object):
 			if SASProgram.about is not None:
 				out.write('## About\n')
 				out.write('{}\n\n'.format(SASProgram.about))
+			if flowChartImg is not None:
+				out.write('## Program Struture\n\n')
+				out.write('![Program Structure]({})\n\n'.format(os.path.basename(flowChartImg)))
 			if len(SASProgram.libnames) > 0:
 				out.write('## Libname(s)\n\n')
 				out.write('| Name | Location |\n')
