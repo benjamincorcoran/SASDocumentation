@@ -7,7 +7,7 @@ class SASBaseObject(object):
         self.regexFlags = re.DOTALL|re.IGNORECASE
 
         self.SASRegexDict = {
-            'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])',self.regexFlags),
+            'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])|\*.*?;',self.regexFlags),
             'macro':re.compile(r'(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.regexFlags),
             'libname':re.compile(r"libname .{1,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.regexFlags),
             'include':re.compile(r"include ['\"].*?['\"]",self.regexFlags),              
@@ -19,7 +19,7 @@ class SASBaseObject(object):
             'datastepBody':re.compile(r"data .*?;(.*?run;)",self.regexFlags)   
         }
 
-        self.SASKeywords = ['nway','noprint','nodup','nodupkey']
+        self.SASKeywords = ['nway','noprint','nodup','nodupkey','replace','ways','noobs','label']
 
 
     def splitDataObjects(self, str):
@@ -80,7 +80,7 @@ class SASBaseObject(object):
         if not re.match('end=|out=',obj,self.regexFlags) is None:
             return False
         for keyword in self.SASKeywords:
-            if not re.match('^{}$'.format(keyword),obj,self.regexFlags) is None:
+            if not re.match('{}'.format(keyword),obj,self.regexFlags) is None:
                 return False
         return True
 
