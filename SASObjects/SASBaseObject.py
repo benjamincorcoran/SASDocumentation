@@ -75,7 +75,8 @@ class SASBaseObject(object):
     def validateSplitDataObjects(self,obj):
         if not len(re.sub('\s','',obj))>0:
             return False
-        
+        if len(re.findall('=',obj,self.regexFlags)) > 0:
+            return False
         if not re.match('end=|out=',obj,self.regexFlags) is None:
             return False
         for keyword in self.SASKeywords:
