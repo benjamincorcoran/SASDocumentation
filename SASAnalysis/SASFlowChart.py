@@ -104,3 +104,5 @@ class SASFlowChart(object):
                                         pos=pos, parent = root)
         return pos
 
+    def countNodes(self):
+        return len(list(self.G.nodes()))
