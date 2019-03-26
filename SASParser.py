@@ -48,12 +48,19 @@ class SASParser(object):
 			if flowChartImg is not None:
 				out.write('## Program Struture\n\n')
 				out.write('![Program Structure]({})\n\n'.format(os.path.basename(flowChartImg)))
-			if len(SASProgram.libnames) > 0:
+			if len(SASProgram.libnames['SAS']) > 0:
 				out.write('## Libname(s)\n\n')
 				out.write('| Name | Location |\n')
 				out.write('| --- | --- |\n')
-				for libname in SASProgram.libnames:
+				for libname in SASProgram.libnames['SAS']:
 					out.write('| {} | [{}]({}) |\n'.format(libname.name,libname.path,libname.posixPath))
+				out.write('\n\n')
+			if len(SASProgram.libnames['SQL']) > 0:
+				out.write('## SQL Libname(s)\n\n')
+				out.write('| Name | Database | Schema | Server |\n')
+				out.write('| --- | --- | --- | --- |\n')
+				for libname in SASProgram.libnames['SQL']:
+					out.write('| {} | {} | {} | {} |\n'.format(libname.name,libname.database,libname.schema,libname.server))
 				out.write('\n\n')
 			if len(SASProgram.includes) > 0:
 				out.write('## Include(s)\n\n')
