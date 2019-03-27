@@ -27,6 +27,7 @@ class SASBaseObject(object):
         objects = []
         current = ''
         blev = 0
+        mlev = 0
         for i,c in enumerate(str):
             if c == '(':
                 blev += 1
@@ -34,7 +35,11 @@ class SASBaseObject(object):
             elif c == ')':
                 blev -= 1
                 current += c
-            elif re.match('\s',c) is not None and blev == 0 and len(current)>0 and re.match('\s*\(',str[i:]) is None:
+            elif c=='%':
+                mlev += 1
+            elif c==';':
+                mlev -= 1
+            elif re.match('\s',c) is not None and blev == 0 and mlev == 0 and len(current)>0 and re.match('\s*\(',str[i:]) is None:
                 objects.append(current)
                 current=''
             elif c == ';':
