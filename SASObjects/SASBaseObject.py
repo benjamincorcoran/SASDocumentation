@@ -20,7 +20,7 @@ class SASBaseObject(object):
             'datastepBody':re.compile(r"data .*?;(.*?run;)",self.regexFlags)   
         }
 
-        self.SASKeywords = ['nway','noprint','nodup','nodupkey','replace','ways','noobs','label']
+        self.SASKeywords = ['nway','noprint','nodup','nodupkey','replace','ways','noobs','label','missing','outfile']
 
 
     def splitDataObjects(self, str):
@@ -81,7 +81,7 @@ class SASBaseObject(object):
         if not re.match('^\s*end\s*[=]*$|^\s*out\s*[=]*$',obj,self.regexFlags) is None:
             return False
         for keyword in self.SASKeywords:
-            if not re.match('{}'.format(keyword),obj,self.regexFlags) is None:
+            if not re.match('\s*{}\s*'.format(keyword),obj,self.regexFlags) is None:
                 return False
         return True
 
@@ -104,7 +104,7 @@ class SASBaseObject(object):
             dataset = re.findall(r'([^(]+)[.]*',dataObject[1],self.regexFlags)[0]
             condition = re.findall(r'\((.*)\)',dataObject[1],self.regexFlags)
             
-            print(objectText,dataObject,library,dataset,condition)
+            
             if len(library) > 0:
                 library = library
             else:
