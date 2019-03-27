@@ -7,7 +7,7 @@ class SASBaseObject(object):
         self.regexFlags = re.DOTALL|re.IGNORECASE
 
         self.SASRegexDict = {
-            'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])',self.regexFlags),
+            'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])|\*.*?;',self.regexFlags),
             'macro':re.compile(r'(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.regexFlags),
             'libname':re.compile(r"libname .{1,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.regexFlags),
             'sqllibname':re.compile(r'%sqllib\((.*?)\)',self.regexFlags),
@@ -20,7 +20,7 @@ class SASBaseObject(object):
             'datastepBody':re.compile(r"data .*?;(.*?run;)",self.regexFlags)   
         }
 
-        self.SASKeywords = ['nway','noprint','nodup','nodupkey']
+        self.SASKeywords = ['nway','noprint','nodup','nodupkey','replace','ways','noobs','label','missing','outfile']
 
 
     def splitDataObjects(self, str):
@@ -45,7 +45,7 @@ class SASBaseObject(object):
 
         if len(current)>0:
             objects.append(current)
-
+        
         validObjects =  [obj for obj in objects if self.validateSplitDataObjects(obj) is True]
         
         libSplitObjects = []
@@ -76,12 +76,12 @@ class SASBaseObject(object):
     def validateSplitDataObjects(self,obj):
         if not len(re.sub('\s','',obj))>0:
             return False
-        if len(re.findall('=',obj,self.regexFlags)) > 0:
+        if len(re.findall('^[^\(]*=[^\)]*$',obj,self.regexFlags)) > 0:
             return False
-        if not re.match('end=|out=',obj,self.regexFlags) is None:
+        if not re.match('^\s*end\s*[=]*$|^\s*out\s*[=]*$',obj,self.regexFlags) is None:
             return False
         for keyword in self.SASKeywords:
-            if not re.match('^{}$'.format(keyword),obj,self.regexFlags) is None:
+            if not re.match('\s*{}\s*'.format(keyword),obj,self.regexFlags) is None:
                 return False
         return True
 
@@ -104,7 +104,7 @@ class SASBaseObject(object):
             dataset = re.findall(r'([^(]+)[.]*',dataObject[1],self.regexFlags)[0]
             condition = re.findall(r'\((.*)\)',dataObject[1],self.regexFlags)
             
-            print(objectText,dataObject,library,dataset,condition)
+            
             if len(library) > 0:
                 library = library
             else:
