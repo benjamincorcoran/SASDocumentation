@@ -4,7 +4,7 @@ import datetime
 
 from .SASBaseObject import SASBaseObject
 from .SASMacro import SASMacro
-from .SASLibname import SASLibname, SASSQLLibname
+from .SASLibname import SASLibname
 from .SASInclude import SASInclude
 from .SASDatastep import SASDatastep
 from .SASProcedure import SASProcedure
@@ -38,7 +38,7 @@ class SASProgram(SASBaseObject):
         self.LastUpdated = datetime.datetime.fromtimestamp(st[8])
 
         self.macros = []
-        self.libnames = {'SAS':[],'SQL':[]}
+        self.libnames = []
         self.includes = []
         self.datasteps = []
         self.procedures = []
@@ -64,11 +64,7 @@ class SASProgram(SASBaseObject):
 
         rawLibnames = self.parse('libname',self.rawProgram)
         if len(rawLibnames) > 0:
-            self.readLibnames(rawLibnames,'SAS')
-        
-        rawSQLLibnames = self.parse('sqllibname',self.rawProgram)
-        if len(rawSQLLibnames) > 0:
-            self.readLibnames(rawSQLLibnames,'SQL')
+            self.readLibnames(rawLibnames)
         
         rawIncludes = self.parse('include',self.rawProgram)
         if len(rawIncludes) > 0:
@@ -91,13 +87,10 @@ class SASProgram(SASBaseObject):
         for macroStr in rawMacros:
             self.macros.append(SASMacro(macroStr))
 
-    def readLibnames(self, rawLibnames, libType):
+    def readLibnames(self, rawLibnames):
         for libnameStr in rawLibnames:
-            if libType == 'SAS':
-                self.libnames['SAS'].append(SASLibname(libnameStr))
-            elif libType == 'SQL':
-                self.libnames['SQL'].append(SASSQLLibname(libnameStr))
-
+            self.libnames.append(SASLibname(libnameStr))
+    
     def readIncludes(self, rawIncludes):
         for includeStr in rawIncludes:
             self.includes.append(SASInclude(includeStr))

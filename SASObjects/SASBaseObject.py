@@ -10,7 +10,6 @@ class SASBaseObject(object):
             'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])',self.regexFlags),
             'macro':re.compile(r'(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.regexFlags),
             'libname':re.compile(r"libname .{1,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.regexFlags),
-            'sqllibname':re.compile(r'%sqllib\((.*?)\)',self.regexFlags),
             'include':re.compile(r"include ['\"].*?['\"]",self.regexFlags),              
             'datastep':re.compile(r"\s*data [^=].*?;.*?run;",self.regexFlags),
             'dataObject':re.compile(r'\s*(.*?\(.*?[^(]*\))\s*;',self.regexFlags),
@@ -76,8 +75,7 @@ class SASBaseObject(object):
     def validateSplitDataObjects(self,obj):
         if not len(re.sub('\s','',obj))>0:
             return False
-        if len(re.findall('=',obj,self.regexFlags)) > 0:
-            return False
+        
         if not re.match('end=|out=',obj,self.regexFlags) is None:
             return False
         for keyword in self.SASKeywords:
