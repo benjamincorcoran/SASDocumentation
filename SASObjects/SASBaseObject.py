@@ -45,7 +45,7 @@ class SASBaseObject(object):
 
         if len(current)>0:
             objects.append(current)
-
+        
         validObjects =  [obj for obj in objects if self.validateSplitDataObjects(obj) is True]
         
         libSplitObjects = []
@@ -76,9 +76,9 @@ class SASBaseObject(object):
     def validateSplitDataObjects(self,obj):
         if not len(re.sub('\s','',obj))>0:
             return False
-        if len(re.findall('=',obj,self.regexFlags)) > 0:
+        if len(re.findall('^[^\(]*=[^\)]*$',obj,self.regexFlags)) > 0:
             return False
-        if not re.match('end=|out=',obj,self.regexFlags) is None:
+        if not re.match('^\s*end\s*[=]*$|^\s*out\s*[=]*$',obj,self.regexFlags) is None:
             return False
         for keyword in self.SASKeywords:
             if not re.match('^{}$'.format(keyword),obj,self.regexFlags) is None:

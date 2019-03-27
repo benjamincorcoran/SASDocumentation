@@ -12,7 +12,7 @@ class SASDataObjectParser(SASBaseObject):
 
     def parseDataObjects(self,objectText):
         rawObjectList = self.splitDataObjects(objectText)
-
+        
         objectList = []
         
         for dataObject in rawObjectList:            

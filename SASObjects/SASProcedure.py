@@ -10,12 +10,13 @@ class SASProcedure(SASDataObjectParser):
 
         self.rawStr = rawStr
 
+
         self.procedure = re.findall(r'proc (.*?)[\s;]',self.rawStr,self.regexFlags)[0]
         
-        rawOutputs = re.findall(r'out=(.*?[;\(/])',self.rawStr,self.regexFlags)
-        rawInputs = re.findall(r'data=(.*?(?:;|out=))',self.rawStr,self.regexFlags)
+        rawOutputs = re.findall(r'out\s*=\s*(.*?[;\(/])',self.rawStr,self.regexFlags)
+        rawInputs = re.findall(r'data\s*=\s*(.*?(?:;|out\s*=|outfile\s*=))',self.rawStr,self.regexFlags)
         
-        if len(rawInputs)>0:   
+        if len(rawInputs)>0:  
             self.inputs = self.parseDataObjects(rawInputs[0])
         else:
             self.inputs = []
