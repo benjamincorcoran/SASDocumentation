@@ -25,7 +25,7 @@ class SASSQLLibname(SASBaseObject):
     def __init__(self,rawStr):
         SASBaseObject.__init__(self)
         
-        self.name = re.findall('(.*?),',rawStr,flags=self.regexFlags)[0]
+        self.name = re.findall('(.*?)(?=,|$)',rawStr,flags=self.regexFlags)[0]
 
         server = re.findall('server=(.*?)(?=,|$)',rawStr,flags=self.regexFlags)
         database = re.findall('dbname=(.*?)(?=,|$)',rawStr,flags=self.regexFlags)
