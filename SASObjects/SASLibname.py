@@ -27,10 +27,10 @@ class SASSQLLibname(SASBaseObject):
         
         self.name = re.findall('(.*?),',rawStr,flags=self.regexFlags)[0]
 
-        server = re.findall('server=(.*?),',rawStr,flags=self.regexFlags)
-        database = re.findall('dbname=(.*?),',rawStr,flags=self.regexFlags)
-        schema =  re.findall('schema=(.*?),',rawStr,flags=self.regexFlags)
-
+        server = re.findall('server=(.*?)(?=,|$)',rawStr,flags=self.regexFlags)
+        database = re.findall('dbname=(.*?)(?=,|$)',rawStr,flags=self.regexFlags)
+        schema =  re.findall('schema=(.*?)(?=,|$)',rawStr,flags=self.regexFlags)
+        
         if len(server)>0:
             self.server=server[0]
         else:
