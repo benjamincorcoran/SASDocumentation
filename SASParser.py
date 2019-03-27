@@ -28,8 +28,11 @@ class SASParser(object):
 					
 					parsedSASFile = SASProgram(SASfile)
 					flowChart = SASFlowChart(parsedSASFile)
-					flowChartImg = os.path.join(self.outDir,re.sub('\s','',re.sub('.sas$','.png',flowChart.SASProgram.fileName,flags=re.IGNORECASE)))
-					flowChart.saveFig(flowChartImg)
+					if flowChart.countNodes() > 0:
+						flowChartImg = os.path.join(self.outDir,re.sub('\s','',re.sub('.sas$','.png',flowChart.SASProgram.fileName,flags=re.IGNORECASE)))
+						flowChart.saveFig(flowChartImg)
+					else:
+						flowChartImg = None
 
 					self.writeMD(parsedSASFile,self.outDir,flowChartImg=flowChartImg)
 		
@@ -45,22 +48,31 @@ class SASParser(object):
 			if flowChartImg is not None:
 				out.write('## Program Struture\n\n')
 				out.write('![Program Structure]({})\n\n'.format(os.path.basename(flowChartImg)))
-			if len(SASProgram.libnames) > 0:
-				out.write('## Libname(s)\n\n')
-				out.write('| Name | Location |\n')
-				out.write('| --- | --- |\n')
-				for libname in SASProgram.libnames:
-					out.write('| {} | [{}]({}) |\n'.format(libname.name,libname.path,libname.posixPath))
-				out.write('\n\n')
+			if len(SASProgram.libnames['SAS'])+len(SASProgram.libnames['SQL'])> 0:
+				out.write('## Libraries\n\n')
+				if len(SASProgram.libnames['SAS']) > 0:
+					out.write('### SAS Libraries\n\n')
+					out.write('| Name | Location |\n')
+					out.write('| --- | --- |\n')
+					for libname in SASProgram.libnames['SAS']:
+						out.write('| {} | [{}]({}) |\n'.format(libname.name,libname.path,libname.posixPath))
+					out.write('\n\n')
+				if len(SASProgram.libnames['SQL']) > 0:
+					out.write('### SQL Libraries\n\n')
+					out.write('| Name | Database | Schema | Server |\n')
+					out.write('| --- | --- | --- | --- |\n')
+					for libname in SASProgram.libnames['SQL']:
+						out.write('| {} | {} | {} | {} |\n'.format(libname.name,libname.database,libname.schema,libname.server))
+					out.write('\n\n')
 			if len(SASProgram.includes) > 0:
-				out.write('## Include(s)\n\n')
+				out.write('## Include\n\n')
 				out.write('| Path |\n')
 				out.write('| --- |\n')
 				for include in SASProgram.includes:
 					out.write('| [{}]({}) |\n'.format(include.path,include.posixPath))
 				out.write('\n\n')
 			if len(SASProgram.macros)> 0:
-				out.write('## Macro(s)\n')
+				out.write('## Macro\n')
 				for macro in SASProgram.macros:
 					out.write('### {}\n'.format(macro.name))
 					out.write('#### About\n')
@@ -76,7 +88,7 @@ class SASParser(object):
 							out.write('| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString))
 					out.write('\n\n')
 			if len(SASProgram.uniqueDataItems) > 0:
-				out.write('## Datasets(s)\n\n')
+				out.write('## Datasets\n\n')
 				out.write('| Library | Name |\n')
 				out.write('| --- | --- |\n')
 				for dataItem in SASProgram.uniqueDataItems:
