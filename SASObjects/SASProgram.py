@@ -7,7 +7,7 @@ from .SASMacro import SASMacro
 from .SASLibname import SASLibname, SASSQLLibname
 from .SASInclude import SASInclude
 from .SASDatastep import SASDatastep
-from .SASProcedure import SASProcedure
+from .SASProcedure import SASProcedure, SASProcSQL
 
 class SASProgram(SASBaseObject):
     '''
@@ -81,7 +81,7 @@ class SASProgram(SASBaseObject):
         rawProcedures = self.parse('procedure',self.unCommentedProgram)
         if len(rawProcedures) > 0:
             self.readProcedures(rawProcedures)
-
+        
         self.getInputs()
         self.getOutputs()
 
@@ -108,7 +108,10 @@ class SASProgram(SASBaseObject):
 
     def readProcedures(self, rawProcedures):
         for procedureStr in rawProcedures:
-            self.procedures.append(SASProcedure(procedureStr))
+            if len(re.findall('proc sql',procedureStr,self.regexFlags))>0:
+                self.procedures.append(SASProcSQL(procedureStr))
+            else:
+                self.procedures.append(SASProcedure(procedureStr))
 
     def getInputs(self):
         for datastep in self.datasteps:

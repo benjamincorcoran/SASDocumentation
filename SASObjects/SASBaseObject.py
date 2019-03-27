@@ -7,7 +7,7 @@ class SASBaseObject(object):
         self.regexFlags = re.DOTALL|re.IGNORECASE
 
         self.SASRegexDict = {
-            'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])|\*.*?;',self.regexFlags),
+            'commentBlock':re.compile(r'\/\*.*?\*\/(?!\s*[\/\*])',self.regexFlags),
             'macro':re.compile(r'(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',self.regexFlags),
             'libname':re.compile(r"libname .{1,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.regexFlags),
             'sqllibname':re.compile(r'%sqllib\((.*?)\)',self.regexFlags),
