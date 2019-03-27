@@ -42,8 +42,6 @@ class SASProcSQL(SASDataObjectParser):
         rawOutputs = re.findall(r'create table\s*(.*?)\sas',self.rawStr,self.regexFlags)
         rawInputs = re.findall(r'create table.*?from\s(.*?)\s|join\s(.*?)\s',self.rawStr,self.regexFlags)
         rawInputs = [' '.join(list(chain.from_iterable(rawInputs)))]
-        print(rawStr)
-        print(rawInputs,rawOutputs)
 
         if len(rawInputs)>0:  
             self.inputs = self.parseDataObjects(rawInputs[0])
