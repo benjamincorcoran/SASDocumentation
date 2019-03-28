@@ -63,6 +63,7 @@ class SASFlowChart(object):
 
     def saveFig(self,path):
         self.figure.savefig(path,format='PNG')
+        plt.close()
 
     def addDataNodes(self,SASObject):
         for obj in SASObject:
