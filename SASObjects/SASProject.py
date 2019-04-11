@@ -44,30 +44,19 @@ class SASProject(object):
         if not os.path.exists(self.outPath):
             os.makedirs(self.outPath)
         
-        codeDocumentationFiles = self.writeProgramDocumentation(self.SASPrograms)
-        externalDocumentationFiles = self.writeProgramDocumentation(self.externalPrograms)
+        codeDocumentationFiles = self.writeProgramDocumentation(self.SASPrograms, '_code.rst')
+        externalDocumentationFiles = self.writeProgramDocumentation(self.externalPrograms, '_extcode.rst')
 
         macroIndex = self.buildMacroIndex()
         MDWritePath = os.path.join(self.outPath,'_macroIndex.md')
         with open(MDWritePath,'w+') as out:
             out.write(macroIndex)
-        
-        with open(os.path.join(self.outPath,'_code.rst'),'w+') as codeRST:
-            codeRST.write('Project Code\n============\n\n.. toctree::\n   :maxdepth: 2 \n\n')
-            for docFile in codeDocumentationFiles:
-                codeRST.write('   {}\n'.format(os.path.splitext(os.path.basename(docFile))[0]))
-        
-        if len(externalDocumentationFiles) > 0:
-            with open(os.path.join(self.outPath,'_extcode.rst'),'w+') as codeRST:
-                codeRST.write('External Code\n=============\n\n.. toctree::\n   :maxdepth: 2 \n\n')
-                for docFile in externalDocumentationFiles:
-                    codeRST.write('   {}\n'.format(os.path.splitext(os.path.basename(docFile))[0]))
             
         with open(os.path.join(self.outPath,'_mindex.rst'),'w+') as codeRST:
             codeRST.write('.. toctree::\n   :maxdepth: 3 \n\n   _macroIndex')
 
     
-    def writeProgramDocumentation(self, programList):
+    def writeProgramDocumentation(self, programList, rstFile):
         codeDocumentationFiles = []
 
         for SASProgram in programList:
@@ -86,6 +75,18 @@ class SASProject(object):
                 out.write(documentation)
 
             codeDocumentationFiles.append(MDWritePath)
+
+        if len(codeDocumentationFiles) > 0:
+            if rstFile == '_code.rst':
+                title = 'Project Code'
+            else:
+                title = 'External Code'
+            with open(os.path.join(self.outPath, rstFile),'w+') as codeRST:
+                codeRST.write('{}\n'.format(title)+'='*len(title)+'\n\n')
+                codeRST.write('.. toctree::\n   :maxdepth: 2 \n\n')
+                for docFile in codeDocumentationFiles:
+                    codeRST.write('   {}\n'.format(os.path.splitext(os.path.basename(docFile))[0]))
+        
         return codeDocumentationFiles
 
     def buildProgramDocumentation(self, SASProgram, imagePath):
