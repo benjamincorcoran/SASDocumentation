@@ -10,7 +10,8 @@ Welcome to {{ project }}'s documentation!
 .. toctree::
    :maxdepth: 2
 
-   source/code/code
+   source/code/_code
+   source/code/_mindex
 
 
 {{ mastertoctree }}
