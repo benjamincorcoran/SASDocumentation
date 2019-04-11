@@ -36,19 +36,43 @@ class SASProject(object):
                 try:
                     self.externalPrograms.append(SASProgram(os.path.abspath(includePath)))
                 except:
-                    print('Could not find included file.')
+                    print('Could not find included file: {}'.format(includePath))
 
     def buildProject(self, outPath):
 
-        outPath = os.path.join(outPath,'source','code')
-        if not os.path.exists(outPath):
-            os.makedirs(outPath)
+        self.outPath = os.path.join(outPath,'source','code')
+        if not os.path.exists(self.outPath):
+            os.makedirs(self.outPath)
         
+        codeDocumentationFiles = self.writeProgramDocumentation(self.SASPrograms)
+        externalDocumentationFiles = self.writeProgramDocumentation(self.externalPrograms)
+
+        macroIndex = self.buildMacroIndex()
+        MDWritePath = os.path.join(self.outPath,'_macroIndex.md')
+        with open(MDWritePath,'w+') as out:
+            out.write(macroIndex)
+        
+        with open(os.path.join(self.outPath,'_code.rst'),'w+') as codeRST:
+            codeRST.write('Project Code\n============\n\n.. toctree::\n   :maxdepth: 2 \n\n')
+            for docFile in codeDocumentationFiles:
+                codeRST.write('   {}\n'.format(os.path.splitext(os.path.basename(docFile))[0]))
+        
+        if len(externalDocumentationFiles) > 0:
+            with open(os.path.join(self.outPath,'_extcode.rst'),'w+') as codeRST:
+                codeRST.write('External Code\n=============\n\n.. toctree::\n   :maxdepth: 2 \n\n')
+                for docFile in externalDocumentationFiles:
+                    codeRST.write('   {}\n'.format(os.path.splitext(os.path.basename(docFile))[0]))
+            
+        with open(os.path.join(self.outPath,'_mindex.rst'),'w+') as codeRST:
+            codeRST.write('.. toctree::\n   :maxdepth: 3 \n\n   _macroIndex')
+
+    
+    def writeProgramDocumentation(self, programList):
         codeDocumentationFiles = []
 
-        for SASProgram in self.SASPrograms:
-            MDWritePath = os.path.join(outPath,os.path.splitext(SASProgram.fileName)[0]+'.md')
-            PNGWritePath = os.path.join(outPath,re.sub('\s','',os.path.splitext(SASProgram.fileName)[0]+'.png'))
+        for SASProgram in programList:
+            MDWritePath = os.path.join(self.outPath,re.sub('\s','',os.path.splitext(SASProgram.fileName)[0]+'.md'))
+            PNGWritePath = os.path.join(self.outPath,re.sub('\s','',os.path.splitext(SASProgram.fileName)[0]+'.png'))
 
             FlowChart = SASFlowChart(SASProgram)
             if FlowChart.countNodes() > 0:
@@ -62,22 +86,7 @@ class SASProject(object):
                 out.write(documentation)
 
             codeDocumentationFiles.append(MDWritePath)
-
-        macroIndex = self.buildMacroIndex()
-        MDWritePath = os.path.join(outPath,'_macroIndex.md')
-        with open(MDWritePath,'w+') as out:
-            out.write(macroIndex)
-        
-        with open(os.path.join(outPath,'_code.rst'),'w+') as codeRST:
-            codeRST.write('Code\n====\n\n.. toctree::\n   :maxdepth: 2 \n\n')
-            for docFile in codeDocumentationFiles:
-                codeRST.write('   {}\n'.format(os.path.splitext(os.path.basename(docFile))[0]))
-        
-        with open(os.path.join(outPath,'_mindex.rst'),'w+') as codeRST:
-            codeRST.write('.. toctree::\n   :maxdepth: 3 \n\n   _macroIndex')
-        
-
-
+        return codeDocumentationFiles
 
     def buildProgramDocumentation(self, SASProgram, imagePath):
 
@@ -153,7 +162,7 @@ class SASProject(object):
         markdownStr = '# Macro index\n'
         for path,macro in self.projectMacros.items():
             markdownStr += '## {}\n'.format(macro.name)
-            markdownStr += '*Found in: [{}]({})*\n'.format(os.path.splitext(os.path.basename(path))[0],re.sub('\s','%20',os.path.splitext(os.path.basename(path))[0])+'.md')
+            markdownStr += '*Found in: [{}]({})*\n'.format(os.path.splitext(os.path.basename(path))[0],re.sub('\s','',os.path.splitext(os.path.basename(path))[0]+'.md'))
             markdownStr += '### About\n'
             markdownStr += '{}\n\n'.format(macro.docString)
             if len(macro.help)>0:
