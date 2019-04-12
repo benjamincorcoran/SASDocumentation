@@ -24,6 +24,7 @@ class SASProcedure(SASDataObjectParser):
         else:
             self.outputs = []
 
+
     # def __str__(self):
     #     return ','.join([_.__str__ for _ in self.outputs])
 
@@ -40,18 +41,22 @@ class SASProcSQL(SASDataObjectParser):
         self.procedure = re.findall(r'proc (.*?)[\s;]',self.rawStr,self.regexFlags)[0]
         
         rawOutputs = re.findall(r'create table\s*(.*?)\sas',self.rawStr,self.regexFlags)
-        rawInputs = re.findall(r'create table.*?from\s(.*?)\s|join\s(.*?)\s',self.rawStr,self.regexFlags)
-        rawInputs = [' '.join(list(chain.from_iterable(rawInputs)))]
+        rawInputs = re.findall(r'(?:from|join)\s+([^()]*?)\s',self.rawStr,self.regexFlags)
+
+        self.inputs = []
+        self.outputs = []
 
         if len(rawInputs)>0:  
-            self.inputs = self.parseDataObjects(rawInputs[0])
-        else:
-            self.inputs = []
+            for input in rawInputs:
+                self.inputs.append(self.parseDataObjects(input))
+
         if len(rawOutputs)>0:
-            self.outputs = self.parseDataObjects(rawOutputs[0])
-        else:
-            self.outputs = []
-        
+            for output in rawOutputs:
+                self.outputs.append(self.parseDataObjects(output))
+
+        self.inputs = list(chain(*self.inputs))
+        self.outputs = list(chain(*self.outputs))
+
         
 
     # def __str__(self):

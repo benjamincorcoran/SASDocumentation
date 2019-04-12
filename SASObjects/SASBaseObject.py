@@ -12,7 +12,7 @@ class SASBaseObject(object):
             'libname':re.compile(r"libname .{1,8} ['\"\(][^'\"\(\)]*?['\"\)]\s*;",self.regexFlags),
             'sqllibname':re.compile(r'%sqllib\((.*?)\)',self.regexFlags),
             'include':re.compile(r"include ['\"].*?['\"]",self.regexFlags),              
-            'datastep':re.compile(r"\s*data [^=].*?;.*?run;",self.regexFlags),
+            'datastep':re.compile(r"(?:\A\s*|;\s*)data [^=].*?;.*?run;",self.regexFlags),
             'dataObject':re.compile(r'\s*(.*?\(.*?[^(]*\))\s*;',self.regexFlags),
             'procedure':re.compile(r'proc .*?(?:run|quit);',self.regexFlags),
         
