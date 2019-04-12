@@ -125,19 +125,16 @@ class SASProject(object):
         if len(SASProgram.macros)> 0:
             markdownStr += '## Macro\n'
             for macro in SASProgram.macros:
-                markdownStr += '### {}\n'.format(macro.name)
-                markdownStr += '#### About\n'
-                markdownStr += '{}\n\n'.format(macro.docString)
+                markdownStr += '## %{}\n'.format(macro.name)
+                markdownStr += '\n{}\n\n'.format(macro.docString)
                 if len(macro.help)>0:
-                    markdownStr += '#### Help\n'
+                    markdownStr += 'Help: \n\n'
                     markdownStr += '{}\n\n'.format(macro.help)
                 if len(macro.arguments)>0:
-                    markdownStr += '#### Arguments\n\n'
-                    markdownStr += '| Name | Type | Default Value | About |\n'
-                    markdownStr += '| --- | --- | --- | --- |\n'
+                    markdownStr += '**Arguments:**\n'
                     for arg in macro.arguments:
-                        markdownStr += '| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString)
-                markdownStr += '\n\n'
+                        markdownStr += '* **{}** (*{}*) - {} \n'.format(arg.name,arg.type,arg.docString)
+                markdownStr += '---\n\n'
         if len(SASProgram.uniqueDataItems) > 0:
             markdownStr += '## Datasets\n\n'
             markdownStr += '| Library | Name |\n'
@@ -160,20 +157,17 @@ class SASProject(object):
         return markdownStr
 
     def buildMacroIndex(self):
-        markdownStr = '# Macro index\n'
+        markdownStr = ' # Macro index\n *Index of all macros discovered in the project folder*\n\n---\n'
         for path,macro in self.projectMacros.items():
-            markdownStr += '## {}\n'.format(macro.name)
+            markdownStr += '## %{}\n'.format(macro.name)
             markdownStr += '*Found in: [{}]({})*\n'.format(os.path.splitext(os.path.basename(path))[0],re.sub('\s','',os.path.splitext(os.path.basename(path))[0]+'.md'))
-            markdownStr += '### About\n'
-            markdownStr += '{}\n\n'.format(macro.docString)
+            markdownStr += '\n{}\n\n'.format(macro.docString)
             if len(macro.help)>0:
-                markdownStr += '### Help\n'
+                markdownStr += 'Help: \n\n'
                 markdownStr += '{}\n\n'.format(macro.help)
             if len(macro.arguments)>0:
-                markdownStr += '### Arguments\n\n'
-                markdownStr += '| Name | Type | Default Value | About |\n'
-                markdownStr += '| --- | --- | --- | --- |\n'
+                markdownStr += '**Arguments:**\n'
                 for arg in macro.arguments:
-                    markdownStr += '| {} | {} | {} | {} |\n'.format(arg.name,arg.type,arg.defaultValue,arg.docString)
-            markdownStr += '\n\n'
+                    markdownStr += '* **{}** (*{}*) - {} \n'.format(arg.name,arg.type,arg.docString)
+            markdownStr += '---\n\n'
         return markdownStr

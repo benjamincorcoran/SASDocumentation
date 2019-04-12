@@ -32,7 +32,7 @@ class SASArgument(object):
         if re.search('.*?\*(.*)\*',rawStr) is not None:
             self.docString = re.findall('.*?\*(.*)\*',rawStr,reFlags)[0]
         else:
-            self.docString='Not set'
+            self.docString='No description provided'
 
     def __str__(self):
         _ = '{}\n - Type: {}\n - DefaultValue: {}\n - About: {}'.format(self.name,self.type,self.defaultValue,self.docString)
