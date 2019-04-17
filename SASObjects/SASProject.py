@@ -1,8 +1,11 @@
 import re 
 import os 
 
+
 from .SASProgram import SASProgram
 from .SASFlowChart import SASFlowChart
+
+
 
 class SASProject(object):
 
@@ -69,7 +72,7 @@ class SASProject(object):
             else:
                 PNGWritePath = None
             
-            documentation = self.buildProgramDocumentation(SASProgram,PNGWritePath)
+            documentation = self.buildProgramDocumentation(SASProgram,FlowChart,PNGWritePath)
 
             with open(MDWritePath,'w+') as out:
                 out.write(documentation)
@@ -89,7 +92,7 @@ class SASProject(object):
         
         return codeDocumentationFiles
 
-    def buildProgramDocumentation(self, SASProgram, imagePath):
+    def buildProgramDocumentation(self, SASProgram, FlowChart, imagePath):
 
         markdownStr = ''
         markdownStr += '# {}\n\n'.format(SASProgram.name)
@@ -98,7 +101,9 @@ class SASProject(object):
             markdownStr += '{}\n\n'.format(SASProgram.about)
         if imagePath is not None:
             markdownStr += '## Program Struture\n\n'
-            markdownStr += '![Program Structure]({})\n\n'.format(os.path.basename(imagePath))
+            # markdownStr += '![Program Structure]({})\n\n'.format(os.path.basename(imagePath))
+            markdownStr += "<script>window.onload = function(){createNetworkGraph('"+FlowChart.json+"')};</script>\n"
+            markdownStr += '<div id="dataNetwork"></div>\n\n'
         if len(SASProgram.libnames['SAS'])+len(SASProgram.libnames['SQL'])> 0:
             markdownStr += '## Libraries\n\n'
             if len(SASProgram.libnames['SAS']) > 0:

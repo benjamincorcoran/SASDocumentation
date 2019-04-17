@@ -5,6 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
+import json
+from networkx.readwrite import json_graph
+
 from SASObjects.SASProgram import SASProgram
 
 class SASFlowChart(object):
@@ -28,8 +31,9 @@ class SASFlowChart(object):
         # for obj in self.SASProgram.procedures:
         #     print('Procedure: ',obj.procedure,obj.inputs, obj.outputs)
 
+        self.json = json.dumps(json_graph.node_link_data(self.G))
+
         for node in self.G.nodes():
-            
             if len(list(self.G.predecessors(node))) == 0:
                 self.G.add_edge('start',node)
 
