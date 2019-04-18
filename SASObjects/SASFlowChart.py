@@ -37,6 +37,9 @@ class SASFlowChart(object):
             if len(list(self.G.predecessors(node))) == 0:
                 self.G.add_edge('start',node)
 
+
+
+    def saveFig(self,path):
         try:
             self.pos = self._hierarchy_pos(self.G,'start')
             self.G.remove_node('start')
@@ -62,10 +65,8 @@ class SASFlowChart(object):
 
             plt.legend(handles=legendHandles,fontsize=8)
             plt.axis('off')
-        except RecursionError:
+        except :
             print("Failed to produce diagram, recursive loop detected.")
-
-    def saveFig(self,path):
         self.figure.savefig(path,format='PNG')
         plt.close()
 
