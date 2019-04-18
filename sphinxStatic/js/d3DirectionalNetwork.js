@@ -1,7 +1,7 @@
 function createNetworkGraph(json){
 
 	var width = 500,
-			height = 500;
+		height = 500;
 
 
 	var pJSON = JSON.parse(json)
@@ -22,7 +22,6 @@ function createNetworkGraph(json){
 		link.value = +link.value;
 	});
 		
-	
 
 	var force = d3.layout.force()
 		.nodes(d3.values(nodes))
@@ -35,7 +34,9 @@ function createNetworkGraph(json){
 
 	var svg = d3.select("#dataNetwork").append("svg")
 		.attr("width", width)
-		.attr("height", height);
+		.attr("height", height)
+		.on("dblclick", svgdblclick);
+
 
 	// build the arrow.
 	svg.append("svg:defs").selectAll("marker")
@@ -80,7 +81,9 @@ function createNetworkGraph(json){
 		.attr("dy", ".35em")
 		.text(function(d) { return d.ds; });
 
-	// add the curvy lines
+	resize();
+	d3.select(window).on("resize", resize);
+
 	function tick(e) {
 		var k = 6*e.alpha
 		path.attr("d", function(d) {
@@ -94,10 +97,18 @@ function createNetworkGraph(json){
 				targety;
 		});
 
-		node
-			.attr("transform", function(d) {
-			return "translate(" + d.x + "," + d.y + ")"; });
+		node.attr("transform", function(d) {
+				var boundX = Math.max(20,Math.min(width-20,d.x)),
+				    boundY = Math.max(12,Math.min(height-12,d.y));
+			return "translate(" + boundX + "," + boundY + ")"; });
 	}
+
+	function resize() {
+		var div = d3.select('#dataNetwork').node().getBoundingClientRect()
+		width = div.width, height = div.height;
+		svg.attr("width", width).attr("height", height);
+		force.size([width, height]).resume();
+	  }
 
 	var legend = svg.selectAll(".legend")
     .data(color.domain())
@@ -148,21 +159,19 @@ function createNetworkGraph(json){
 			//.style("stroke", "none")
 			//.style("font", "10px sans-serif");
 	}
+	function svgdblclick() {
+		if (d3.select(this).attr("height")<=1000){
+			d3.select(this).attr("height", 1200);
+		}else{
+			d3.select(this).attr("height", 500);
+		}
+		resize();
+		//d3.select(this).select("text").transition()
+			//.duration(750)
+			//.attr("x", 12)
+			//.style("stroke", "none")
+			//.style("fill", "black")
+			//.style("stroke", "none")
+			//.style("font", "10px sans-serif");
+	}
 };
-
-function dragstarted(d) {
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-  d.fx = d.x;
-  d.fy = d.y;
-}
-
-function dragged(d) {
-  d.fx = d3.event.x;
-  d.fy = d3.event.y;
-}
-
-function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
-  d.fx = null;
-  d.fy = null;
-}
