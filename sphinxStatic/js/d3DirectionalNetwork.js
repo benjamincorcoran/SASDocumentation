@@ -160,8 +160,9 @@ function createNetworkGraph(json){
 			//.style("font", "10px sans-serif");
 	}
 	function svgdblclick() {
-		if (d3.select(this).attr("height")<=1000){
-			d3.select(this).attr("height", 1200);
+		var curheight = d3.select(this).attr("height");
+		if (curheight<=5000){
+			d3.select(this).attr("height",+curheight+500);
 		}else{
 			d3.select(this).attr("height", 500);
 		}
