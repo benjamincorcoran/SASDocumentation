@@ -8,16 +8,22 @@ function createNetworkGraph(json){
 	var nodes = []
 	var links = pJSON.links
 
-	var color = d3.scale.category20();
-		
+	var color = d3.scale.category10();
+	
 	links.forEach(function(link) {
 		link.source = nodes[link.source] || 
-				(nodes[link.source] = {name: link.source, lib:'a'});
+				(nodes[link.source] = {name: link.source, 
+									   lib:pJSON.nodes.find(x => x.id === link.source).lib,
+									   ds:pJSON.nodes.find(x => x.id === link.source).ds});
 		link.target = nodes[link.target] || 
-				(nodes[link.target] = {name: link.target, lib:'a'});
+				(nodes[link.target] = {name: link.target, 
+					lib:pJSON.nodes.find(x => x.id === link.target).lib,
+					ds:pJSON.nodes.find(x => x.id === link.target).ds});
 		link.value = +link.value;
 	});
 		
+	
+
 	var force = d3.layout.force()
 		.nodes(d3.values(nodes))
 		.links(links)
@@ -58,20 +64,21 @@ function createNetworkGraph(json){
 		.data(force.nodes())
 		.enter().append("g")
 		.attr("class", "node")
-		.style("fill",function(d) { return color(d.name); })
+		
 		.on("click", click)
 		.on("dblclick", dblclick)
 		.call(force.drag);
 
 	// add the nodes
 	node.append("circle")
-		.attr("r", 5);
+		.attr("r", 5)
+		.style("fill",function(d) { return color(d.lib); });
 
 	// add the text 
 	node.append("text")
 		.attr("x", 12)
 		.attr("dy", ".35em")
-		.text(function(d) { return d.name; });
+		.text(function(d) { return d.ds; });
 
 	// add the curvy lines
 	function tick(e) {
@@ -91,6 +98,26 @@ function createNetworkGraph(json){
 			.attr("transform", function(d) {
 			return "translate(" + d.x + "," + d.y + ")"; });
 	}
+
+	var legend = svg.selectAll(".legend")
+    .data(color.domain())
+    .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+	legend.append("rect")
+		.attr("x", width - 18)
+		.attr("width", 18)
+		.attr("height", 18)
+		.style("fill", color);
+
+	legend.append("text")
+		.attr("x", width - 24)
+		.attr("y", 9)
+		.attr("dy", ".35em")
+		.style("text-anchor", "end")
+		.text(function(d) { return d; });
+
 
 	// action to take on mouse click
 	function click() {

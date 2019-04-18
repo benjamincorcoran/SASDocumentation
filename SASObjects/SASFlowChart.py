@@ -76,14 +76,14 @@ class SASFlowChart(object):
                 inputNode = input.library.upper()+'.'+input.dataset.upper()
                 if not input.isNull():
                     if self.G.has_node(inputNode) is False:
-                        self.G.add_node(inputNode,lib=input.library.upper())
+                        self.G.add_node(inputNode,lib=input.library.upper(),ds=input.dataset)
                         self.nodeLabels[inputNode]=input.dataset
 
                     for output in obj.outputs:
                         outputNode = output.library.upper()+'.'+output.dataset.upper()
                         if not output.isNull():
                             if self.G.has_node(outputNode) is False:
-                                self.G.add_node(outputNode,lib=output.library.upper())
+                                self.G.add_node(outputNode,lib=output.library.upper(),ds=output.dataset)
                                 self.nodeLabels[outputNode]=output.dataset
                             if hasattr(obj,'procedure'):
                                 if input.dataset != output.dataset:
