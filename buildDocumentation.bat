@@ -8,13 +8,12 @@ if [%2] == [] (
     set out=%2\docs
 )
 
-
 call pip install sphinx recommonmark sphinx-markdown-tables matplotlib numpy networkx
 
-call sphinx-quickstart -q --project=%1 --author=%username% --batchfile --template=sphinxTemplate %out%
+call sphinx-quickstart -q --project=%1 --author=%username% --batchfile --template=Sphinx\sphinxTemplate %out%
 python SASParser.py %1 %out%
 
-xcopy sphinxStatic %out%\_static\ /s/e/y
+xcopy Sphinx\sphinxStatic %out%\_static\ /s/e/y
 
 %out%\make.bat html
 
