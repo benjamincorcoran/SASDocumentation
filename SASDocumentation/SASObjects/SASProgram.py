@@ -1,5 +1,5 @@
-import re 
-import os 
+import re
+import os
 import datetime
 
 from .SASBaseObject import SASBaseObject
@@ -9,10 +9,11 @@ from .SASInclude import SASInclude
 from .SASDatastep import SASDatastep
 from .SASProcedure import SASProcedure, SASProcSQL
 
+
 class SASProgram(SASBaseObject):
     '''
     SAS Macro Class
-    
+
     Creates an object with the following properties
 
         Name: Name of the SAS Program
@@ -24,10 +25,10 @@ class SASProgram(SASBaseObject):
         DocString: Documentation String for the argument.
     '''
 
-    def __init__(self,file):
+    def __init__(self, file):
 
         SASBaseObject.__init__(self)
-        
+
         self.name = os.path.basename(file)
         self.fileName = os.path.basename(file)
         self.filePath = os.path.abspath(file)
@@ -38,7 +39,7 @@ class SASProgram(SASBaseObject):
         self.LastUpdated = datetime.datetime.fromtimestamp(st[8])
 
         self.macros = []
-        self.libnames = {'SAS':[],'SQL':[]}
+        self.libnames = {'SAS': [], 'SQL': []}
         self.includes = []
         self.datasteps = []
         self.procedures = []
@@ -46,49 +47,50 @@ class SASProgram(SASBaseObject):
         self.inputs = []
         self.outputs = []
 
-
         with open(self.filePath) as f:
             self.rawProgram = f.read()
 
-        self.rawComments = self.parse('commentBlock',self.rawProgram)
+        self.rawComments = self.parse('commentBlock', self.rawProgram)
         if len(self.rawComments) > 0:
-            self.about=re.sub('\*|\t|\/','',self.rawComments[0])
-            self.about=re.sub('(?<!\n)\n(?!\n)','\n\n',self.about)
+            self.about = re.sub(r'\*|\t|\/', '', self.rawComments[0])
+            self.about = re.sub('(?<!\n)\n(?!\n)', '\n\n', self.about)
         else:
-            self.about=None
+            self.about = None
 
-        self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub('',self.rawProgram)
+        self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub(
+            '', self.rawProgram)
 
-        rawMacros = self.parse('macro',self.rawProgram)
+        rawMacros = self.parse('macro', self.rawProgram)
         if len(rawMacros) > 0:
             self.readMacros(rawMacros)
 
-        rawLibnames = self.parse('libname',self.rawProgram)
+        rawLibnames = self.parse('libname', self.rawProgram)
         if len(rawLibnames) > 0:
-            self.readLibnames(rawLibnames,'SAS')
-        
-        rawSQLLibnames = self.parse('sqllibname',self.rawProgram)
+            self.readLibnames(rawLibnames, 'SAS')
+
+        rawSQLLibnames = self.parse('sqllibname', self.rawProgram)
         if len(rawSQLLibnames) > 0:
-            self.readLibnames(rawSQLLibnames,'SQL')
-        
-        rawIncludes = self.parse('include',self.rawProgram)
+            self.readLibnames(rawSQLLibnames, 'SQL')
+
+        rawIncludes = self.parse('include', self.rawProgram)
         if len(rawIncludes) > 0:
             self.readIncludes(rawIncludes)
 
-        rawDatasteps = self.parse('datastep',self.unCommentedProgram)
+        rawDatasteps = self.parse('datastep', self.unCommentedProgram)
         if len(rawDatasteps) > 0:
             self.readDatasteps(rawDatasteps)
 
-        rawProcedures = self.parse('procedure',self.unCommentedProgram)
+        rawProcedures = self.parse('procedure', self.unCommentedProgram)
         if len(rawProcedures) > 0:
             self.readProcedures(rawProcedures)
-        
+
         self.getInputs()
         self.getOutputs()
 
-        self.uniqueDataItems = [x.split('#/#') for x in list(set([ds.library.upper()+'#/#'+ds.dataset.upper() for ds in self.inputs+self.outputs]))]
+        self.uniqueDataItems = [x.split('#/#') for x in list(set([ds.library.upper(
+        ) + '#/#' + ds.dataset.upper() for ds in self.inputs + self.outputs]))]
 
-    def readMacros(self,rawMacros):
+    def readMacros(self, rawMacros):
         for macroStr in rawMacros:
             self.macros.append(SASMacro(macroStr))
 
@@ -102,14 +104,14 @@ class SASProgram(SASBaseObject):
     def readIncludes(self, rawIncludes):
         for includeStr in rawIncludes:
             self.includes.append(SASInclude(includeStr))
-    
+
     def readDatasteps(self, rawDatasteps):
         for datastepStr in rawDatasteps:
             self.datasteps.append(SASDatastep(datastepStr))
 
     def readProcedures(self, rawProcedures):
         for procedureStr in rawProcedures:
-            if len(re.findall('proc sql',procedureStr,self.regexFlags))>0:
+            if len(re.findall('proc sql', procedureStr, self.regexFlags)) > 0:
                 self.procedures.append(SASProcSQL(procedureStr))
             else:
                 self.procedures.append(SASProcedure(procedureStr))
@@ -121,7 +123,7 @@ class SASProgram(SASBaseObject):
         for proc in self.procedures:
             for input in proc.inputs:
                 self.inputs.append(input)
-    
+
     def getOutputs(self):
         for datastep in self.datasteps:
             for output in datastep.outputs:
@@ -129,11 +131,13 @@ class SASProgram(SASBaseObject):
         for proc in self.procedures:
             for output in proc.outputs:
                 self.outputs.append(output)
-        
-
 
     def __str__(self):
-        _ = '{}\n - {} macro(s)\n - {} libnames\n - {} includes'.format(self.fileName,len(self.macros),len(self.libnames),len(self.includes))
+        _ = '{}\n - {} macro(s)\n - {} libnames\n - {} includes'.format(
+            self.fileName, len(
+                self.macros), len(
+                self.libnames), len(
+                self.includes))
         return _
 
     def __repr__(self):
