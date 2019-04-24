@@ -1,5 +1,6 @@
 # Usage
 
 ~~~~cmd
-S:\> buildDocumentation.bat "<path-to-project-root>" "<optional-output-location>"
+pip install -e ./
+python -m SASDocumentation  "<path-to-project-root>" "<output-location>"
 ~~~~
