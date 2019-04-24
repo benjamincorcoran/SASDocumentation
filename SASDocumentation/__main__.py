@@ -41,7 +41,10 @@ if __name__ == "__main__":
         if os.path.exists(readmePath):
             with open(readmePath) as r:
                 projectREADME = r.read()
-            projectTitle = re.findall('^#([^#\n]+)', projectREADME)[0]
+            try:
+                projectTitle = re.findall('^#([^#\n]+)', projectREADME)[0]
+            except:
+                projectTitle = path
         else:
             projectREADME = ""
             projectTitle = path
@@ -74,6 +77,7 @@ if __name__ == "__main__":
                 o.write(projectREADME)
                 o.write(defaultIndex)
             else:
+                o.write('Stick a README.md file in the project folder to add text here.\n\n\n')
                 o.write(defaultIndex)
 
         shutil.rmtree(os.path.join(out, '_static'))
