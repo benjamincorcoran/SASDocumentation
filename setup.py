@@ -11,7 +11,7 @@ LONG_DESCRIPTION = readme()
 AUTHOR='Ben Corcoran'
 
 PACKAGES=['SASDocumentation']
-INSTALL_REQUIRES=['sphinx', 'recommonmark', 'sphinx-markdown-tables', 'matplotlib', 'numpy', 'networkx']
+INSTALL_REQUIRES=['sphinx', 'recommonmark', 'sphinx-markdown-tables', 'matplotlib', 'numpy', 'networkx', 'm2r']
 
 
 setup(name=NAME,

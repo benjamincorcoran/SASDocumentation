@@ -3,6 +3,7 @@ import os
 import re
 import pkg_resources
 import shutil
+import m2r
 
 import sphinx.cmd.quickstart as quickstart
 import sphinx.cmd.build as build
@@ -36,13 +37,44 @@ if __name__ == "__main__":
         sphinxResource = pkg_resources.resource_filename(
             'SASDocumentation', 'Sphinx')
 
+        readmePath = os.path.join(path, 'README.md')
+        if os.path.exists(readmePath):
+            with open(readmePath) as r:
+                projectREADME = r.read()
+            projectTitle = re.findall('^#([^#\n]+)', projectREADME)[0]
+        else:
+            projectREADME = ""
+            projectTitle = path
+
         quickstart.main(['-q',
-                         '--project={}'.format(path),
+                         '--project={}'.format(projectTitle),
                          '--author=corcobe',
                          '--batchfile',
                          '--template={}/sphinxTemplate'.format(
                              sphinxResource),
                          out])
+
+        indexPath = os.path.join(out, 'index.rst')
+        _defaultIndex = os.path.join(out, '_defaultIndex.rst')
+
+        if not os.path.exists(_defaultIndex):
+            with open(indexPath) as i:
+                defaultIndex = i.read()
+            with open(_defaultIndex, 'w') as di:
+                di.write(defaultIndex)
+        else:
+            with open(_defaultIndex) as i:
+                defaultIndex = i.read()
+
+        os.remove(indexPath)
+
+        with open(indexPath, 'w') as o:
+            if projectREADME != '':
+                projectREADME = m2r.convert(projectREADME)
+                o.write(projectREADME)
+                o.write(defaultIndex)
+            else:
+                o.write(defaultIndex)
 
         shutil.rmtree(os.path.join(out, '_static'))
         shutil.copytree(
