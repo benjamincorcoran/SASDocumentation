@@ -132,36 +132,34 @@ function createNetworkGraph(json){
 
 	// action to take on mouse click
 	function click() {
-	//	d3.select(this).select("text").transition()
-		//	.duration(750)
-			//.attr("x", 22)
-			//.style("fill", "steelblue")
-			//.style("stroke", "lightsteelblue")
-			//.style("stroke-width", ".5px")
-			//.style("font", "20px sans-serif");
-		//d3.select(this).select("circle").transition()
-		//	.duration(750)
-		//	.attr("r", 16)
-		//	.style("fill", "lightsteelblue");
+		if(d3.select(this).select("circle").attr("r")==5){
+			d3.select(this).select("text")
+				.style("font-size", "15px")
+				.style("font-weight","bold");
+			d3.select(this).select("circle")
+				.attr("r", 10)
+		}else{
+			d3.select(this).select("text")
+			.style("font-size", "10px")
+			.style("font-weight","normal");
+			d3.select(this).select("circle")
+				.attr("r", 5)
+		}
 	}
 
 	// action to take on mouse double click
 	function dblclick() {
-		//d3.select(this).select("circle").transition()
-			//.duration(750)
-			//.attr("r", 6)
-			//.style("fill", "#ccc");
-		//d3.select(this).select("text").transition()
-			//.duration(750)
-			//.attr("x", 12)
-			//.style("stroke", "none")
-			//.style("fill", "black")
-			//.style("stroke", "none")
-			//.style("font", "10px sans-serif");
+		// d3.select(this).select("circle").transition()
+		// 	.duration(250)
+		// 	.attr("r", 5)
+		// d3.select(this).select("text").transition()
+		// 	.duration(250)
+		// 	.style("fontWeight","normal")
+		// 	.style("font", "12px sans-serif");
 	}
 	function svgdblclick() {
 		var curheight = d3.select(this).attr("height");
-		if (curheight<=5000){
+		if (curheight<=3000){
 			d3.select(this).attr("height",+curheight+500);
 		}else{
 			d3.select(this).attr("height", 500);

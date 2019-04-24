@@ -53,6 +53,7 @@ class SASProgram(SASBaseObject):
         self.rawComments = self.parse('commentBlock',self.rawProgram)
         if len(self.rawComments) > 0:
             self.about=re.sub('\*|\t|\/','',self.rawComments[0])
+            self.about=re.sub('(?<!\n)\n(?!\n)','\n\n',self.about)
         else:
             self.about=None
 
