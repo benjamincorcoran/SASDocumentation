@@ -5,6 +5,7 @@ import pkg_resources
 import shutil
 
 import sphinx.cmd.quickstart as quickstart
+import sphinx.cmd.build as build
 
 from .SASObjects.SASProject import SASProject
 from .SASAnalysis.SASFlowChart import SASFlowChart
@@ -44,6 +45,8 @@ if __name__ == "__main__":
 
 		project = SASProject(path)
 		project.buildProject(out)
+
+		build.main(['-M','html',out,os.path.join(out,'_build')])
 
 
 

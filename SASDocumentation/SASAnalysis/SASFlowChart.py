@@ -15,7 +15,7 @@ class SASFlowChart(object):
     def __init__(self, SASProgram):
 
         self.figure=plt.figure(figsize=(8,5))
-
+        
         self.G = nx.DiGraph()
         self.G.add_node('start')
 
