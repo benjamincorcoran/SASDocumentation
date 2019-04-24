@@ -2,6 +2,7 @@ import sys
 import os 
 import re
 import pkg_resources
+import shutil
 
 import sphinx.cmd.quickstart as quickstart
 
@@ -30,6 +31,7 @@ if __name__ == "__main__":
 		path = sys.argv[1]
 		out = sys.argv[2]
 		sphinxResource = pkg_resources.resource_filename('SASDocumentation', 'Sphinx')
+
 		quickstart.main(['-q',
 						 '--project={}'.format(path),
 						 '--author=corcobe',
@@ -37,7 +39,12 @@ if __name__ == "__main__":
 						 '--template={}/sphinxTemplate'.format(sphinxResource),
 						 out])
 
+		shutil.rmtree(os.path.join(out,'_static'))
+		shutil.copytree(os.path.join(sphinxResource,'sphinxStatic'),os.path.join(out,'_static'))
+
 		project = SASProject(path)
 		project.buildProject(out)
+
+
 
 
