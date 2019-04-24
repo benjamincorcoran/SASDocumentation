@@ -3,24 +3,25 @@ import re
 from .SASBaseObject import SASBaseObject
 from .SASDataObject import SASDataObject
 
+
 class SASDataObjectParser(SASBaseObject):
 
     def __init__(self):
 
         SASBaseObject.__init__(self)
 
-
-    def parseDataObjects(self,objectText):
+    def parseDataObjects(self, objectText):
         rawObjectList = self.splitDataObjects(objectText)
-        
+
         objectList = []
-        
-        for dataObject in rawObjectList:            
-            
+
+        for dataObject in rawObjectList:
+
             library = dataObject[0]
-            dataset = re.findall(r'([^(]+)[.]*',dataObject[1],self.regexFlags)[0]
-            condition = re.findall(r'\((.*)\)',dataObject[1],self.regexFlags)
-            
+            dataset = re.findall(
+                r'([^(]+)[.]*', dataObject[1], self.regexFlags)[0]
+            condition = re.findall(r'\((.*)\)', dataObject[1], self.regexFlags)
+
             if len(library) > 0:
                 library = library
             else:
@@ -30,6 +31,6 @@ class SASDataObjectParser(SASBaseObject):
             else:
                 condition = None
             if len(dataset) > 0:
-                objectList.append(SASDataObject(library,dataset,condition))
+                objectList.append(SASDataObject(library, dataset, condition))
 
         return objectList
