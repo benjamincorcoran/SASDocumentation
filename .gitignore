@@ -1,5 +1,4 @@
-sasdoc*
-donottrack
+*.egg-info
 .vscode
 *.pyc
 __pycache__/
