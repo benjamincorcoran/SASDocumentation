@@ -67,17 +67,11 @@ class SASProject(object):
         for SASProgram in programList:
             MDWritePath = os.path.join(self.outPath, re.sub(
                 '\s', '', os.path.splitext(SASProgram.fileName)[0] + '.md'))
-            PNGWritePath = os.path.join(self.outPath, re.sub(
-                '\s', '', os.path.splitext(SASProgram.fileName)[0] + '.png'))
-
+            
             FlowChart = SASFlowChart(SASProgram)
-            if FlowChart.countNodes() > 0:
-                FlowChart.saveFig(PNGWritePath)
-            else:
-                PNGWritePath = None
 
             documentation = self.buildProgramDocumentation(
-                SASProgram, FlowChart, PNGWritePath)
+                SASProgram, FlowChart)
 
             with open(MDWritePath, 'w+') as out:
                 out.write(documentation)
@@ -98,16 +92,15 @@ class SASProject(object):
 
         return codeDocumentationFiles
 
-    def buildProgramDocumentation(self, SASProgram, FlowChart, imagePath):
+    def buildProgramDocumentation(self, SASProgram, FlowChart):
 
         markdownStr = ''
         markdownStr += '# {}\n\n'.format(SASProgram.name)
         if SASProgram.about is not None:
             markdownStr += '## About\n'
             markdownStr += '{}\n\n'.format(SASProgram.about)
-        if imagePath is not None:
+        if FlowChart.countNodes() > 0:
             markdownStr += '## Program Struture\n\n'
-            # markdownStr += '![Program Structure]({})\n\n'.format(os.path.basename(imagePath))
             markdownStr += "<script>window.onload = function(){createNetworkGraph('" + \
                 FlowChart.json + "')};</script>\n"
             markdownStr += '<div id="dataNetwork"></div>\n\n'
