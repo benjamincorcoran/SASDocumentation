@@ -4,8 +4,12 @@ from pathlib import Path, PureWindowsPath, PurePosixPath
 
 class SASInclude(object):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
         reFlags = re.DOTALL | re.IGNORECASE
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
+
         self._path = re.findall(
             r"include ['\"](.*?)['\"]", rawStr, flags=reFlags)[0]
         self.path = str(PureWindowsPath(self._path))

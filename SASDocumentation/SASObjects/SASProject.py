@@ -135,7 +135,9 @@ class SASProject(object):
             markdownStr += '## Macro\n'
             for macro in SASProgram.macros:
                 markdownStr += '## %{}\n'.format(macro.name)
+                markdownStr += '*Lines {}-{}*\n'.format(macro.startLine,macro.endLine)
                 markdownStr += '\n{}\n\n'.format(macro.docString)
+                
                 if len(macro.help) > 0:
                     markdownStr += 'Help: \n\n'
                     markdownStr += '{}\n\n'.format(macro.help)

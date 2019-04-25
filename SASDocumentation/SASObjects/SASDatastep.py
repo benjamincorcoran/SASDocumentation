@@ -5,9 +5,12 @@ from .SASDataObjectParser import SASDataObjectParser
 
 class SASDatastep(SASDataObjectParser):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
 
         SASDataObjectParser.__init__(self)
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.head = self.parse('datastepHead', rawStr)[0]
         self.body = self.parse('datastepBody', rawStr)[0]

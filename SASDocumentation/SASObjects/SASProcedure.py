@@ -6,9 +6,12 @@ from .SASDataObjectParser import SASDataObjectParser
 
 class SASProcedure(SASDataObjectParser):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
 
         SASDataObjectParser.__init__(self)
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.rawStr = rawStr
         self.procedure = re.findall(
@@ -39,9 +42,12 @@ class SASProcedure(SASDataObjectParser):
 
 class SASProcSQL(SASDataObjectParser):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
 
         SASDataObjectParser.__init__(self)
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.rawStr = rawStr
         self.procedure = re.findall(

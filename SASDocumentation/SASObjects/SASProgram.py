@@ -12,7 +12,7 @@ from .SASProcedure import SASProcedure, SASProcSQL
 
 class SASProgram(SASBaseObject):
     '''
-    SAS Macro Class
+    SAS Program Class
 
     Creates an object with the following properties
 
@@ -90,31 +90,35 @@ class SASProgram(SASBaseObject):
         self.uniqueDataItems = [x.split('#/#') for x in list(set([ds.library.upper(
         ) + '#/#' + ds.dataset.upper() for ds in self.inputs + self.outputs]))]
 
+    def findLine(self,str):
+        start = re.findall("^[\s\\\*\/]*([^\n]*)",str,re.IGNORECASE)[0]
+        return re.findall("^(.*)"+re.escape(start),self.rawProgram,re.DOTALL|re.IGNORECASE)[0].count('\n')
+
     def readMacros(self, rawMacros):
         for macroStr in rawMacros:
-            self.macros.append(SASMacro(macroStr))
+            self.macros.append(SASMacro(macroStr,self.findLine(macroStr)))
 
     def readLibnames(self, rawLibnames, libType):
         for libnameStr in rawLibnames:
             if libType == 'SAS':
-                self.libnames['SAS'].append(SASLibname(libnameStr))
+                self.libnames['SAS'].append(SASLibname(libnameStr,self.findLine(libnameStr)))
             elif libType == 'SQL':
-                self.libnames['SQL'].append(SASSQLLibname(libnameStr))
+                self.libnames['SQL'].append(SASSQLLibname(libnameStr,self.findLine(libnameStr)))
 
     def readIncludes(self, rawIncludes):
         for includeStr in rawIncludes:
-            self.includes.append(SASInclude(includeStr))
+            self.includes.append(SASInclude(includeStr,self.findLine(includeStr)))
 
     def readDatasteps(self, rawDatasteps):
         for datastepStr in rawDatasteps:
-            self.datasteps.append(SASDatastep(datastepStr))
+            self.datasteps.append(SASDatastep(datastepStr,self.findLine(datastepStr)))
 
     def readProcedures(self, rawProcedures):
         for procedureStr in rawProcedures:
             if len(re.findall('proc sql', procedureStr, self.regexFlags)) > 0:
-                self.procedures.append(SASProcSQL(procedureStr))
+                self.procedures.append(SASProcSQL(procedureStr,self.findLine(procedureStr)))
             else:
-                self.procedures.append(SASProcedure(procedureStr))
+                self.procedures.append(SASProcedure(procedureStr,self.findLine(procedureStr)))
 
     def getInputs(self):
         for datastep in self.datasteps:

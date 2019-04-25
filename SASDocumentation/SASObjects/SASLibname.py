@@ -6,8 +6,11 @@ from .SASBaseObject import SASBaseObject
 
 class SASLibname(SASBaseObject):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
         SASBaseObject.__init__(self)
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.name = re.findall(
             r"libname (.{0,8}) ['\"\(][^'\"\(\)]*?['\"\)]\s*;",
@@ -30,8 +33,11 @@ class SASLibname(SASBaseObject):
 
 class SASSQLLibname(SASBaseObject):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
         SASBaseObject.__init__(self)
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.name = re.findall('(.*?)(?=,|$)', rawStr,
                                flags=self.regexFlags)[0]
