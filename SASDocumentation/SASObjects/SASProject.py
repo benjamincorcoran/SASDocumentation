@@ -133,9 +133,11 @@ class SASProject(object):
             markdownStr += '\n\n'
         if len(SASProgram.macros) > 0:
             markdownStr += '## Macro\n'
+            markdownStr += '---\n\n'
             for macro in SASProgram.macros:
-                markdownStr += '## %{}\n'.format(macro.name)
-                markdownStr += '*Lines {}-{}*\n'.format(macro.startLine,macro.endLine)
+        
+                markdownStr += '### %{}\n'.format(macro.name)
+                markdownStr += '<a href="javascript:window.myCodeMirror.scrollIntoView({line:'+str(macro.startLine)+',char:0});window.myCodeMirror.markText({line:'+str(macro.startLine-2)+',char:0},{line:'+str(macro.endLine-1)+',char:0},{className: \'CodeMirror-activeline-background\'})">'+'*Lines {}-{}*</a>\n'.format(macro.startLine,macro.endLine)
                 markdownStr += '\n{}\n\n'.format(macro.docString)
                 
                 if len(macro.help) > 0:
@@ -155,11 +157,13 @@ class SASProject(object):
                 markdownStr += '| {} | {} |\n'.format(dataItem[0], dataItem[1])
             markdownStr += '\n\n'
 
-        markdownStr += '## Full code:\n\n<details><summary>Show/Hide</summary>\n\n'
-        markdownStr += '~~~~sas\n\n'
-        markdownStr += SASProgram.rawProgram
-        markdownStr += '\n\n~~~~\n\n'
-        markdownStr += '</details>\n\n'
+        markdownStr += '## Full code:\n\n'
+        # markdownStr += '<details><summary>Show/Hide</summary>\n\n'
+        
+        markdownStr += '<script>window.onload = function(){var textArea = document.getElementById("code"); window.myCodeMirror = CodeMirror.fromTextArea(textArea, {mode:"sas",lineNumbers:true,readOnly:true,gutter:true,lineWrapping:true,autoRefresh: true}); window.myCodeMirror.setSize(null, 500);}</script>'
+        markdownStr += '<textarea id="code">\n~~~\n'+SASProgram.rawProgram+'\n~~~\n</textarea>\n\n'
+        
+        # markdownStr += '</details>\n\n'
         markdownStr += '## Properties\n\n'
         markdownStr += '| Meta | Property |\n| --- | --- |\n'
         markdownStr += '| **Author:** | |\n'

@@ -92,7 +92,7 @@ class SASProgram(SASBaseObject):
 
     def findLine(self,str):
         start = re.findall("^[\s\\\*\/]*([^\n]*)",str,re.IGNORECASE)[0]
-        return re.findall("^(.*)"+re.escape(start),self.rawProgram,re.DOTALL|re.IGNORECASE)[0].count('\n')
+        return re.findall("^(.*)"+re.escape(start),self.rawProgram,re.DOTALL|re.IGNORECASE)[0].count('\n')+1
 
     def readMacros(self, rawMacros):
         for macroStr in rawMacros:
