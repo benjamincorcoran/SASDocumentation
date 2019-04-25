@@ -135,9 +135,9 @@ class SASProject(object):
             markdownStr += '## Macro\n'
             markdownStr += '---\n\n'
             for macro in SASProgram.macros:
-        
+
                 markdownStr += '### %{}\n'.format(macro.name)
-                markdownStr += '<a href="javascript:window.myCodeMirror.scrollIntoView({line:'+str(macro.startLine)+',char:0});window.myCodeMirror.markText({line:'+str(macro.startLine-2)+',char:0},{line:'+str(macro.endLine-1)+',char:0},{className: \'CodeMirror-activeline-background\'})">'+'*Lines {}-{}*</a>\n'.format(macro.startLine,macro.endLine)
+                markdownStr += '<a href="javascript:window.myCodeMirror.scrollIntoView({line:'+str(macro.startLine)+',char:0});window.myCodeMirror.markText({line:'+str(macro.startLine-2)+',char:0},{line:'+str(macro.endLine-1)+',char:0},{className: \'cm-searching\'})">'+'*Lines {}-{}*</a>\n'.format(macro.startLine,macro.endLine)
                 markdownStr += '\n{}\n\n'.format(macro.docString)
                 
                 if len(macro.help) > 0:
