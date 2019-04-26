@@ -111,24 +111,24 @@ class SASProject(object):
                 markdownStr += '| Name | Location | Line |\n'
                 markdownStr += '| --- | --- | --- |\n'
                 for libname in SASProgram.libnames['SAS']:
-                    markdownStr += '| {0} | [{1}]({2}) | <a class="lineJump" startLine={3} endLine={4}>*{3}*</a> |\n'.format(
-                        libname.name, libname.path, libname.posixPath, libname.startLine, libname.endLine)
+                    markdownStr += '| {0} | [{1}]({2}) | {3} |\n'.format(
+                        libname.name, libname.path, libname.posixPath, self.linkLines(libname.startLine, libname.endLine))
                 markdownStr += '\n\n'
             if len(SASProgram.libnames['SQL']) > 0:
                 markdownStr += '### SQL Libraries\n\n'
                 markdownStr += '| Name | Database | Schema | Server | Line |\n'
                 markdownStr += '| --- | --- | --- | --- | --- |\n'
                 for libname in SASProgram.libnames['SQL']:
-                    markdownStr += '| {0} | {1} | {2} | {3} | <a class="lineJump" startLine={4} endLine={5}>*{4}*</a> |\n'.format(
-                        libname.name, libname.database, libname.schema, libname.server, libname.startLine, libname.endLine)
+                    markdownStr += '| {0} | {1} | {2} | {3} | {4} |\n'.format(
+                        libname.name, libname.database, libname.schema, libname.server, self.linkLines(libname.startLine, libname.endLine))
                 markdownStr += '\n\n'
         if len(SASProgram.includes) > 0:
             markdownStr += '## Include\n\n'
             markdownStr += '| Path | Line |\n'
             markdownStr += '| --- | --- |\n'
             for include in SASProgram.includes:
-                markdownStr += '| [{0}]({1}) | <a class="lineJump" startLine={2} endLine={3}>*{2}*</a> |\n'.format(include.path,
-                                                       include.posixPath, include.startLine, include.endLine)
+                markdownStr += '| [{0}]({1}) | {2} |\n'.format(include.path,
+                                                       include.posixPath, self.linkLines(include.startLine, include.endLine))
             markdownStr += '\n\n'
         if len(SASProgram.macros) > 0:
             markdownStr += '## Macro\n'
@@ -136,8 +136,8 @@ class SASProject(object):
             for macro in SASProgram.macros:
 
                 markdownStr += '### %{}\n'.format(macro.name)
-                markdownStr += '<a class="lineJump" startLine={0} endLine={1}>*Lines {0}-{1}*</a>\n'.format(macro.startLine,macro.endLine)
-                markdownStr += '\n{}\n\n'.format(macro.docString)
+                markdownStr += 'Lines: '+self.linkLines(macro.startLine,macro.endLine)
+                markdownStr += '\n\n{}\n\n'.format(macro.docString)
                 
                 if len(macro.help) > 0:
                     markdownStr += 'Help: \n\n'
@@ -150,10 +150,14 @@ class SASProject(object):
                 markdownStr += '---\n\n'
         if len(SASProgram.uniqueDataItems) > 0:
             markdownStr += '## Datasets\n\n'
-            markdownStr += '| Library | Name |\n'
-            markdownStr += '| --- | --- |\n'
-            for dataItem in SASProgram.uniqueDataItems:
-                markdownStr += '| {} | {} |\n'.format(dataItem[0], dataItem[1])
+            markdownStr += '| Library | Name | Lines |\n'
+            markdownStr += '| --- | --- | --- |\n'
+            for dataItem, lines in SASProgram.uniqueDataItems.items():
+                markdownStr += '| {0} | {1} | '.format(dataItem[0], dataItem[1])
+                for line in lines:
+                    markdownStr += self.linkLines(line[0], line[1])+", "
+                markdownStr = markdownStr[:-2]
+                markdownStr += ' |\n'
             markdownStr += '\n\n'
 
         markdownStr += '## Full code:\n\n'
@@ -169,6 +173,12 @@ class SASProject(object):
             SASProgram.LastUpdated)
 
         return markdownStr
+
+    def linkLines(self, startLine, endLine):
+        if startLine==endLine:
+            return '<a class="lineJump" startLine={0} endLine={1}>*{0}*</a>'.format(startLine, endLine)
+        else:
+            return '<a class="lineJump" startLine={0} endLine={1}>*{0}-{1}*</a>'.format(startLine, endLine)
 
     def buildMacroIndex(self):
         markdownStr = ' # Macro index\n *Index of all macros discovered in the project folder*\n\n---\n'

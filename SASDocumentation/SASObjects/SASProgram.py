@@ -87,8 +87,19 @@ class SASProgram(SASBaseObject):
         self.getInputs()
         self.getOutputs()
 
-        self.uniqueDataItems = [x.split('#/#') for x in list(set([ds.library.upper(
-        ) + '#/#' + ds.dataset.upper() for ds in self.inputs + self.outputs]))]
+        self.getUniqueDataObjects()
+
+    def getUniqueDataObjects(self):
+        self.uniqueDataItems = {}
+        for ds in self.inputs + self.outputs:
+            dsKey = (ds.library.upper(),ds.dataset.upper())
+            if dsKey in self.uniqueDataItems:
+                self.uniqueDataItems[dsKey].append((ds.startLine,ds.endLine))
+            else:
+                self.uniqueDataItems[dsKey]=[(ds.startLine,ds.endLine)]
+        for key, linepairs in self.uniqueDataItems.items():
+            self.uniqueDataItems[key]=sorted(list(set(linepairs)),key=lambda x:x[0])
+            
 
     def findLine(self,str):
         start = re.findall("^[\s\\\*\/]*([^\n]*)",str,re.IGNORECASE)[0]
