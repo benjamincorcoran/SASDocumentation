@@ -1,6 +1,8 @@
 $(document).ready(function(){
-    createNetworkGraph(window.flowChart);
-
+    if (typeof(window.flowChart) != 'undefined'){
+        createNetworkGraph(window.flowChart);
+    }
+    
     var textArea = $("#code");
     textArea.val(window.rawCode);
     textArea.text(function(index, text){
@@ -17,9 +19,11 @@ $(document).ready(function(){
 });
 
 function jumpTo(startLine,endLine){
-    $('.cm-searching').removeClass('cm-searching');
+    if(typeof(window.markedText) != 'undefined'){
+        window.markedText.clear()
+    }
     window.codeMirror.scrollIntoView({line:startLine,char:0});
-    window.codeMirror.markText({line:startLine-2,char:0},{line:endLine-1,char:0},{className:'cm-searching'});
+    window.markedText = window.codeMirror.markText({line:startLine-2,char:0},{line:endLine-1,char:0},{className:'cm-searching'});
 }
 
 function strip(html)
