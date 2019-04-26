@@ -101,8 +101,7 @@ class SASProject(object):
             markdownStr += '{}\n\n'.format(SASProgram.about)
         if FlowChart.countNodes() > 0:
             markdownStr += '## Program Struture\n\n'
-            markdownStr += "<script>window.onload = function(){createNetworkGraph('" + \
-                FlowChart.json + "')};</script>\n"
+            markdownStr += "<script>window.flowChart="+FlowChart.json+"</script>\n"
             markdownStr += '<div id="dataNetwork"></div>\n\n'
         if len(SASProgram.libnames['SAS']) + \
                 len(SASProgram.libnames['SQL']) > 0:
@@ -137,7 +136,7 @@ class SASProject(object):
             for macro in SASProgram.macros:
 
                 markdownStr += '### %{}\n'.format(macro.name)
-                markdownStr += '<a href="javascript:window.myCodeMirror.scrollIntoView({line:'+str(macro.startLine)+',char:0});window.myCodeMirror.markText({line:'+str(macro.startLine-2)+',char:0},{line:'+str(macro.endLine-1)+',char:0},{className: \'cm-searching\'})">'+'*Lines {}-{}*</a>\n'.format(macro.startLine,macro.endLine)
+                markdownStr += '<a class="lineJump" startLine={0} endLine={1}>*Lines {0}-{1}*</a>\n'.format(macro.startLine,macro.endLine)
                 markdownStr += '\n{}\n\n'.format(macro.docString)
                 
                 if len(macro.help) > 0:
@@ -160,8 +159,7 @@ class SASProject(object):
         markdownStr += '## Full code:\n\n'
         # markdownStr += '<details><summary>Show/Hide</summary>\n\n'
         
-        markdownStr += '<script>window.onload = function(){var textArea = document.getElementById("code"); window.myCodeMirror = CodeMirror.fromTextArea(textArea, {mode:"sas",lineNumbers:true,readOnly:true,gutter:true,lineWrapping:true,autoRefresh: true}); window.myCodeMirror.setSize(null, 500);}</script>'
-        markdownStr += '<textarea id="code">\n~~~\n'+SASProgram.rawProgram+'\n~~~\n</textarea>\n\n'
+        markdownStr += '<textarea id="code">\n\n~~~\n\n'+SASProgram.rawProgram+'\n\n~~~\n\n</textarea>\n\n'
         
         # markdownStr += '</details>\n\n'
         markdownStr += '## Properties\n\n'
