@@ -108,27 +108,27 @@ class SASProject(object):
             markdownStr += '## Libraries\n\n'
             if len(SASProgram.libnames['SAS']) > 0:
                 markdownStr += '### SAS Libraries\n\n'
-                markdownStr += '| Name | Location |\n'
-                markdownStr += '| --- | --- |\n'
+                markdownStr += '| Name | Location | Line |\n'
+                markdownStr += '| --- | --- | --- |\n'
                 for libname in SASProgram.libnames['SAS']:
-                    markdownStr += '| {} | [{}]({}) |\n'.format(
-                        libname.name, libname.path, libname.posixPath)
+                    markdownStr += '| {0} | [{1}]({2}) | <a class="lineJump" startLine={3} endLine={4}>*{3}*</a> |\n'.format(
+                        libname.name, libname.path, libname.posixPath, libname.startLine, libname.endLine)
                 markdownStr += '\n\n'
             if len(SASProgram.libnames['SQL']) > 0:
                 markdownStr += '### SQL Libraries\n\n'
-                markdownStr += '| Name | Database | Schema | Server |\n'
-                markdownStr += '| --- | --- | --- | --- |\n'
+                markdownStr += '| Name | Database | Schema | Server | Line |\n'
+                markdownStr += '| --- | --- | --- | --- | --- |\n'
                 for libname in SASProgram.libnames['SQL']:
-                    markdownStr += '| {} | {} | {} | {} |\n'.format(
-                        libname.name, libname.database, libname.schema, libname.server)
+                    markdownStr += '| {0} | {1} | {2} | {3} | <a class="lineJump" startLine={4} endLine={5}>*{4}*</a> |\n'.format(
+                        libname.name, libname.database, libname.schema, libname.server, libname.startLine, libname.endLine)
                 markdownStr += '\n\n'
         if len(SASProgram.includes) > 0:
             markdownStr += '## Include\n\n'
-            markdownStr += '| Path |\n'
-            markdownStr += '| --- |\n'
+            markdownStr += '| Path | Line |\n'
+            markdownStr += '| --- | --- |\n'
             for include in SASProgram.includes:
-                markdownStr += '| [{}]({}) |\n'.format(include.path,
-                                                       include.posixPath)
+                markdownStr += '| [{0}]({1}) | <a class="lineJump" startLine={2} endLine={3}>*{2}*</a> |\n'.format(include.path,
+                                                       include.posixPath, include.startLine, include.endLine)
             markdownStr += '\n\n'
         if len(SASProgram.macros) > 0:
             markdownStr += '## Macro\n'
@@ -157,12 +157,10 @@ class SASProject(object):
             markdownStr += '\n\n'
 
         markdownStr += '## Full code:\n\n'
-        # markdownStr += '<details><summary>Show/Hide</summary>\n\n'
         
         markdownStr += '<script>window.rawCode='+json.dumps(SASProgram.rawProgram)+'</script>'
-        markdownStr += '<textarea id="code"></textarea>'
+        markdownStr += '<textarea id="code"></textarea>\n\n'
         
-        # markdownStr += '</details>\n\n'
         markdownStr += '## Properties\n\n'
         markdownStr += '| Meta | Property |\n| --- | --- |\n'
         markdownStr += '| **Author:** | |\n'
