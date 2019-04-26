@@ -15,7 +15,7 @@ class SASMacro(object):
         Help: Help statement if present in the macro
     '''
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
 
         reFlags = re.DOTALL | re.IGNORECASE
 
@@ -23,6 +23,9 @@ class SASMacro(object):
         body = re.findall('%macro.*?;(.*)', rawStr, reFlags)[0]
 
         self.name = re.findall(r'%macro ([^\(;]*)', head, reFlags)[0]
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.arguments = []
         argsLine = re.findall(r'\((.*\))', head, reFlags)

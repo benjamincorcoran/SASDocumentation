@@ -4,7 +4,7 @@ function createNetworkGraph(json){
 		height = 500;
 
 
-	var pJSON = JSON.parse(json)
+	var pJSON = json
 	var nodes = []
 	var links = pJSON.links
 

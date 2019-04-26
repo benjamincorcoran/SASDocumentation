@@ -6,9 +6,12 @@ from .SASDataObjectParser import SASDataObjectParser
 
 class SASProcedure(SASDataObjectParser):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
 
         SASDataObjectParser.__init__(self)
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.rawStr = rawStr
         self.procedure = re.findall(
@@ -21,15 +24,20 @@ class SASProcedure(SASDataObjectParser):
             self.rawStr,
             self.regexFlags)
 
-        if len(rawInputs) > 0:
-            self.inputs = self.parseDataObjects(rawInputs[0])
-        else:
-            self.inputs = []
-        if len(rawOutputs) > 0:
-            self.outputs = self.parseDataObjects(rawOutputs[0])
-        else:
-            self.outputs = []
+        self.inputs = []
+        self.outputs = []
 
+        if len(rawInputs) > 0:
+            for input in rawInputs:
+                self.inputs.append(self.parseDataObjects(input, startLine=self.startLine, endLine=self.endLine))
+
+        if len(rawOutputs) > 0:
+            for output in rawOutputs:
+                self.outputs.append(self.parseDataObjects(output, startLine=self.startLine, endLine=self.endLine))
+
+        self.inputs = list(chain(*self.inputs))
+        self.outputs = list(chain(*self.outputs))
+        
     # def __str__(self):
     #     return ','.join([_.__str__ for _ in self.outputs])
 
@@ -39,9 +47,12 @@ class SASProcedure(SASDataObjectParser):
 
 class SASProcSQL(SASDataObjectParser):
 
-    def __init__(self, rawStr):
+    def __init__(self, rawStr, startLine):
 
         SASDataObjectParser.__init__(self)
+
+        self.startLine = startLine
+        self.endLine = rawStr.count('\n')+startLine
 
         self.rawStr = rawStr
         self.procedure = re.findall(
@@ -57,11 +68,11 @@ class SASProcSQL(SASDataObjectParser):
 
         if len(rawInputs) > 0:
             for input in rawInputs:
-                self.inputs.append(self.parseDataObjects(input))
+                self.inputs.append(self.parseDataObjects(input, startLine=self.startLine, endLine=self.endLine))
 
         if len(rawOutputs) > 0:
             for output in rawOutputs:
-                self.outputs.append(self.parseDataObjects(output))
+                self.outputs.append(self.parseDataObjects(output, startLine=self.startLine, endLine=self.endLine))
 
         self.inputs = list(chain(*self.inputs))
         self.outputs = list(chain(*self.outputs))

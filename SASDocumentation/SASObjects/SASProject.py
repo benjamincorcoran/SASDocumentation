@@ -1,6 +1,6 @@
 import re
 import os
-
+import json
 
 from .SASProgram import SASProgram
 from ..SASAnalysis.SASFlowChart import SASFlowChart
@@ -101,41 +101,44 @@ class SASProject(object):
             markdownStr += '{}\n\n'.format(SASProgram.about)
         if FlowChart.countNodes() > 0:
             markdownStr += '## Program Struture\n\n'
-            markdownStr += "<script>window.onload = function(){createNetworkGraph('" + \
-                FlowChart.json + "')};</script>\n"
+            markdownStr += "<script>window.flowChart="+FlowChart.json+"</script>\n"
             markdownStr += '<div id="dataNetwork"></div>\n\n'
         if len(SASProgram.libnames['SAS']) + \
                 len(SASProgram.libnames['SQL']) > 0:
             markdownStr += '## Libraries\n\n'
             if len(SASProgram.libnames['SAS']) > 0:
                 markdownStr += '### SAS Libraries\n\n'
-                markdownStr += '| Name | Location |\n'
-                markdownStr += '| --- | --- |\n'
+                markdownStr += '| Name | Location | Line |\n'
+                markdownStr += '| --- | --- | --- |\n'
                 for libname in SASProgram.libnames['SAS']:
-                    markdownStr += '| {} | [{}]({}) |\n'.format(
-                        libname.name, libname.path, libname.posixPath)
+                    markdownStr += '| {0} | [{1}]({2}) | {3} |\n'.format(
+                        libname.name, libname.path, libname.posixPath, self.linkLines(libname.startLine, libname.endLine))
                 markdownStr += '\n\n'
             if len(SASProgram.libnames['SQL']) > 0:
                 markdownStr += '### SQL Libraries\n\n'
-                markdownStr += '| Name | Database | Schema | Server |\n'
-                markdownStr += '| --- | --- | --- | --- |\n'
+                markdownStr += '| Name | Database | Schema | Server | Line |\n'
+                markdownStr += '| --- | --- | --- | --- | --- |\n'
                 for libname in SASProgram.libnames['SQL']:
-                    markdownStr += '| {} | {} | {} | {} |\n'.format(
-                        libname.name, libname.database, libname.schema, libname.server)
+                    markdownStr += '| {0} | {1} | {2} | {3} | {4} |\n'.format(
+                        libname.name, libname.database, libname.schema, libname.server, self.linkLines(libname.startLine, libname.endLine))
                 markdownStr += '\n\n'
         if len(SASProgram.includes) > 0:
             markdownStr += '## Include\n\n'
-            markdownStr += '| Path |\n'
-            markdownStr += '| --- |\n'
+            markdownStr += '| Path | Line |\n'
+            markdownStr += '| --- | --- |\n'
             for include in SASProgram.includes:
-                markdownStr += '| [{}]({}) |\n'.format(include.path,
-                                                       include.posixPath)
+                markdownStr += '| [{0}]({1}) | {2} |\n'.format(include.path,
+                                                       include.posixPath, self.linkLines(include.startLine, include.endLine))
             markdownStr += '\n\n'
         if len(SASProgram.macros) > 0:
             markdownStr += '## Macro\n'
+            markdownStr += '---\n\n'
             for macro in SASProgram.macros:
-                markdownStr += '## %{}\n'.format(macro.name)
-                markdownStr += '\n{}\n\n'.format(macro.docString)
+
+                markdownStr += '### %{}\n'.format(macro.name)
+                markdownStr += 'Lines: '+self.linkLines(macro.startLine,macro.endLine)
+                markdownStr += '\n\n{}\n\n'.format(macro.docString)
+                
                 if len(macro.help) > 0:
                     markdownStr += 'Help: \n\n'
                     markdownStr += '{}\n\n'.format(macro.help)
@@ -147,17 +150,21 @@ class SASProject(object):
                 markdownStr += '---\n\n'
         if len(SASProgram.uniqueDataItems) > 0:
             markdownStr += '## Datasets\n\n'
-            markdownStr += '| Library | Name |\n'
-            markdownStr += '| --- | --- |\n'
-            for dataItem in SASProgram.uniqueDataItems:
-                markdownStr += '| {} | {} |\n'.format(dataItem[0], dataItem[1])
+            markdownStr += '| Library | Name | Lines |\n'
+            markdownStr += '| --- | --- | --- |\n'
+            for dataItem, lines in SASProgram.uniqueDataItems.items():
+                markdownStr += '| {0} | {1} | '.format(dataItem[0], dataItem[1])
+                for line in lines:
+                    markdownStr += self.linkLines(line[0], line[1])+", "
+                markdownStr = markdownStr[:-2]
+                markdownStr += ' |\n'
             markdownStr += '\n\n'
 
-        markdownStr += '## Full code:\n\n<details><summary>Show/Hide</summary>\n\n'
-        markdownStr += '~~~~sas\n\n'
-        markdownStr += SASProgram.rawProgram
-        markdownStr += '\n\n~~~~\n\n'
-        markdownStr += '</details>\n\n'
+        markdownStr += '## Full code:\n\n'
+        
+        markdownStr += '<script>window.rawCode='+json.dumps(SASProgram.rawProgram)+'</script>'
+        markdownStr += '<textarea id="code"></textarea>\n\n'
+        
         markdownStr += '## Properties\n\n'
         markdownStr += '| Meta | Property |\n| --- | --- |\n'
         markdownStr += '| **Author:** | |\n'
@@ -166,6 +173,12 @@ class SASProject(object):
             SASProgram.LastUpdated)
 
         return markdownStr
+
+    def linkLines(self, startLine, endLine):
+        if startLine==endLine:
+            return '<a class="lineJump" startLine={0} endLine={1}>*{0}*</a>'.format(startLine, endLine)
+        else:
+            return '<a class="lineJump" startLine={0} endLine={1}>*{0}-{1}*</a>'.format(startLine, endLine)
 
     def buildMacroIndex(self):
         markdownStr = ' # Macro index\n *Index of all macros discovered in the project folder*\n\n---\n'

@@ -10,7 +10,7 @@ class SASDataObjectParser(SASBaseObject):
 
         SASBaseObject.__init__(self)
 
-    def parseDataObjects(self, objectText):
+    def parseDataObjects(self, objectText, startLine=None, endLine=None):
         rawObjectList = self.splitDataObjects(objectText)
 
         objectList = []
@@ -31,6 +31,6 @@ class SASDataObjectParser(SASBaseObject):
             else:
                 condition = None
             if len(dataset) > 0:
-                objectList.append(SASDataObject(library, dataset, condition))
+                objectList.append(SASDataObject(library, dataset, condition, startLine, endLine))
 
         return objectList

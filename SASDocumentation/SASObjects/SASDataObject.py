@@ -5,11 +5,13 @@ from .SASBaseObject import SASBaseObject
 
 class SASDataObject(SASBaseObject):
 
-    def __init__(self, library, dataset, condition):
+    def __init__(self, library, dataset, condition, startLine=None, endLine=None):
 
         SASBaseObject.__init__(self)
 
         self.dataset = re.sub(r'\s', '', dataset)
+        self.startLine = startLine
+        self.endLine = endLine
 
         if library is None:
             self.library = 'work'
