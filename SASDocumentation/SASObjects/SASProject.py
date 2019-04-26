@@ -1,6 +1,6 @@
 import re
 import os
-
+import json
 
 from .SASProgram import SASProgram
 from ..SASAnalysis.SASFlowChart import SASFlowChart
@@ -159,7 +159,8 @@ class SASProject(object):
         markdownStr += '## Full code:\n\n'
         # markdownStr += '<details><summary>Show/Hide</summary>\n\n'
         
-        markdownStr += '<textarea id="code">\n\n~~~\n\n'+SASProgram.rawProgram+'\n\n~~~\n\n</textarea>\n\n'
+        markdownStr += '<script>window.rawCode='+json.dumps(SASProgram.rawProgram)+'</script>'
+        markdownStr += '<textarea id="code"></textarea>'
         
         # markdownStr += '</details>\n\n'
         markdownStr += '## Properties\n\n'

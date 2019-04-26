@@ -2,6 +2,7 @@ $(document).ready(function(){
     createNetworkGraph(window.flowChart);
 
     var textArea = $("#code");
+    textArea.val(window.rawCode);
     textArea.text(function(index, text){
         return strip(text);
     });
