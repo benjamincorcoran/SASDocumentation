@@ -1,26 +1,28 @@
-path.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
+
+.links {
+	stroke:"#aaa";
+	stroke-width:1px;
 }
 
-circle {
-  fill: #ccc;
-  stroke: #fff;
-  stroke-width: 1.5px;
+.nodes{
 }
 
-text {
-  fill: #000;
-  font: 10px sans-serif;
-  pointer-events: none;
+.labelNodes text{
+	fill: rgb(85, 85, 85); 
+	font-family: Arial; 
+	font-weight: bold;
+	font-size: 12px; 
 }
 
-.fullscreen {
-  z-index: 9999; 
-  width: 100%; 
-  height: 100%; 
-  position: fixed; 
-  top: 0; 
-  left: 0; 
+.labelLinks text{
+	fill: rgb(85, 85, 85); 
+	opacity: 0.5;
+	font-family: Arial; 
+	font-size: 10px; 
+}
+
+.legend {
+	fill: rgb(85, 85, 85); 
+	font-family: Arial; 
+	font-size: 12px; 
 }

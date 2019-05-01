@@ -120,8 +120,8 @@ def setup(app):
     app.add_javascript('js/documentationPage.js')
 
     app.add_stylesheet('css/d3Style.css')
-    app.add_javascript('js/d3DirectionalNetwork.js')
-    app.add_javascript('js/d3.v3.min.js')
+    app.add_javascript('js/directedNetwork.js')
+    app.add_javascript('js/d3.v5.js')
 
     app.add_stylesheet('css/codemirror.css')
     app.add_javascript('js/codemirror.js')

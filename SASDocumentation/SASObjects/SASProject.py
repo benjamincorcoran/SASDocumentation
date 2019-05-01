@@ -102,7 +102,7 @@ class SASProject(object):
         if FlowChart.countNodes() > 0:
             markdownStr += '## Program Struture\n\n'
             markdownStr += "<script>window.flowChart="+FlowChart.json+"</script>\n"
-            markdownStr += '<div id="dataNetwork"></div>\n\n'
+            markdownStr += '<div><svg id="flowChartViz"></svg></div>\n\n'
         if len(SASProgram.libnames['SAS']) + \
                 len(SASProgram.libnames['SQL']) > 0:
             markdownStr += '## Libraries\n\n'
