@@ -102,7 +102,7 @@ class SASProgram(SASBaseObject):
             
 
     def findLine(self,str):
-        start = re.findall("^[;\s\\\*\/]*([^\n]*)",str,re.IGNORECASE)[0]
+        start = re.findall("^[\s\\\*\/]*([^\n]*)",str,re.IGNORECASE)[0]
         prevLines = re.findall("^(.*)"+re.escape(start),self.rawProgram,re.DOTALL|re.IGNORECASE)
         if len(prevLines) == 0:
             print("Unable to find first line due to inline comment.")
