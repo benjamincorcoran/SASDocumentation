@@ -14,7 +14,7 @@ class SASDataObjectParser(SASBaseObject):
         rawObjectList = self.splitDataObjects(objectText)
 
         objectList = []
-
+        
         for dataObject in rawObjectList:
 
             library = dataObject[0]

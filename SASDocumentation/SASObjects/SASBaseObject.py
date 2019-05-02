@@ -88,6 +88,7 @@ class SASBaseObject(object):
             library = ''
             dataObject = ''
             macroLev = 0
+            blev = 0
             current = ''
             for c in obj:
                 if c == '&':
@@ -96,7 +97,13 @@ class SASBaseObject(object):
                 elif c == '.' and macroLev > 0:
                     macroLev -= 1
                     current += c
-                elif c == '.' and macroLev == 0:
+                elif c == '(':
+                    blev += 1
+                    current += c
+                elif c == ')':
+                    blev -= 1
+                    current += c
+                elif c == '.' and macroLev == 0 and blev == 0:
                     library = current
                     current = ''
                 else:
