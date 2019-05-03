@@ -11,6 +11,9 @@ class SASBaseObject(object):
             'commentBlock': re.compile(
                 r'\/\*.*?\*\/(?!\s*[\/\*])',
                 self.regexFlags),
+            'putStatement': re.compile(
+                r'%put.*?;',
+                self.regexFlags),
             'macro': re.compile(
                 r'(?:\/\*[^;]*\*\/\s*)?%macro.*?%mend',
                 self.regexFlags),
@@ -24,7 +27,7 @@ class SASBaseObject(object):
                 r"include ['\"].*?['\"]",
                 self.regexFlags),
             'datastep': re.compile(
-                r"(?:\s*|;\s*)data [^=].*?;.*?run;",
+                r"(?:\s*|;\s*)(data\s[^=].*?;.*?run;)",
                 self.regexFlags),
             'dataObject': re.compile(
                 r'\s*(.*?\(.*?[^(]*\))\s*;',
