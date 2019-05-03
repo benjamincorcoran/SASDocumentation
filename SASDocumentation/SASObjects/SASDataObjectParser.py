@@ -16,7 +16,6 @@ class SASDataObjectParser(SASBaseObject):
         objectList = []
         
         for dataObject in rawObjectList:
-
             library = dataObject[0]
             dataset = re.findall(
                 r'([^(]+)[.]*', dataObject[1], self.regexFlags)[0]
