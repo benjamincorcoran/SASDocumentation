@@ -1,17 +1,10 @@
-SASDocumentation package
-========================
-
-Subpackages
------------
-
 .. toctree::
 
     SASDocumentation.SASObjects
-
-Module contents
----------------
+    SASDocumentation.SASAnalysis
 
 .. automodule:: SASDocumentation
     :members:
     :undoc-members:
     :show-inheritance:
+

@@ -6,11 +6,17 @@
 Welcome to SASDocumentation's documentation!
 ============================================
 
+.. mdinclude:: ../../README.md
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Submodules:
 
-.. mdinclude:: ../../README.md
+   SASDocumentation
+
+
+
+   
 
 
 
