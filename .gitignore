@@ -2,5 +2,7 @@
 .vscode
 *.pyc
 __pycache__/
-_build/
+
 example/
+
+docs/build
