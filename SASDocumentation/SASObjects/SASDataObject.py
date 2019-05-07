@@ -7,7 +7,11 @@ class SASDataObject(SASBaseObject):
     '''
     SAS Data Object Class
 
-    Creates an object with the following properties
+    This object exists as a definition for a SASDataset. Not a 'Data' statement
+    but any reference to a dataset that exists in a piece of SAS Code. Including
+    any inline conditions and libraries.
+
+    Attributes:
 
         Library: Name of Library
         Dataset: Name of Dataset
@@ -15,9 +19,7 @@ class SASDataObject(SASBaseObject):
         StartLine (optional): The inital line in the parent code where this appears
         Endline (optional): The final line of the datastatement
 
-    This object exists as a definition for a SASDataset. Not a 'Data' statement
-    but any reference to a dataset that exists in a piece of SAS Code. Including
-    any inline conditions and libraries.
+
     '''
 
     def __init__(

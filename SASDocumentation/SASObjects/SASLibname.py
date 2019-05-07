@@ -8,7 +8,9 @@ class SASLibname(SASBaseObject):
     '''
     SAS Libname Object
 
-    Creates an object with the following properties
+    This object represents a SAS libname statement.
+
+    Attributes:
 
         name: Defined name of the library
         path: Path defined in the libname statement
@@ -17,7 +19,7 @@ class SASLibname(SASBaseObject):
         StartLine (optional): The inital line in the parent code where this appears
         Endline (optional): The final line of the datastatement
 
-    This object represents a SAS libname statement.
+   
     '''
 
     def __init__(self, rawStr, startLine):
@@ -49,7 +51,7 @@ class SASSQLLibname(SASBaseObject):
     '''
     SAS SQLLibname Object
 
-    Creates an object with the following properties
+    Attributes:
 
         name: Defined name of the library
         server: Hosted SQL server for library

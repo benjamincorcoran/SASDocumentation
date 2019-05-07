@@ -6,16 +6,17 @@ from .SASArgument import SASArgument
 class SASMacro(object):
     '''
     SAS Macro Class
+    
+    This class represents a SAS Macro function, primarly an attempt to
+    fit the SAS Macro into a python class/function documentation structure.
 
-    Creates an object with the following properties
+    Attributes:
 
         Name: Name of the Macro given
         Arguments: List of SASArgument Objects
         DocString: Documentation String for the argument.
         Help: Help statement if present in the macro
 
-    This class represents a SAS Macro function, primarly an attempt to
-    fit the SAS Macro into a python class/function documentation structure.
     '''
 
     def __init__(self, rawStr, startLine):

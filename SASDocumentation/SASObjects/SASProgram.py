@@ -14,7 +14,11 @@ class SASProgram(SASBaseObject):
     '''
     SAS Program Class
 
-    Creates an object with the following properties
+    This class represents an entire .sas program. Seperating out macros, datasteps and
+    procedures into predefined python objects. Included are several functions to read
+    different aspects of the code correctly.
+
+    Attributes:
 
         Name: Name of the SAS Program
         Filename: Filename of the SAS Program
@@ -34,9 +38,7 @@ class SASProgram(SASBaseObject):
         unCommentedCode: a version of the code with all comments/put
                          statements removed.
 
-    This class represents an entire .sas program. Seperating out macros, datasteps and
-    procedures into predefined python objects. Included are several functions to read
-    different aspects of the code correctly.
+
     '''
 
     def __init__(self, file):

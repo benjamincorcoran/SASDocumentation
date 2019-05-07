@@ -5,12 +5,15 @@ class SASBaseObject(object):
     '''
     SAS Base Object Class
 
-    This object exists as the base object for most SAS objects.
-    It contains regexFlags, SASRegexDict for identifying elements of
-    the SAS program, SASKeywords.
+    This object exists as the base object for most SAS objects 
+    and several functions for processing SAS program text in to 
+    SASObjects correctly.
 
-    And several functions for processing SAS program text in to SASObjects
-    correctly.
+
+    Attributes:
+        regexFlags: Global regex flags
+        SASRegexDict:  Identifies elements of the SAS program 
+        SASKeywords: List of SAS reserved keywords
 
     '''
 

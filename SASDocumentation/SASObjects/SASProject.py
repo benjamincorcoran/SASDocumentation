@@ -11,8 +11,15 @@ class SASProject(object):
     def __init__(self, projectPath):
         '''
         SAS Project Class
+        This class represents a SAS Project, or several pieces of SAS Code that have
+        been stored together. Given a root this class will search for all pieces of
+        .sas code and generate a SASProgram object for each. Appending that object and
+        its elements into this project class.
 
-        Creates an object with the following properties
+        This class also deals with the generation of SAS Program documentation into
+        markdown text, as well as creating a macro index.
+
+        Attributes:
 
             ProjectName: Name of the SAS Project
             ProjectPath: Path to the root of the Project
@@ -22,13 +29,7 @@ class SASProject(object):
             ProjectMacros: Dict of all Macros discovered in the project
             ProjectIncludes: Dict of all includes discovered in the project
 
-        This class represents a SAS Project, or several pieces of SAS Code that have
-        been stored together. Given a root this class will search for all pieces of
-        .sas code and generate a SASProgram object for each. Appending that object and
-        its elements into this project class.
 
-        This class also deals with the generation of SAS Program documentation into
-        markdown text, as well as creating a macro index.
         '''
 
         self.projectPath = projectPath

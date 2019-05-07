@@ -7,7 +7,10 @@ class SASDatastep(SASDataObjectParser):
     '''
     SAS Datastep Object
 
-    Creates an object with the following properties
+    This object represents an entire SAS Datastep. Each input and output being a SASDataObject
+    and such having the properties of a library, dataset name and condition where applicable
+
+    Attributes:
 
         Inputs: List of DataObjects that are inputs to this step
         Outputs: List of DataObjects that are outputs from this step
@@ -17,8 +20,6 @@ class SASDatastep(SASDataObjectParser):
         StartLine (optional): The inital line in the parent code where this appears
         Endline (optional): The final line of the datastatement
 
-    This object represents an entire SAS Datastep. Each input and output being a SASDataObject
-    and such having the properties of a library, dataset name and condition where applicable
     '''
 
     def __init__(self, rawStr, startLine):

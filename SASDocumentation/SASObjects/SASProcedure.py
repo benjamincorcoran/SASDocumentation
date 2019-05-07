@@ -8,7 +8,11 @@ class SASProcedure(SASDataObjectParser):
     '''
     SAS Procedure Class
 
-    Creates an object with the following properties
+    This class represents all SAS procedures, except PROC SQL. They are defined as a
+    list of inputs, outputs and a procedure type which is the word after proc in the
+    raw code.
+
+    Attributes:
 
         Inputs: List of DataObjects that are inputs to this step
         Outputs: List of DataObjects that are outputs from this step
@@ -18,9 +22,6 @@ class SASProcedure(SASDataObjectParser):
         Endline: The final line of the datastatement
 
 
-    This class represents all SAS procedures, except PROC SQL. They are defined as a
-    list of inputs, outputs and a procedure type which is the word after proc in the
-    raw code.
     '''
 
     def __init__(self, rawStr, startLine):
@@ -74,7 +75,10 @@ class SASProcSQL(SASDataObjectParser):
     '''
     SAS Proc SQL Class
 
-    Creates an object with the following properties
+    This class represents the PROC SQL statment. It is largely identical to the
+    SASProcedure class except for handling the rawInput and rawOutputs from the code.
+
+    Attributes:
 
         Inputs: List of DataObjects that are inputs to this step
         Outputs: List of DataObjects that are outputs from this step
@@ -82,10 +86,6 @@ class SASProcSQL(SASDataObjectParser):
 
         StartLine: The inital line in the parent code where this appears
         Endline: The final line of the datastatement
-
-
-    This class represents the PROC SQL statment. It is largely identical to the
-    SASProcedure class except for handling the rawInput and rawOutputs from the code.
     '''
 
     def __init__(self, rawStr, startLine):
