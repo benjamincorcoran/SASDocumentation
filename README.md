@@ -1,6 +1,8 @@
 
 
-#  <img src="https://static.vecteezy.com/system/resources/previews/000/422/489/large_2x/vector-documents-icon.jpg" width=100 title="SASDocumentationLogo" alt="SASDocumentationLogo"></a> SAS Documentation
+<img src="https://static.vecteezy.com/system/resources/previews/000/422/489/large_2x/vector-documents-icon.jpg" width=100 title="SASDocumentationLogo" alt="SASDocumentationLogo"> 
+
+# SAS Documentation
 
 *A small python library to generate rich documentation from SAS code*
 
@@ -11,13 +13,12 @@
 
 
 
-
 ## Installation
 
 
 ### Clone
 
-- Clone this repo to your local machine using 'https://github.com/benjamincorcoran/SASDocumentation'
+- Clone this repo to your local machine using `https://github.com/benjamincorcoran/SASDocumentation`
 
 ### Setup
 
@@ -43,10 +44,11 @@ TBW
 
 ## Documentation 
 
-TBW
+View complete documentation on [ReadTheDocs.io](https://sasdocumentation.readthedocs.io/en/latest/index.html) 
 
 ## Tests 
 
+TBW
 
 ## Contributing
 
@@ -61,7 +63,6 @@ TBW
 Ben Corcoran - 2019
 
 ---
-
 
 ## License
 
