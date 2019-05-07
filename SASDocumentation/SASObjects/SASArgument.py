@@ -2,6 +2,7 @@ import re
 
 from .SASBaseObject import SASBaseObject
 
+
 class SASArgument(SASBaseObject):
     '''
     SAS Argument Class
@@ -13,7 +14,7 @@ class SASArgument(SASBaseObject):
         DefaultValue: If type is optional then the default value
         DocString: Documentation String for the argument.
 
-    This object exists as a definition for a "argument". Currently used to define 
+    This object exists as a definition for a "argument". Currently used to define
     arguments parsed from a SAS Macro. It could be expanded to work with proc fcmp
     allowing for analysis of custom function arguements.
     '''

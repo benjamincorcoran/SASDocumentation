@@ -22,7 +22,7 @@ class SASInclude(object):
         reFlags = re.DOTALL | re.IGNORECASE
 
         self.startLine = startLine
-        self.endLine = rawStr.count('\n')+startLine
+        self.endLine = rawStr.count('\n') + startLine
 
         self._path = re.findall(
             r"include ['\"](.*?)['\"]", rawStr, flags=reFlags)[0]

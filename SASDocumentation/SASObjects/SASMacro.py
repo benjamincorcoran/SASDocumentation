@@ -14,7 +14,7 @@ class SASMacro(object):
         DocString: Documentation String for the argument.
         Help: Help statement if present in the macro
 
-    This class represents a SAS Macro function, primarly an attempt to 
+    This class represents a SAS Macro function, primarly an attempt to
     fit the SAS Macro into a python class/function documentation structure.
     '''
 
@@ -28,7 +28,7 @@ class SASMacro(object):
         self.name = re.findall(r'%macro ([^\(;]*)', head, reFlags)[0]
 
         self.startLine = startLine
-        self.endLine = rawStr.count('\n')+startLine
+        self.endLine = rawStr.count('\n') + startLine
 
         self.arguments = []
         argsLine = re.findall(r'\((.*\))', head, reFlags)

@@ -17,10 +17,10 @@ class SASProcedure(SASDataObjectParser):
         StartLine: The inital line in the parent code where this appears
         Endline: The final line of the datastatement
 
-    
-    This class represents all SAS procedures, except PROC SQL. They are defined as a 
-    list of inputs, outputs and a procedure type which is the word after proc in the 
-    raw code. 
+
+    This class represents all SAS procedures, except PROC SQL. They are defined as a
+    list of inputs, outputs and a procedure type which is the word after proc in the
+    raw code.
     '''
 
     def __init__(self, rawStr, startLine):
@@ -28,7 +28,7 @@ class SASProcedure(SASDataObjectParser):
         SASDataObjectParser.__init__(self)
 
         self.startLine = startLine
-        self.endLine = rawStr.count('\n')+startLine
+        self.endLine = rawStr.count('\n') + startLine
 
         self.rawStr = rawStr
         self.procedure = re.findall(
@@ -46,15 +46,23 @@ class SASProcedure(SASDataObjectParser):
 
         if len(rawInputs) > 0:
             for input in rawInputs:
-                self.inputs.append(self.parseDataObjects(input, startLine=self.startLine, endLine=self.endLine))
+                self.inputs.append(
+                    self.parseDataObjects(
+                        input,
+                        startLine=self.startLine,
+                        endLine=self.endLine))
 
         if len(rawOutputs) > 0:
             for output in rawOutputs:
-                self.outputs.append(self.parseDataObjects(output, startLine=self.startLine, endLine=self.endLine))
+                self.outputs.append(
+                    self.parseDataObjects(
+                        output,
+                        startLine=self.startLine,
+                        endLine=self.endLine))
 
         self.inputs = list(chain(*self.inputs))
         self.outputs = list(chain(*self.outputs))
-        
+
     # def __str__(self):
     #     return ','.join([_.__str__ for _ in self.outputs])
 
@@ -75,16 +83,17 @@ class SASProcSQL(SASDataObjectParser):
         StartLine: The inital line in the parent code where this appears
         Endline: The final line of the datastatement
 
-    
-    This class represents the PROC SQL statment. It is largely identical to the 
-    SASProcedure class except for handling the rawInput and rawOutputs from the code. 
+
+    This class represents the PROC SQL statment. It is largely identical to the
+    SASProcedure class except for handling the rawInput and rawOutputs from the code.
     '''
+
     def __init__(self, rawStr, startLine):
 
         SASDataObjectParser.__init__(self)
 
         self.startLine = startLine
-        self.endLine = rawStr.count('\n')+startLine
+        self.endLine = rawStr.count('\n') + startLine
 
         self.rawStr = rawStr
         self.procedure = re.findall(
@@ -100,11 +109,19 @@ class SASProcSQL(SASDataObjectParser):
 
         if len(rawInputs) > 0:
             for input in rawInputs:
-                self.inputs.append(self.parseDataObjects(input, startLine=self.startLine, endLine=self.endLine))
+                self.inputs.append(
+                    self.parseDataObjects(
+                        input,
+                        startLine=self.startLine,
+                        endLine=self.endLine))
 
         if len(rawOutputs) > 0:
             for output in rawOutputs:
-                self.outputs.append(self.parseDataObjects(output, startLine=self.startLine, endLine=self.endLine))
+                self.outputs.append(
+                    self.parseDataObjects(
+                        output,
+                        startLine=self.startLine,
+                        endLine=self.endLine))
 
         self.inputs = list(chain(*self.inputs))
         self.outputs = list(chain(*self.outputs))

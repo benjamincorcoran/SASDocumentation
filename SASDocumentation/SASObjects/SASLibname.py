@@ -17,14 +17,14 @@ class SASLibname(SASBaseObject):
         StartLine (optional): The inital line in the parent code where this appears
         Endline (optional): The final line of the datastatement
 
-    This object represents a SAS libname statement. 
+    This object represents a SAS libname statement.
     '''
 
     def __init__(self, rawStr, startLine):
         SASBaseObject.__init__(self)
 
         self.startLine = startLine
-        self.endLine = rawStr.count('\n')+startLine
+        self.endLine = rawStr.count('\n') + startLine
 
         self.name = re.findall(
             r"libname (.{0,8}) ['\"\(][^'\"\(\)]*?['\"\)]\s*;",
@@ -63,12 +63,11 @@ class SASSQLLibname(SASBaseObject):
     This object represents a SAS SQLlibname statement. This is pulled from the %SQLLIB macro only.
     '''
 
-
     def __init__(self, rawStr, startLine):
         SASBaseObject.__init__(self)
 
         self.startLine = startLine
-        self.endLine = rawStr.count('\n')+startLine
+        self.endLine = rawStr.count('\n') + startLine
 
         self.name = re.findall('(.*?)(?=,|$)', rawStr,
                                flags=self.regexFlags)[0]
