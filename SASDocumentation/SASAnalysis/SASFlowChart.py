@@ -12,7 +12,20 @@ from ..SASObjects.SASProgram import SASProgram
 
 
 class SASFlowChart(object):
+    '''
+    SAS FlowChart Class
 
+    This class creates a network object based on a SAS program. Isolating data inputs, outputs 
+    into a force directed network (displayed by d3.js in html build).
+
+    Attributes:
+
+        SASProgram: SASProgram object used to generate network
+        G: networkx DiGraph object 
+        json: String dump of nodes in G DiGraph object
+        
+
+    '''
     def __init__(self, SASProgram):
 
         self.G = nx.DiGraph()
@@ -32,6 +45,13 @@ class SASFlowChart(object):
         self.json = json.dumps(json_graph.node_link_data(self.G))
 
     def addDataNodes(self, SASObject):
+        '''
+        Loop over SASObject and add any inputs or outputs into the DiGraph
+
+        Parameters:
+            SASObject (list): A list of SASObjects that contain SASDataObjects
+
+        '''
         for obj in SASObject:
             for input in obj.inputs:
                 inputNode = input.library.upper() + '.' + input.dataset.upper()
@@ -57,4 +77,11 @@ class SASFlowChart(object):
                                     self.G.add_edge(inputNode, outputNode)
 
     def countNodes(self):
+        '''
+        Return count of nodes in G the DiGraph object
+
+        Returns:
+            int : Count of nodes in G the DiGraph object
+
+        '''
         return len(list(self.G.nodes()))
