@@ -13,6 +13,9 @@ class SASMacro(object):
         Arguments: List of SASArgument Objects
         DocString: Documentation String for the argument.
         Help: Help statement if present in the macro
+
+    This class represents a SAS Macro function, primarly an attempt to 
+    fit the SAS Macro into a python class/function documentation structure.
     '''
 
     def __init__(self, rawStr, startLine):
@@ -46,15 +49,42 @@ class SASMacro(object):
             self.help = ''
 
     def getArgs(self, argStr):
+        '''
+        Find all arguements in the macro definition line.
+
+        Parameters:
+            argStr - String containing defined arguments
+
+        Returns:
+            list - List of SASArgument Objects
+        '''
         args = re.findall(r'(.*?(?:\/\*.*?\*\/)?)(?:\s*,\s*|\s*\))', argStr)
         for arg in args:
             self.arguments.append(SASArgument(arg))
 
     def getDocString(self, docString):
+        '''
+        Clean the doc string defintion of the macro
+
+        Parameters:
+            docString - String containing macro docstring
+
+        Returns:
+            list - Docstring with comment delimiters removed
+        '''
         docString = re.sub(r'\/|\*|\t| {2,}', '', docString)
         self.docString = docString
 
     def getHelp(self, helpString):
+        '''
+        Clean the help string defintion of the macro
+
+        Parameters:
+            helpString - String containing macro helpString
+
+        Returns:
+            list - Docstring with %put statments removed
+        '''
         helpString = '\n'.join(
             re.findall(
                 '%put(.*?);',

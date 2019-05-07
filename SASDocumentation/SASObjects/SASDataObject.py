@@ -9,7 +9,7 @@ class SASDataObject(SASBaseObject):
 
     Creates an object with the following properties
 
-        Libarary: Name of Library
+        Library: Name of Library
         Dataset: Name of Dataset
         Condition: Any inline conditions applied to the dataset
         StartLine (optional): The inital line in the parent code where this appears

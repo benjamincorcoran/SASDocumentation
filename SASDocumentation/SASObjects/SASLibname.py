@@ -5,6 +5,20 @@ from .SASBaseObject import SASBaseObject
 
 
 class SASLibname(SASBaseObject):
+    '''
+    SAS Libname Object
+
+    Creates an object with the following properties
+
+        name: Defined name of the library
+        path: Path defined in the libname statement
+        posixPath: Web-friendly version of path
+
+        StartLine (optional): The inital line in the parent code where this appears
+        Endline (optional): The final line of the datastatement
+
+    This object represents a SAS libname statement. 
+    '''
 
     def __init__(self, rawStr, startLine):
         SASBaseObject.__init__(self)
@@ -32,6 +46,23 @@ class SASLibname(SASBaseObject):
 
 
 class SASSQLLibname(SASBaseObject):
+    '''
+    SAS SQLLibname Object
+
+    Creates an object with the following properties
+
+        name: Defined name of the library
+        server: Hosted SQL server for library
+        database: Database on the SQL server for library
+        schema: Defined schema for the library (default: dbo)
+
+
+        StartLine (optional): The inital line in the parent code where this appears
+        Endline (optional): The final line of the datastatement
+
+    This object represents a SAS SQLlibname statement. This is pulled from the %SQLLIB macro only.
+    '''
+
 
     def __init__(self, rawStr, startLine):
         SASBaseObject.__init__(self)

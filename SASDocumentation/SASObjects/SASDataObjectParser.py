@@ -5,12 +5,27 @@ from .SASDataObject import SASDataObject
 
 
 class SASDataObjectParser(SASBaseObject):
+    '''
+    SAS Data Object Parser Class
 
+    Factory for creating DataObjects from text string
+    '''
     def __init__(self):
-
         SASBaseObject.__init__(self)
 
     def parseDataObjects(self, objectText, startLine=None, endLine=None):
+        '''
+        Takes object text and parses out Data Objects
+
+        Parameters:
+            objectText - Raw text with DataObject defined within
+            startLine (optional) - Starting line of specified text
+            endLine (optional) - Ending line of specified text
+       
+        Returns:
+            list - List of validated SASDataObjects found in objectText
+        '''  
+
         rawObjectList = self.splitDataObjects(objectText)
 
         objectList = []
