@@ -16,7 +16,6 @@ INSTALL_REQUIRES = [
     'sphinx',
     'recommonmark',
     'sphinx-markdown-tables',
-    'matplotlib',
     'numpy',
     'networkx',
     'm2r']
