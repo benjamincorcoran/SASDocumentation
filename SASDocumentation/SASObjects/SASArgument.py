@@ -1,16 +1,22 @@
 import re
 
+from .SASBaseObject import SASBaseObject
 
-class SASArgument(object):
+
+class SASArgument(SASBaseObject):
     '''
     SAS Argument Class
 
-    Creates an object with the following properties
+    This object exists as a definition for a "argument". Currently used to define
+    arguments parsed from a SAS Macro. It could be expanded to work with proc fcmp
+    allowing for analysis of custom function arguements.
 
+    Attributes:
         Name: Name of the Argument given
         Type: Required or Optional
         DefaultValue: If type is optional then the default value
         DocString: Documentation String for the argument.
+
     '''
 
     def __init__(self, rawStr):

@@ -4,8 +4,31 @@ from .SASBaseObject import SASBaseObject
 
 
 class SASDataObject(SASBaseObject):
+    '''
+    SAS Data Object Class
 
-    def __init__(self, library, dataset, condition, startLine=None, endLine=None):
+    This object exists as a definition for a SASDataset. Not a 'Data' statement
+    but any reference to a dataset that exists in a piece of SAS Code. Including
+    any inline conditions and libraries.
+
+    Attributes:
+
+        Library: Name of Library
+        Dataset: Name of Dataset
+        Condition: Any inline conditions applied to the dataset
+        StartLine (optional): The inital line in the parent code where this appears
+        Endline (optional): The final line of the datastatement
+
+
+    '''
+
+    def __init__(
+            self,
+            library,
+            dataset,
+            condition,
+            startLine=None,
+            endLine=None):
 
         SASBaseObject.__init__(self)
 
@@ -26,6 +49,12 @@ class SASDataObject(SASBaseObject):
         self.id = '{}.{}'.format(self.library, self.dataset)
 
     def isNull(self):
+        '''
+        Check if the self is a _null_ dataset
+
+        Returns:
+            bool - True if _null_
+        '''
         if len(re.findall(r'_null_', self.dataset, self.regexFlags)) > 0:
             return True
         else:

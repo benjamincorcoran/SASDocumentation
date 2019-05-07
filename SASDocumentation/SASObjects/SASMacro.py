@@ -6,13 +6,17 @@ from .SASArgument import SASArgument
 class SASMacro(object):
     '''
     SAS Macro Class
+    
+    This class represents a SAS Macro function, primarly an attempt to
+    fit the SAS Macro into a python class/function documentation structure.
 
-    Creates an object with the following properties
+    Attributes:
 
         Name: Name of the Macro given
         Arguments: List of SASArgument Objects
         DocString: Documentation String for the argument.
         Help: Help statement if present in the macro
+
     '''
 
     def __init__(self, rawStr, startLine):
@@ -25,7 +29,7 @@ class SASMacro(object):
         self.name = re.findall(r'%macro ([^\(;]*)', head, reFlags)[0]
 
         self.startLine = startLine
-        self.endLine = rawStr.count('\n')+startLine
+        self.endLine = rawStr.count('\n') + startLine
 
         self.arguments = []
         argsLine = re.findall(r'\((.*\))', head, reFlags)
@@ -46,15 +50,42 @@ class SASMacro(object):
             self.help = ''
 
     def getArgs(self, argStr):
+        '''
+        Find all arguements in the macro definition line.
+
+        Parameters:
+            argStr - String containing defined arguments
+
+        Returns:
+            list - List of SASArgument Objects
+        '''
         args = re.findall(r'(.*?(?:\/\*.*?\*\/)?)(?:\s*,\s*|\s*\))', argStr)
         for arg in args:
             self.arguments.append(SASArgument(arg))
 
     def getDocString(self, docString):
+        '''
+        Clean the doc string defintion of the macro
+
+        Parameters:
+            docString - String containing macro docstring
+
+        Returns:
+            list - Docstring with comment delimiters removed
+        '''
         docString = re.sub(r'\/|\*|\t| {2,}', '', docString)
         self.docString = docString
 
     def getHelp(self, helpString):
+        '''
+        Clean the help string defintion of the macro
+
+        Parameters:
+            helpString - String containing macro helpString
+
+        Returns:
+            list - Docstring with %put statments removed
+        '''
         helpString = '\n'.join(
             re.findall(
                 '%put(.*?);',

@@ -2,6 +2,20 @@ import re
 
 
 class SASBaseObject(object):
+    '''
+    SAS Base Object Class
+
+    This object exists as the base object for most SAS objects 
+    and several functions for processing SAS program text in to 
+    SASObjects correctly.
+
+
+    Attributes:
+        regexFlags: Global regex flags
+        SASRegexDict:  Identifies elements of the SAS program 
+        SASKeywords: List of SAS reserved keywords
+
+    '''
 
     def __init__(self):
 
@@ -55,6 +69,15 @@ class SASBaseObject(object):
             'outfile']
 
     def splitDataObjects(self, str):
+        '''
+        Splits a string into seperate data objects ignoring macro variables and brackets
+
+        Parameters:
+            str - String containing one more data objects
+
+        Returns:
+            list - Containing seperated data objects
+        '''
         objects = []
         current = ''
         blev = 0
@@ -117,6 +140,15 @@ class SASBaseObject(object):
         return libSplitObjects
 
     def validateSplitDataObjects(self, obj):
+        '''
+        Validates a data object against SASKeywords and commonsense
+
+        Parameters:
+            DataObject - Data object to be validated
+
+        Returns:
+            Bool - Data object is valid or not.
+        '''
         if not len(re.sub(r'\s', '', obj)) > 0:
             return False
         if len(re.findall(r'^[^\(]*=[^\)]*$', obj, self.regexFlags)) > 0:
@@ -133,12 +165,31 @@ class SASBaseObject(object):
         return True
 
     def parse(self, SASObject, str):
+        '''
+        Parses passed string for specified object from SASRegexDict
+
+        Parameters:
+            SASObjectName - Str name of SAS Object to be parsed key for SASRegexDict
+            str - String of text to be parsed
+
+        Returns:
+            List - Returns list of parsed strings
+        '''
         if SASObject in self.SASRegexDict.keys():
             return re.findall(self.SASRegexDict[SASObject], str)
         else:
             raise TypeError('SAS Object not found int SASRegexDict')
 
     def parseDataObjects(self, objectText):
+        '''
+        Parses Data Objects Strings into SASDataObjects grabbing library.
+
+        Parameters:
+            ObjectText - String defintion of data object.
+
+        Returns:
+            SASDataObject
+        '''
         rawObjectList = self.splitDataObjects(objectText)
 
         objectList = []

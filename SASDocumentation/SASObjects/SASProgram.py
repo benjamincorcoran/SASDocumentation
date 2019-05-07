@@ -14,15 +14,31 @@ class SASProgram(SASBaseObject):
     '''
     SAS Program Class
 
-    Creates an object with the following properties
+    This class represents an entire .sas program. Seperating out macros, datasteps and
+    procedures into predefined python objects. Included are several functions to read
+    different aspects of the code correctly.
+
+    Attributes:
 
         Name: Name of the SAS Program
-        Filename:
-        FilePath:
-        LastUpdated:
-        Macros:
-        Arguments: List of SASArgument Objects
-        DocString: Documentation String for the argument.
+        Filename: Filename of the SAS Program
+        FilePath: Absolute file path of the SAS Program
+        LastUpdated: Current time
+        FileSize: Size of SAS Programfile
+        Macros: List of SAS Macros
+
+        Libnames: Two lists of defined SAS and SQL libnames
+        Datasteps: List of all datasteps found the in code
+        Procedures: list of all procedure found in the code
+
+        Inputs: List of all inputs in the code
+        Outputs: List of all outputs in the code
+
+        rawComments: a list of all comment blocks within the code
+        unCommentedCode: a version of the code with all comments/put
+                         statements removed.
+
+
     '''
 
     def __init__(self, file):
@@ -92,53 +108,124 @@ class SASProgram(SASBaseObject):
         self.getUniqueDataObjects()
 
     def getUniqueDataObjects(self):
+        '''
+        Create a list of unique data items based on name and library
+        and a list of tuples denoting the lines where they occur.
+
+        Returns:
+            dict - DataItem library,dataset tupple -> linestart,lineend tupple list
+        '''
         self.uniqueDataItems = {}
         for ds in self.inputs + self.outputs:
-            dsKey = (ds.library.upper(),ds.dataset.upper())
+            dsKey = (ds.library.upper(), ds.dataset.upper())
             if dsKey in self.uniqueDataItems:
-                self.uniqueDataItems[dsKey].append((ds.startLine,ds.endLine))
+                self.uniqueDataItems[dsKey].append((ds.startLine, ds.endLine))
             else:
-                self.uniqueDataItems[dsKey]=[(ds.startLine,ds.endLine)]
+                self.uniqueDataItems[dsKey] = [(ds.startLine, ds.endLine)]
         for key, linepairs in self.uniqueDataItems.items():
-            self.uniqueDataItems[key]=sorted(list(set(linepairs)),key=lambda x:x[0])
-            
+            self.uniqueDataItems[key] = sorted(
+                list(set(linepairs)), key=lambda x: x[0])
 
-    def findLine(self,str):
-        start = re.findall("^[\s\\\*\/]*([^\n]*)",str,re.IGNORECASE)[0]
-        prevLines = re.findall("^(.*)"+re.escape(start),self.rawProgram,re.DOTALL|re.IGNORECASE)
+    def findLine(self, str):
+        '''
+        Find the line number of a given string.
+        Parameters:
+            str - String to search for in the code
+
+        Returns:
+            int - Line number for string
+        '''
+        start = re.findall(r"^[\s\\\*\/]*([^\n]*)", str, re.IGNORECASE)[0]
+        prevLines = re.findall(
+            "^(.*)" + re.escape(start),
+            self.rawProgram,
+            re.DOTALL | re.IGNORECASE)
         if len(prevLines) == 0:
             print("Unable to find first line due to inline comment.")
             return 0
         else:
-            return re.findall("^(.*)"+re.escape(start),self.rawProgram,re.DOTALL|re.IGNORECASE)[0].count('\n')+1
+            return re.findall(
+                "^(.*)" + re.escape(start),
+                self.rawProgram,
+                re.DOTALL | re.IGNORECASE)[0].count('\n') + 1
 
     def readMacros(self, rawMacros):
+        '''
+        Read and process list of rawStrings into Objects
+
+        Returns:
+            list - List of Objects
+        '''
         for macroStr in rawMacros:
-            self.macros.append(SASMacro(macroStr,self.findLine(macroStr)))
+            self.macros.append(SASMacro(macroStr, self.findLine(macroStr)))
 
     def readLibnames(self, rawLibnames, libType):
+        '''
+        Read and process list of rawStrings into Objects
+
+        Returns:
+            list - List of Objects
+        '''
         for libnameStr in rawLibnames:
             if libType == 'SAS':
-                self.libnames['SAS'].append(SASLibname(libnameStr,self.findLine(libnameStr)))
+                self.libnames['SAS'].append(SASLibname(
+                    libnameStr, self.findLine(libnameStr)))
             elif libType == 'SQL':
-                self.libnames['SQL'].append(SASSQLLibname(libnameStr,self.findLine(libnameStr)))
+                self.libnames['SQL'].append(SASSQLLibname(
+                    libnameStr, self.findLine(libnameStr)))
 
     def readIncludes(self, rawIncludes):
+        '''
+        Read and process list of rawStrings into Objects
+
+        Returns:
+            list - List of Objects
+        '''
         for includeStr in rawIncludes:
-            self.includes.append(SASInclude(includeStr,self.findLine(includeStr)))
+            self.includes.append(
+                SASInclude(
+                    includeStr,
+                    self.findLine(includeStr)))
 
     def readDatasteps(self, rawDatasteps):
+        '''
+        Read and process list of rawStrings into Objects
+
+        Returns:
+            list - List of Objects
+        '''
         for datastepStr in rawDatasteps:
-            self.datasteps.append(SASDatastep(datastepStr,self.findLine(datastepStr)))
+            self.datasteps.append(
+                SASDatastep(
+                    datastepStr,
+                    self.findLine(datastepStr)))
 
     def readProcedures(self, rawProcedures):
+        '''
+        Read and process list of rawStrings into Objects
+
+        Returns:
+            list - List of Objects
+        '''
         for procedureStr in rawProcedures:
             if len(re.findall('proc sql', procedureStr, self.regexFlags)) > 0:
-                self.procedures.append(SASProcSQL(procedureStr,self.findLine(procedureStr)))
+                self.procedures.append(
+                    SASProcSQL(
+                        procedureStr,
+                        self.findLine(procedureStr)))
             else:
-                self.procedures.append(SASProcedure(procedureStr,self.findLine(procedureStr)))
+                self.procedures.append(
+                    SASProcedure(
+                        procedureStr,
+                        self.findLine(procedureStr)))
 
     def getInputs(self):
+        '''
+        Find all input objects from datasteps and procedures
+
+        Returns:
+            list - List of input objects
+        '''
         for datastep in self.datasteps:
             for input in datastep.inputs:
                 self.inputs.append(input)
@@ -147,6 +234,12 @@ class SASProgram(SASBaseObject):
                 self.inputs.append(input)
 
     def getOutputs(self):
+        '''
+        Find all output objects from datasteps and procedures
+
+        Returns:
+            list - List of output objects
+        '''
         for datastep in self.datasteps:
             for output in datastep.outputs:
                 self.outputs.append(output)
