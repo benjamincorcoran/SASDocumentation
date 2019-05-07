@@ -1,11 +1,6 @@
 SASAnalysis package
 ===================
 
-.. automodule:: SASDocumentation.SASAnalysis
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 SASFlowChart
 ------------
 
