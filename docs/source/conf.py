@@ -13,9 +13,9 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('./SASDocumentation'))
-sys.path.insert(0, os.path.abspath('./SASDocumentation/SASAnalysis'))
-sys.path.insert(0, os.path.abspath('./SASDocumentation/SASObjects'))
+sys.path.insert(0, os.path.abspath('../SASDocumentation'))
+sys.path.insert(0, os.path.abspath('../SASDocumentation/SASAnalysis'))
+sys.path.insert(0, os.path.abspath('../SASDocumentation/SASObjects'))
 
 
 # -- Project information -----------------------------------------------------
