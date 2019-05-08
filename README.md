@@ -10,7 +10,7 @@
 [![Follow](https://img.shields.io/github/followers/benjamincorcoran.svg?label=Follow&style=plastic)](https://GitHub.com/benjamincorcoran/)
 [![Commits](https://img.shields.io/github/commit-activity/y/benjamincorcoran/SASDocumentation.svg)](https://GitHub.com/benjamincorcoran/)
 [![Commits](https://img.shields.io/github/last-commit/benjamincorcoran/SASDocumentation.svg)](https://GitHub.com/benjamincorcoran/)
-
+[![Documentation Status](https://readthedocs.org/projects/sasdocumentation/badge/?version=latest)](https://sasdocumentation.readthedocs.io/en/latest/?badge=latest)
 
 
 ## Installation
