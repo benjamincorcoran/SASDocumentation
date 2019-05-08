@@ -2,8 +2,6 @@ import random
 
 import networkx as nx
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 
 import json
 from networkx.readwrite import json_graph
