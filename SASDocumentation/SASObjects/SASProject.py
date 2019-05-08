@@ -76,10 +76,10 @@ class SASProject(object):
 
         Parameters:
             outPath: Root outpath for documentation, these files are written to
-                     outpath/source/code
+                     outpath/code
         '''
 
-        self.outPath = os.path.join(outPath, 'source', 'code')
+        self.outPath = os.path.join(outPath,'source', 'code')
         if not os.path.exists(self.outPath):
             os.makedirs(self.outPath)
 
