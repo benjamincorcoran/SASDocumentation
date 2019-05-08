@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 
 def readme():
@@ -7,17 +7,15 @@ def readme():
 
 
 NAME = 'SASDocumentation'
-VERSION = '0.1dev'
+VERSION = '1.0.dev0'
 DESCRIPTION = 'A tool for analysising and documenting SAS code.'
 LONG_DESCRIPTION = readme()
 AUTHOR = 'Ben Corcoran'
 
-PACKAGES = ['SASDocumentation']
 INSTALL_REQUIRES = [
     'sphinx',
     'recommonmark',
     'sphinx-markdown-tables',
-    'matplotlib',
     'numpy',
     'networkx',
     'm2r']
@@ -28,7 +26,7 @@ setup(name=NAME,
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       author=AUTHOR,
-      packages=PACKAGES,
+      packages=find_packages(),
       install_requires=INSTALL_REQUIRES,
       include_package_data=True,
       zip_safe=False)

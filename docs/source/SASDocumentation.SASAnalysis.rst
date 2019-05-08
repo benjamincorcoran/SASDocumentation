@@ -1,5 +1,5 @@
-SASAnalysis package
-===================
+SASAnalysis
+===========
 
 SASFlowChart
 ------------

@@ -1,15 +1,19 @@
 
 .. mdinclude:: ../../README.md
 
+
+.. toctree::
+   :maxdepth: 4
+   
+   readme
+
 .. toctree::
    :maxdepth: 2
    :caption: Submodules:
 
-   SASDocumentation
-
-
-
-   
+   SASDocumentation.SASObjects
+   SASDocumentation.SASAnalysis
+  
 
 
 

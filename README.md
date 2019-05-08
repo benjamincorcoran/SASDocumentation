@@ -1,5 +1,3 @@
-
-
 <img src="https://static.vecteezy.com/system/resources/previews/000/422/489/large_2x/vector-documents-icon.jpg" width=100 title="SASDocumentationLogo" alt="SASDocumentationLogo"> 
 
 # SAS Documentation
@@ -10,7 +8,7 @@
 [![Follow](https://img.shields.io/github/followers/benjamincorcoran.svg?label=Follow&style=plastic)](https://GitHub.com/benjamincorcoran/)
 [![Commits](https://img.shields.io/github/commit-activity/y/benjamincorcoran/SASDocumentation.svg)](https://GitHub.com/benjamincorcoran/)
 [![Commits](https://img.shields.io/github/last-commit/benjamincorcoran/SASDocumentation.svg)](https://GitHub.com/benjamincorcoran/)
-
+[![Documentation Status](https://readthedocs.org/projects/sasdocumentation/badge/?version=latest)](https://sasdocumentation.readthedocs.io/en/latest/?badge=latest)
 
 
 ## Installation
@@ -54,18 +52,14 @@ TBW
 
 1. Clone this repo to your local machine using `https://github.com/benjamincorcoran/SASDocumentation.git`
 
-2. Create a new pull request using <a href="https://github.com/benjamincorcoran/SASDocumentation/compare/" target="_blank">`https://github.com/benjamincorcoran/SASDocumentation/compare/`</a>.
+2. Create a new pull request using `https://github.com/benjamincorcoran/SASDocumentation/compare/`.
 
----
 
 ## Contributors
 
 Ben Corcoran - 2019
 
----
 
 ## License
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-- **[MIT license](http://opensource.org/licenses/mit-license.php)**
