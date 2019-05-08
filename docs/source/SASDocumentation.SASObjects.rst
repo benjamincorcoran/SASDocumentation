@@ -1,89 +1,89 @@
-SASObjects package
-==================
+SASObjects
+==========
 
 
-SASArgument module
-------------------
+SASArgument
+-----------
 
 .. automodule:: SASDocumentation.SASObjects.SASArgument
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASBaseObject module
---------------------
+SASBaseObject
+-------------
 
 .. automodule:: SASDocumentation.SASObjects.SASBaseObject
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASDataObject module
---------------------
+SASDataObject
+-------------
 
 .. automodule:: SASDocumentation.SASObjects.SASDataObject
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASDataObjectParser module
---------------------------
+SASDataObjectParser
+-------------------
 
 .. automodule:: SASDocumentation.SASObjects.SASDataObjectParser
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASDatastep module
-------------------
+SASDatastep
+-----------
 
 .. automodule:: SASDocumentation.SASObjects.SASDatastep
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASInclude module
------------------
+SASInclude
+----------
 
 .. automodule:: SASDocumentation.SASObjects.SASInclude
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASLibname module
------------------
+SASLibname
+----------
 
 .. automodule:: SASDocumentation.SASObjects.SASLibname
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASMacro module
----------------
+SASMacro
+--------
 
 .. automodule:: SASDocumentation.SASObjects.SASMacro
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASProcedure module
--------------------
+SASProcedure
+------------
 
 .. automodule:: SASDocumentation.SASObjects.SASProcedure
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASProgram module
------------------
+SASProgram
+----------
 
 .. automodule:: SASDocumentation.SASObjects.SASProgram
     :members:
     :undoc-members:
     :show-inheritance:
 
-SASProject module
------------------
+SASProject
+----------
 
 .. automodule:: SASDocumentation.SASObjects.SASProject
     :members:
