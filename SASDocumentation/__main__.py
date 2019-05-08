@@ -11,29 +11,12 @@ import sphinx.cmd.build as build
 from .SASObjects.SASProject import SASProject
 from .SASAnalysis.SASFlowChart import SASFlowChart
 
-
-class SASParser(object):
-
-    def __init__(self, codepath, docpath):
-
-        self.codepath = codepath
-        self.docpath = docpath
-
-        self.outDir = os.path.join(docpath, 'source', 'code')
-
-        if not os.path.exists(self.outDir):
-            os.makedirs(self.outDir)
-
-        with open(os.path.join(self.outDir, 'code.rst'), 'w+') as codeRST:
-            codeRST.write(
-                'Code\n====\n\n.. toctree::\n   :maxdepth: 2\n   :glob:\n\n   *')
-
-
 if __name__ == "__main__":
     if len(sys.argv) > 2:
 
         path = sys.argv[1]
         out = sys.argv[2]
+
         sphinxResource = pkg_resources.resource_filename(
             'SASDocumentation', 'Sphinx')
 
@@ -52,13 +35,18 @@ if __name__ == "__main__":
         quickstart.main(['-q',
                          '--project={}'.format(projectTitle),
                          '--author=corcobe',
-                         '--batchfile',
-                         '--template={}/sphinxTemplate'.format(
+                         '--no-makefile',
+                         '--sep',
+                         '--template={}\sphinxTemplate'.format(
                              sphinxResource),
                          out])
 
-        indexPath = os.path.join(out, 'index.rst')
-        _defaultIndex = os.path.join(out, '_defaultIndex.rst')
+        indexPath = os.path.join(out,'source','index.rst')
+        _defaultIndex = os.path.join(out,'source','_defaultIndex.rst')
+        
+        batchPath = os.path.join(out,'make.bat')
+        with open(batchPath,'w+') as batch:
+            batch.write('python -m SASDocumentation "{}" "{}"'.format(os.path.abspath(path), os.path.abspath(out)))
 
         if not os.path.exists(_defaultIndex):
             with open(indexPath) as i:
@@ -81,13 +69,13 @@ if __name__ == "__main__":
                     'Stick a README.md file in the project folder to add text here.\n\n\n')
                 o.write(defaultIndex)
 
-        shutil.rmtree(os.path.join(out, '_static'))
+        shutil.rmtree(os.path.join(out, 'source', '_static'))
         shutil.copytree(
             os.path.join(
                 sphinxResource, 'sphinxStatic'), os.path.join(
-                out, '_static'))
+                out,'source', '_static'))
 
         project = SASProject(path)
         project.buildProject(out)
 
-        build.main(['-M', 'html', out, os.path.join(out, '_build')])
+        build.main(['-M', 'html', os.path.join(out,'source'), os.path.join(out, 'build')])
