@@ -52,7 +52,7 @@ TBW
 
 1. Clone this repo to your local machine using `https://github.com/benjamincorcoran/SASDocumentation.git`
 
-2. Create a new pull request using <a href="https://github.com/benjamincorcoran/SASDocumentation/compare/" target="_blank">`https://github.com/benjamincorcoran/SASDocumentation/compare/`</a>.
+2. Create a new pull request using `https://github.com/benjamincorcoran/SASDocumentation/compare/`.
 
 
 ## Contributors
