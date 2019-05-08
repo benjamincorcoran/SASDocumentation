@@ -7,7 +7,7 @@ def readme():
 
 
 NAME = 'SASDocumentation'
-VERSION = '0.1dev'
+VERSION = '1.0.dev0'
 DESCRIPTION = 'A tool for analysising and documenting SAS code.'
 LONG_DESCRIPTION = readme()
 AUTHOR = 'Ben Corcoran'
