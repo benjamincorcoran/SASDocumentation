@@ -3,14 +3,14 @@ $(document).ready(function(){
         createNetworkGraph(window.flowChart);
     }
     
-    var textArea = $("#code");
+    var textArea = $("#codeMirrorArea");
     textArea.val(window.rawCode);
     textArea.text(function(index, text){
         return strip(text);
     });
 
     var cmConfig = {mode:"sas",lineNumbers:true,readOnly:true,gutter:true,lineWrapping:true,autoRefresh: true};
-    window.codeMirror = CodeMirror.fromTextArea(document.getElementById("code"), cmConfig);
+    window.codeMirror = CodeMirror.fromTextArea(document.getElementById("codeMirrorArea"), cmConfig);
     window.codeMirror.setSize(null,500)
 
     $(".lineJump").each(function(){

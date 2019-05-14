@@ -50,11 +50,13 @@ class SASProject(object):
         self.projectIncludes = {}
 
         for program in self.SASPrograms:
+            relPath = os.path.relpath(program.filePath,self.projectPath)
             self.projectFiles.append(program.filePath)
             for include in program.includes:
                 self.projectIncludes[program.filePath] = include.path
             for macro in program.macros:
-                self.projectMacros[program.filePath] = macro
+                self.projectMacros[relPath] = macro
+                
 
         for projectFile, includePath in self.projectIncludes.items():
             if os.path.abspath(includePath) not in self.projectFiles:
@@ -111,12 +113,17 @@ class SASProject(object):
             str: RST structured list of files processed for sphinx documenation to generate
                  tables of contents trees from.
         '''
-        codeDocumentationFiles = []
+        codeDocumentationFiles = dict()
 
         for SASProgram in programList:
-            MDWritePath = os.path.join(self.outPath, re.sub(
-                '\s', '', os.path.splitext(SASProgram.fileName)[0] + '.md'))
+            relPath = os.path.dirname(os.path.relpath(SASProgram.filePath,self.projectPath))
 
+            if not os.path.exists(os.path.join(self.outPath,relPath)):
+                os.makedirs(os.path.join(self.outPath,relPath))
+
+            MDWritePath = os.path.join(self.outPath,relPath, re.sub(
+                '\s', '', os.path.splitext(SASProgram.fileName)[0] + '.md'))
+    
             FlowChart = SASFlowChart(SASProgram)
 
             documentation = self.buildProgramDocumentation(
@@ -125,7 +132,10 @@ class SASProject(object):
             with open(MDWritePath, 'w+') as out:
                 out.write(documentation)
 
-            codeDocumentationFiles.append(MDWritePath)
+            if relPath in codeDocumentationFiles:
+                codeDocumentationFiles[relPath].append(MDWritePath)
+            else:
+                codeDocumentationFiles[relPath] = [MDWritePath]
 
         if len(codeDocumentationFiles) > 0:
             if rstFile == '_code.rst':
@@ -134,10 +144,14 @@ class SASProject(object):
                 title = 'External Code'
             with open(os.path.join(self.outPath, rstFile), 'w+') as codeRST:
                 codeRST.write('{}\n'.format(title) + '=' * len(title) + '\n\n')
-                codeRST.write('.. toctree::\n   :maxdepth: 2 \n\n')
-                for docFile in codeDocumentationFiles:
-                    codeRST.write('   {}\n'.format(
-                        os.path.splitext(os.path.basename(docFile))[0]))
+                for relPath, docFileList in codeDocumentationFiles.items():
+                    relPathTitle = "{}".format(relPath).replace("\\"," - ")
+                    codeRST.write('{}\n'.format(relPathTitle)+'-'*len(relPathTitle)+'\n\n')
+                    codeRST.write('.. toctree::\n   :maxdepth: 1  \n\n')
+                    for docFile in docFileList:
+                        codeRST.write('   {}\n'.format(
+                            os.path.join(relPath,os.path.splitext(os.path.basename(docFile))[0])).replace("\\","//"))
+                    codeRST.write('\n\n')
 
         return codeDocumentationFiles
 
@@ -193,7 +207,7 @@ class SASProject(object):
                         include.startLine, include.endLine))
             markdownStr += '\n\n'
         if len(SASProgram.macros) > 0:
-            markdownStr += '## Macro\n'
+            markdownStr += '## Macros\n'
             markdownStr += '---\n\n'
             for macro in SASProgram.macros:
 
@@ -224,11 +238,11 @@ class SASProject(object):
                 markdownStr += ' |\n'
             markdownStr += '\n\n'
 
-        markdownStr += '## Full code:\n\n'
+        markdownStr += '## Full code\n\n'
 
         markdownStr += '<script>window.rawCode=' + \
             json.dumps(SASProgram.rawProgram) + '</script>'
-        markdownStr += '<textarea id="code"></textarea>\n\n'
+        markdownStr += '<textarea id="codeMirrorArea"></textarea>\n\n'
 
         markdownStr += '## Properties\n\n'
         markdownStr += '| Meta | Property |\n| --- | --- |\n'
@@ -268,14 +282,14 @@ class SASProject(object):
             str: Markdown formatted string containing all macros and appropriate properties.
         '''
 
-        markdownStr = ' # Macro index\n *Index of all macros discovered in the project folder*\n\n---\n'
+        markdownStr = '# Macro index\n\n *Index of all macros discovered in the project folder*\n\n---\n'
         for path, macro in self.projectMacros.items():
             markdownStr += '## %{}\n'.format(macro.name)
             markdownStr += '*Found in: [{}]({})*\n'.format(
                 os.path.splitext(
                     os.path.basename(path))[0], re.sub(
                     '\s', '', os.path.splitext(
-                        os.path.basename(path))[0] + '.md'))
+                        path)[0].replace("\\","//") + '.md'))
             markdownStr += '\n{}\n\n'.format(macro.docString)
             if len(macro.help) > 0:
                 markdownStr += 'Help: \n\n'

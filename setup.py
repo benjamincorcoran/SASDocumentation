@@ -15,6 +15,7 @@ AUTHOR = 'Ben Corcoran'
 INSTALL_REQUIRES = [
     'sphinx',
     'recommonmark',
+    'sphinx_rtd_theme',
     'sphinx-markdown-tables',
     'numpy',
     'networkx',
