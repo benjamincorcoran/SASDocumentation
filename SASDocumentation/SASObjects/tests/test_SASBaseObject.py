@@ -12,28 +12,28 @@ splitDataObjectsTestPlan = {
     'macroDataItem':('&dataItem.',[['','&dataItem.']]),
     'partialMacroDataItem':('&data.Item',[['','&data.Item']]),
     'parenthDataItem':('dataItem()',[['','dataItem()']]),
-    'parenthConditionDataItem':('dataItem(where=() rename=())',[['','dataItem(where=() rename=())']]),
+    'parenthConditionDataItem':('dataItem(where=() keep=test test)',[['','dataItem(where=() keep=test test)']]),
     'parenthMacroDataItem':('&data.Item(where=())',[['','&data.Item(where=())']]),
    
     'singleLibDataItem':('library.dataItem',[['library','dataItem']]),
     'macroLibDataItem':('library.&dataItem.',[['library','&dataItem.']]),
     'partialLibMacroDataItem':('library.&data.Item',[['library','&data.Item']]),
     'parenthLibDataItem':('library.dataItem()',[['library','dataItem()']]),
-    'parenthConditionLibDataItem':('library.dataItem(where=() rename=())',[['library','dataItem(where=() rename=())']]),
+    'parenthConditionLibDataItem':('library.dataItem(where=() keep=test test)',[['library','dataItem(where=() keep=test test)']]),
     'parenthLibMacroDataItem':('library.&data.Item(where=())',[['library','&data.Item(where=())']]),
 
     'macroLibSingleDataItem':('&library..dataItem',[['&library.','dataItem']]),
     'macroLibMacroDataItem':('&library..&dataItem.',[['&library.','&dataItem.']]),
     'macroLibPartialMacroDataItem':('&library..&data.Item',[['&library.','&data.Item']]),
     'parenthMacroLibDataItem':('&library..dataItem()',[['&library.','dataItem()']]),
-    'parenthConditionMacroLibDataItem':('&library..dataItem(where=() rename=())',[['&library.','dataItem(where=() rename=())']]),
+    'parenthConditionMacroLibDataItem':('&library..dataItem(where=() keep=test test)',[['&library.','dataItem(where=() keep=test test)']]),
     'parenthMacroLibPartialMacroDataItem':('&library..&data.Item(where=())',[['&library.','&data.Item(where=())']]),
 
     'partialMacroLibDataItem':('li&bra.ry.dataItem',[['li&bra.ry','dataItem']]),
     'partialMacroLibMacroDataItem':('li&bra.ry.&dataItem.',[['li&bra.ry','&dataItem.']]),
     'partialMacroLibPartialMacroDataItem':('li&bra.ry.&data.Item',[['li&bra.ry','&data.Item']]),
     'parenthPartialMacroLibDataItem':('li&bra.ry.dataItem()',[['li&bra.ry','dataItem()']]),
-    'parenthConditionPartialMacroLibDataItem':('li&bra.ry.dataItem(where=() rename=())',[['li&bra.ry','dataItem(where=() rename=())']]),
+    'parenthConditionPartialMacroLibDataItem':('li&bra.ry.dataItem(where=() keep=test test)',[['li&bra.ry','dataItem(where=() keep=test test)']]),
     'parenthPartialMacroLibPartialMacroDataItem':('li&bra.ry.&data.Item(where=())',[['li&bra.ry','&data.Item(where=())']])
 }
 
