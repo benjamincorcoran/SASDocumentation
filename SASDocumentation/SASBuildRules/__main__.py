@@ -10,4 +10,4 @@ if __name__ == "__main__":
 
     prj = SASProject(path)
 
-    ruleCamelCase(prj, strict=mode)
+    ruleCamelCase(prj, mode=mode)

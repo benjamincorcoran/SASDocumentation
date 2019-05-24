@@ -9,7 +9,7 @@ class ruleCamelCase(object):
     def __init__(self, SASProject, mode='normal'):
 
         self.regex = r'[a-z]+[A-Z0-9][a-z0-9]+[A-Za-z0-9]*|^[a-z]+$'
-        self.strict = strict
+        self.mode = mode
 
         failures = dict()
         for SASProgram in SASProject.SASPrograms:
@@ -18,9 +18,9 @@ class ruleCamelCase(object):
             if len(results)!=0:
                 failures[SASProgram]=results
                 print("##vso[task.logissue type=warning]Warning: camelCase not followed for {} in {}".format(results,SASProgram.name))
-        if len(failures) != 0 and mode='normal':
+        if len(failures) != 0 and self.mode =='normal':
             print("##vso[task.complete result=SucceededWithIssues] SAS Build Rule: camelCase")
-        elif len(failures) != and mode='strict':
+        elif len(failures) != 0 and self.mode =='strict':
             print("##vso[task.complete result=Failed] SAS Build Rule: camelCase")
  
     def assess(self, SASProgram):
