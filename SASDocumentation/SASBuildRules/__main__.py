@@ -5,10 +5,7 @@ import logging
 from SASDocumentation.SASObjects.SASProject import SASProject
 
 
-from .camelCase import ruleCamelCase
-
-
-
+from .buildRules import *
 
 if __name__ == "__main__":
     
@@ -24,10 +21,11 @@ if __name__ == "__main__":
     log.addHandler(console)
 
     ado = logging.StreamHandler()
-    adoFmt = logging.Formatter('##vso[%(adotags)s]%(levelname)s: %(message)s')
+    adoFmt = logging.Formatter('##vso[%(adotags)s]%(message)s')
     ado.setFormatter(adoFmt)  
     log.addHandler(ado)
 
     prj = SASProject(path)
 
     ruleCamelCase(prj, log, mode=mode)
+    ruleNoProcMeans(prj, log, mode=mode)
