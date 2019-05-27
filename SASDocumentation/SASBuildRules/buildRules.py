@@ -26,7 +26,7 @@ class ruleNoProcMeans(SASBuildRule):
     Proc Summary should be used in place of a proc mean
     '''
     def __init__(self, SASProject, logger, mode='normal'):
-        super().__init__(SASProject, logger, ruleName='No Proc Means', mode=mode)
+        super().__init__(SASProject, logger, ruleName='No proc means', mode=mode)
 
     def assess(self, SASProgram):
         failures = [x for x in SASProgram.procedures if re.match(r'mean',x.procedure,re.IGNORECASE) is not None]
@@ -48,11 +48,11 @@ class ruleExplicitSortInput(SASBuildRule):
 
 class ruleMacroRequiresHelp(SASBuildRule):
     '''
-    Macro Requires Help
+    Macro requires help statement
     Macros must have a help statement
     '''
     def __init__(self, SASProject, logger, mode='normal'):
-        super().__init__(SASProject, logger, ruleName='Macro Requires Help', mode=mode)
+        super().__init__(SASProject, logger, ruleName='Macro requires help statement', mode=mode)
 
     def assess(self, SASProgram):
         failures = [x for x in SASProgram.macros if x.help=='']
@@ -64,10 +64,10 @@ class ruleMacroRequiresDocString(SASBuildRule):
     Macros must have a doc string
     '''
     def __init__(self, SASProject, logger, mode='normal'):
-        super().__init__(SASProject, logger, ruleName='Macro requires doc string', mode=mode)
+        super().__init__(SASProject, logger, ruleName='Macro requires documentation', mode=mode)
 
     def assess(self, SASProgram):
-        failures = [x for x in SASProgram.macros if x.docString=='No Doc String']
+        failures = [x for x in SASProgram.macros if x.docString=='No documentation']
         return failures                                            
 
 class ruleMacroArgRequiresDocString(SASBuildRule):
@@ -76,7 +76,7 @@ class ruleMacroArgRequiresDocString(SASBuildRule):
     Macros arguments must have a doc string
     '''
     def __init__(self, SASProject, logger, mode='normal'):
-        super().__init__(SASProject, logger, ruleName='Macro arguement requires', mode=mode)
+        super().__init__(SASProject, logger, ruleName='Macro arguement requires documentation', mode=mode)
 
     def assess(self, SASProgram):
         failures = []

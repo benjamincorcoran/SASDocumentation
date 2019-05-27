@@ -42,7 +42,7 @@ class SASMacro(object):
         if len(docString) > 0:
             self.getDocString(docString[0])
         else:
-            self.docString = 'No doc string'
+            self.docString = 'No documentation'
 
         helpString = re.findall('%if.*?help.*?;(.*?)%end', body, reFlags)
         if len(helpString) > 0:
