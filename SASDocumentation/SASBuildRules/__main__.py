@@ -30,3 +30,6 @@ if __name__ == "__main__":
     ruleCamelCase(prj, log, mode=mode)
     ruleNoProcMeans(prj, log, mode=mode)
     ruleExplicitSortInput(prj, log, mode=mode)
+    ruleMacroRequiresHelp(prj, log, mode=mode)
+    ruleMacroRequiresDocString(prj, log, mode=mode)
+    ruleMacroArgRequiresDocString(prj, log, mode=mode)

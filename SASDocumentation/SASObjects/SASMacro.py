@@ -27,6 +27,7 @@ class SASMacro(object):
         body = re.findall('%macro.*?;(.*)', rawStr, reFlags)[0]
 
         self.name = re.findall(r'%macro ([^\(;]*)', head, reFlags)[0]
+        self.id = '%{}'.format(self.name)
 
         self.startLine = startLine
         self.endLine = rawStr.count('\n') + startLine
