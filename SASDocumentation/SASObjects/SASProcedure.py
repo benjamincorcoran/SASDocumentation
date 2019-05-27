@@ -67,7 +67,7 @@ class SASProcedure(SASDataObjectParser):
         self.inputs = list(chain(*self.inputs))
         self.outputs = list(chain(*self.outputs))
 
-        self.id = 'proc {} on {}'.format(self.procedure, self.inputs[0])
+        self.id = 'proc {} on line {}'.format(self.procedure, self.startLine)
 
     # def __str__(self):
     #     return ','.join([_.__str__ for _ in self.outputs])

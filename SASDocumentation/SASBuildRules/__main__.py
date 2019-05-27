@@ -29,3 +29,4 @@ if __name__ == "__main__":
 
     ruleCamelCase(prj, log, mode=mode)
     ruleNoProcMeans(prj, log, mode=mode)
+    ruleExplicitSortInput(prj, log, mode=mode)

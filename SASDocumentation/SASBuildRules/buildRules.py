@@ -40,3 +40,18 @@ class ruleNoProcMeans(SASBuildRule):
         return failures
 
             
+
+class ruleExplicitSortInput(SASBuildRule):
+
+    '''
+    Explicit Sort Input
+    Proc sorts must have an explicit data=
+    '''
+
+    def __init__(self, SASProject, logger, mode='normal'):
+        super().__init__(SASProject, logger, ruleName='Explicit sort input', mode=mode)
+
+    def assess(self, SASProgram):
+        sorts = [x for x in SASProgram.procedures if re.match(r'sort',x.procedure,re.IGNORECASE) is not None]
+        failures = [x for x in sorts if len(x.inputs)==0]
+        return failures            
