@@ -17,6 +17,19 @@ class ruleCamelCase(SASBuildRule):
                 failures.append(item)
         return failures
 
+class ruleDescriptiveName(SASBuildRule):
+    '''
+    Descriptive Name build rule
+    All SAS Variable names should be descriptive
+    '''
+    def assess(self, SASProgram):
+        descriptiveRegex = '[a-zA-Z]{4}'
+        failures = []
+        for item in SASProgram.inputs+SASProgram.outputs:
+            if re.match(descriptiveRegex,item.dataset) is None:
+                failures.append(item)
+        return failures
+
 class ruleNoProcMeans(SASBuildRule):
     '''
     No Proc Means
@@ -68,4 +81,12 @@ class ruleMacroArgRequiresDocString(SASBuildRule):
                     arg.id = '{} in {}'.format(arg.name, macro.id)
                     arg.startLine=macro.startLine
                     failures.append(arg)
-        return failures                                            
+        return failures
+
+class ruleCommentProgramRatio(SASBuildRule):
+
+    def assess(self, SASProgram):
+        if len(''.join(SASProgram.rawComments))/len(SASProgram.unCommentedProgram) < 0.25:
+            return ['page']
+        else:
+            return []

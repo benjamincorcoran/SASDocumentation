@@ -21,13 +21,16 @@ class SASBuildRule(object):
         errors = 0
 
         for SASProgram in SASProject.SASPrograms:
-            results = self.assess(SASProgram)
+            testResult = self.assess(SASProgram)
            
-            if len(results)!=0:
-                failures[SASProgram]=results
-                errors += len(results)
-                for dataObject in results:
-                    self.logError(SASProgram.name,dataObject.startLine,dataObject=dataObject.id)
+            if len(testResult)!=0:
+                failures[SASProgram]=testResult
+                errors += len(testResult)
+                for fail in testResult:
+                    if fail == "page":
+                        self.logError(SASProgram.name)
+                    else:
+                        self.logError(SASProgram.name,lineNumber=fail.startLine,dataObject=fail.id)
 
         self.logRuleResult(errors)
  
@@ -40,9 +43,12 @@ class SASBuildRule(object):
             else:
                 self.loggers['ado'].info(msg,extra=dict(adotags=ado))
 
-    def logError(self,path,lineNumber,dataObject=''):
+    def logError(self,path,lineNumber='',dataObject=''):
         adotags = 'task.logissue type={};sourcepath={};linenumber={}'.format(self.adoLevel,path,lineNumber)
-        self.log('Warning: {} requirement failed for "{}": \t{} [Line: {}]'.format(self.name,dataObject,path,lineNumber),ado=adotags)
+        if lineNumber != '' and dataObject != '':
+            self.log('Warning: {} requirement failed for "{}": \t{} [Line: {}]'.format(self.name,dataObject,path,lineNumber),ado=adotags)
+        else:
+            self.log('Warning: {} requirement failed for "{}"'.format(self.name,path),ado=adotags)
 
     def logRuleResult(self,errors):
         if self.isStrict and errors>0:

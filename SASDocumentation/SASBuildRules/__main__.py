@@ -8,13 +8,18 @@ from SASDocumentation.SASObjects.SASProject import SASProject
 from .buildRules import *
 
 
-def runRuleTests(prj, loggers, mode='strict', adoLogging=False):
+def runRules(prj, loggers, mode='strict', adoLogging=False):
     ruleCamelCase(prj, loggers, ruleName='camelCase',  mode=mode, adoLogging=adoLogging)
+    ruleDescriptiveName(prj, loggers, ruleName='Descriptive naming', mode=mode, adoLogging=adoLogging)
+
     ruleNoProcMeans(prj, loggers, ruleName='PROC MEAN disallowed',mode=mode, adoLogging=adoLogging)
     ruleExplicitSortInput(prj, loggers, ruleName='Explicit sort input', mode=mode, adoLogging=adoLogging)
+
     ruleMacroRequiresHelp(prj, loggers, ruleName='Macro help', mode=mode, adoLogging=adoLogging)
     ruleMacroRequiresDocString(prj, loggers, ruleName='Macro documentation', mode=mode, adoLogging=adoLogging)
     ruleMacroArgRequiresDocString(prj, loggers, ruleName='Macro arguement documentation', mode=mode, adoLogging=adoLogging)
+
+    ruleCommentProgramRatio(prj, loggers, ruleName='Comment/Program ratio > 0.25', mode=mode, adoLogging=adoLogging)
 
 
 if __name__ == "__main__":
@@ -45,5 +50,5 @@ if __name__ == "__main__":
     prj = SASProject(path)
 
     log.info("\nBegining SAS Build Tests\n"+"="*24)
-    runRuleTests(prj,loggers,mode='strict',adoLogging=True)
+    runRules(prj,loggers,mode='strict',adoLogging=True)
 
