@@ -53,5 +53,5 @@ class SASBuildRule(object):
             result = 'Succeeded'
 
         adotags = 'task.complete result={}'.format(result)
-        self.log('SAS Build Rule "{}": {} - {} issues'.format(self.name,result,errors),ado=dict(adotags=adotags))
+        self.log('SAS Build Rule "{}": {} - {} issues'.format(self.name,result,errors),ado=adotags)
 
