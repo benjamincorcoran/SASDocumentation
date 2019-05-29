@@ -1,11 +1,12 @@
 
 class SASBuildRule(object):
 
-    def __init__(self, SASProject, logger, ruleName='', mode='normal'):
+    def __init__(self, SASProject, loggers, ruleName='', mode='normal', adoLogging=False):
 
-        self.logger = logger
+        self.loggers = loggers
         self.mode = mode
         self.isStrict = self.mode=='strict'
+        self.adoLogging = adoLogging
 
         self.name=ruleName
 
@@ -14,8 +15,11 @@ class SASBuildRule(object):
         else:
             self.adoLevel = 'warning'
 
+        self.log('\n\n'+ruleName+' test\n'+'-'*(len(ruleName)+5)+'\n')
+
         failures = dict()
         errors = 0
+
         for SASProgram in SASProject.SASPrograms:
             results = self.assess(SASProgram)
            
@@ -27,11 +31,18 @@ class SASBuildRule(object):
 
         self.logRuleResult(errors)
  
+    def log(self,msg,ado=None):
+        if self.adoLogging is False:
+            self.loggers['log'].info(msg)
+        else:
+            if ado is None:
+                self.loggers['log'].info(msg)
+            else:
+                self.loggers['ado'].info(msg,extra=dict(adotags=ado))
+
     def logError(self,path,lineNumber,dataObject=''):
         adotags = 'task.logissue type={};sourcepath={};linenumber={}'.format(self.adoLevel,path,lineNumber)
-        additional = ': \t{} [Line: {}]'.format(path,lineNumber)
-        info = dict(adotags=adotags,additional=additional)
-        self.logger.warning('{} requirement failed for "{}"'.format(self.name,dataObject),extra=info)
+        self.log('Warning: {} requirement failed for "{}": \t{} [Line: {}]'.format(self.name,dataObject,path,lineNumber),ado=adotags)
 
     def logRuleResult(self,errors):
         if self.isStrict and errors>0:
@@ -42,6 +53,5 @@ class SASBuildRule(object):
             result = 'Succeeded'
 
         adotags = 'task.complete result={}'.format(result)
-        info = dict(adotags=adotags,additional='')
-        self.logger.info('SAS Build Rule "{}": {} - {} issues'.format(self.name,result,errors),extra=info)
+        self.log('SAS Build Rule "{}": {} - {} issues'.format(self.name,result,errors),ado=dict(adotags=adotags))
 
