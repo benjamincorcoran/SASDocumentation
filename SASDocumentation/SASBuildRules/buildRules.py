@@ -106,9 +106,11 @@ class ruleNoMacroLibname(SASBuildRule):
     return failures
 
 class ruleCommentProgramRatio(SASBuildRule):
-
+    '''
+    Code should be well documented
+    '''
     def assess(self, SASProgram):
-        if len(''.join(SASProgram.rawComments))/len(SASProgram.unCommentedProgram) < 0.25:
+        if len(''.join(SASProgram.rawComments))/len(SASProgram.unCommentedProgram) < 0.2:
             return ['programFailure']
         else:
             return []

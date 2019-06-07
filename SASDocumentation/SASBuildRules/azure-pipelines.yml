@@ -1,0 +1,38 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+strategy:
+  matrix:
+    Python37:
+      python.version: '3.7'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+  displayName: 'Use Python $(python.version)'
+
+- task: Bash@3
+  displayName: 'Get SAS Autodocs Repo'
+  inputs:
+    targetType: 'inline'
+    script: 'git clone https://getSASDocs:$PAT@dev.azure.com/ofsvsts/DFA-Global-SAS-AutoDocs/_git/DFA-Global-SAS-AutoDocs --branch SASBuildRules     
+      # Use the environment variables input below to pass secret variables to this script'
+
+- script: |
+    python -m pip install --upgrade pip
+    cd DFA-Global-SAS-AutoDocs
+    pip install -r requirements.txt
+    cd ..
+  displayName: 'Install SASDocumentation Package'
+
+- script: |
+    python -m SASDocumentation.SASBuildRules normal 
+  displayName: 'Checking against SAS build rules'
