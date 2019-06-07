@@ -27,10 +27,11 @@ class SASBuildRule(object):
                 failures[SASProgram]=testResult
                 errors += len(testResult)
                 for fail in testResult:
-                    if fail == "page":
+                    if fail == "programFailure":
                         self.logError(SASProgram.name)
                     else:
                         self.logError(SASProgram.name,lineNumber=fail.startLine,dataObject=fail.id)
+
 
         self.logRuleResult(errors)
  

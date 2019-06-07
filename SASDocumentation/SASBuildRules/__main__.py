@@ -18,6 +18,8 @@ def runRules(prj, loggers, mode='strict', adoLogging=False):
     ruleMacroRequiresHelp(prj, loggers, ruleName='Macro help', mode=mode, adoLogging=adoLogging)
     ruleMacroRequiresDocString(prj, loggers, ruleName='Macro documentation', mode=mode, adoLogging=adoLogging)
     ruleMacroArgRequiresDocString(prj, loggers, ruleName='Macro arguement documentation', mode=mode, adoLogging=adoLogging)
+    ruleMacroLength(prj, loggers, ruleName='Macro length limit', mode=mode, adoLogging=adoLogging)
+    ruleNoMacroLibname(prj, loggers, ruleName='Macros should not contrain libnames', mode=mode, adoLogging=adoLogging)
 
     ruleCommentProgramRatio(prj, loggers, ruleName='Comment/Program ratio > 0.25', mode=mode, adoLogging=adoLogging)
 
@@ -50,5 +52,5 @@ if __name__ == "__main__":
     prj = SASProject(path)
 
     log.info("\nBegining SAS Build Tests\n"+"="*24)
-    runRules(prj,loggers,mode='strict',adoLogging=True)
+    runRules(prj,loggers,mode=mode,adoLogging=True)
 

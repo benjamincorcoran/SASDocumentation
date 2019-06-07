@@ -83,10 +83,32 @@ class ruleMacroArgRequiresDocString(SASBuildRule):
                     failures.append(arg)
         return failures
 
+class ruleMacroLength(SASBuildRule):
+    '''
+    Macros should not exceed 200 lines
+    '''
+    failures = []
+    def assess(self, SASProgram):
+        for macro in SASProgram.macros:
+            if macro.endLine - macro.startLine > 200:
+                failures.append(macro)
+    return failures
+
+class ruleNoMacroLibname(SASBuildRule):
+    '''
+    Macros should not contain libname statement
+    '''
+    failures = []
+    def assess(self, SASProgram):
+        for macro in SASProgram.macros:
+            if self.parse('libname',macro.rawStr) is not None:
+                failures.append(macro)
+    return failures
+
 class ruleCommentProgramRatio(SASBuildRule):
 
     def assess(self, SASProgram):
         if len(''.join(SASProgram.rawComments))/len(SASProgram.unCommentedProgram) < 0.25:
-            return ['page']
+            return ['programFailure']
         else:
             return []
