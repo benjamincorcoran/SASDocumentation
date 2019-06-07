@@ -34,6 +34,7 @@ class SASProcedure(SASDataObjectParser):
         self.rawStr = rawStr
         self.procedure = re.findall(
             r'proc (.*?)[\s;]', self.rawStr, self.regexFlags)[0]
+        self.id = 'proc {} on '.format(self.procedure)
 
         rawOutputs = re.findall(
             r'out\s*=\s*(.*?[;\(/])', self.rawStr, self.regexFlags)
@@ -44,6 +45,8 @@ class SASProcedure(SASDataObjectParser):
 
         self.inputs = []
         self.outputs = []
+
+        
 
         if len(rawInputs) > 0:
             for input in rawInputs:
@@ -63,6 +66,8 @@ class SASProcedure(SASDataObjectParser):
 
         self.inputs = list(chain(*self.inputs))
         self.outputs = list(chain(*self.outputs))
+
+        self.id = 'proc {} on line {}'.format(self.procedure, self.startLine)
 
     # def __str__(self):
     #     return ','.join([_.__str__ for _ in self.outputs])

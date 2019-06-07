@@ -22,11 +22,14 @@ class SASMacro(object):
     def __init__(self, rawStr, startLine):
 
         reFlags = re.DOTALL | re.IGNORECASE
+        
+        self.rawStr = rawStr
 
         head = re.findall('(%macro.*?;)', rawStr, reFlags)[0]
         body = re.findall('%macro.*?;(.*)', rawStr, reFlags)[0]
 
         self.name = re.findall(r'%macro ([^\(;]*)', head, reFlags)[0]
+        self.id = '%{}'.format(self.name)
 
         self.startLine = startLine
         self.endLine = rawStr.count('\n') + startLine
@@ -41,7 +44,7 @@ class SASMacro(object):
         if len(docString) > 0:
             self.getDocString(docString[0])
         else:
-            self.docString = 'No doc string'
+            self.docString = 'No documentation'
 
         helpString = re.findall('%if.*?help.*?;(.*?)%end', body, reFlags)
         if len(helpString) > 0:
