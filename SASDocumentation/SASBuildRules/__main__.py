@@ -9,19 +9,22 @@ from .buildRules import *
 
 
 def runRules(prj, loggers, mode='strict', adoLogging=False):
-    ruleCamelCase(prj, loggers, ruleName='camelCase',  mode=mode, adoLogging=adoLogging)
-    ruleDescriptiveName(prj, loggers, ruleName='Descriptive naming', mode=mode, adoLogging=adoLogging)
+    args = (prj,loggers)
+    kwargs = {'mode':mode,'adoLogging':adoLogging}
+    
+    ruleCamelCase(*args,**kwargs)
+    ruleDescriptiveName(*args,**kwargs)
 
-    ruleNoProcMeans(prj, loggers, ruleName='PROC MEAN disallowed',mode=mode, adoLogging=adoLogging)
-    ruleExplicitSortInput(prj, loggers, ruleName='Explicit sort input', mode=mode, adoLogging=adoLogging)
+    ruleNoProcMeans(*args,**kwargs)
+    ruleExplicitSortInput(*args,**kwargs)
 
-    ruleMacroRequiresHelp(prj, loggers, ruleName='Macro help', mode=mode, adoLogging=adoLogging)
-    ruleMacroRequiresDocString(prj, loggers, ruleName='Macro documentation', mode=mode, adoLogging=adoLogging)
-    ruleMacroArgRequiresDocString(prj, loggers, ruleName='Macro arguement documentation', mode=mode, adoLogging=adoLogging)
-    ruleMacroLength(prj, loggers, ruleName='Macro length limit', mode=mode, adoLogging=adoLogging)
-    ruleNoMacroLibname(prj, loggers, ruleName='Macros should not contrain libnames', mode=mode, adoLogging=adoLogging)
+    ruleMacroRequiresHelp(*args,**kwargs)
+    ruleMacroRequiresDocString(*args,**kwargs)
+    ruleMacroArgRequiresDocString(*args,**kwargs)
+    ruleMacroLength(*args,**kwargs)
+    ruleNoMacroLibname(*args,**kwargs)
 
-    ruleCommentProgramRatio(prj, loggers, ruleName='Comment/Program ratio > 0.25', mode=mode, adoLogging=adoLogging)
+    ruleCommentProgramRatio(*args,**kwargs)
 
 
 if __name__ == "__main__":
