@@ -34,5 +34,5 @@ steps:
   displayName: 'Install SASDocumentation Package'
 
 - script: |
-    python -m SASDocumentation.SASBuildRules normal 
+    python -m SASDocumentation.SASBuildRules -s -a
   displayName: 'Checking against SAS build rules'
