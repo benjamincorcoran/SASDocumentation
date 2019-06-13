@@ -1,6 +1,7 @@
 
 import sys
 import logging
+import argparse
 
 from SASDocumentation.SASObjects.SASProject import SASProject
 
@@ -11,7 +12,7 @@ from .buildRules import *
 def runRules(prj, loggers, mode='strict', adoLogging=False):
     args = (prj,loggers)
     kwargs = {'mode':mode,'adoLogging':adoLogging}
-    
+
     ruleCamelCase(*args,**kwargs)
     ruleDescriptiveName(*args,**kwargs)
 
@@ -29,9 +30,17 @@ def runRules(prj, loggers, mode='strict', adoLogging=False):
 
 if __name__ == "__main__":
     
-    mode = sys.argv[1]
-    path = r'.'
+    parser=argparse.ArgumentParser(description='Process switches')
+    parser.add_argument('-s','--strict',default=False,action='store_true', help='Set global build rule mode as strict. Will fail build on any error.')
+    parser.add_argument('-a','--ado',default=False,action='store_true',help='Turn on ADO output logging')
+    parser.add_argument('-p','--path',default='.',type=str,help='Path to SAS project, defaults to current working directory')
 
+    args = parser.parse_args()
+    if args.strict:
+        mode='strict'
+    else:
+        mode='normal'
+    
     log = logging.getLogger('SASBuildRules')
     log.setLevel(logging.DEBUG)
 
@@ -52,8 +61,9 @@ if __name__ == "__main__":
 
     log.info("Discovering SAS Code\n"+"="*20)
 
-    prj = SASProject(path)
+    prj = SASProject(args.path)
 
     log.info("\nBegining SAS Build Tests\n"+"="*24)
-    runRules(prj,loggers,mode=mode,adoLogging=True)
+
+    runRules(prj,loggers,mode=mode,adoLogging=args.ado)
 
