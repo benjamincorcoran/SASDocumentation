@@ -55,7 +55,7 @@ class SASProject(object):
             for include in program.includes:
                 self.projectIncludes[program.filePath] = include.path
             for macro in program.macros:
-                self.projectMacros[relPath] = macro
+                self.projectMacros['{}:{}::{}'.format(relPath,macro.name,macro.startLine)] = macro
                 
 
         for projectFile, includePath in self.projectIncludes.items():

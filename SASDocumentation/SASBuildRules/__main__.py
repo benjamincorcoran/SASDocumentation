@@ -24,6 +24,7 @@ def runRules(prj, loggers, mode='strict', adoLogging=False):
     ruleMacroArgRequiresDocString(*args,**kwargs)
     ruleMacroLength(*args,**kwargs)
     ruleNoMacroLibname(*args,**kwargs)
+    ruleUniqueMacroNames(*args,**kwargs)
 
     ruleCommentProgramRatio(*args,**kwargs)
 

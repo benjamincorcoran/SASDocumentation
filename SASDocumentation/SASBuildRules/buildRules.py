@@ -141,6 +141,24 @@ class ruleNoMacroLibname(SASBuildRule):
                 failures.append(macro)
         return failures
 
+class ruleUniqueMacroNames(SASBuildRule):
+    '''
+    Macros should not be defined twice in the same project
+    '''
+    def define(self):
+        self.ruleName = 'Macros should not be defined multiple times'
+        self.scope = 'project'
+        
+    def assess(self, SASProject):
+        failures = []
+        uniqueMacros = {}
+        for relpath, macro in SASProject.projectMacros.items():
+            if macro.name not in uniqueMacros.keys():
+                uniqueMacros[macro.name] = relpath
+            else:
+                failures.append((macro.id,relpath,uniqueMacros[macro.name]))
+        return failures
+
 class ruleCommentProgramRatio(SASBuildRule):
     '''
     Code should be well documented

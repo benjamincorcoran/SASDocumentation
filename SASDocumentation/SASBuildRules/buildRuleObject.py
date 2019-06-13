@@ -58,10 +58,12 @@ class SASBuildRule(object):
                     self.logError(SASProgram.name)
 
 
-        # elif self.scope=='project':
-            
-            # Do something
-
+        elif self.scope=='project':
+            testResult = self.assess(self.SASProject)
+            if len(testResult) > 0:
+                errors += len(testResult)
+                for fail in testResult:
+                    self.logError('{} found in {} & {}'.format(fail[0],fail[1],fail[2]))
 
         self.logRuleResult(errors)
 
