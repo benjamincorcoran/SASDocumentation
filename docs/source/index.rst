@@ -14,6 +14,7 @@
 
    SASDocumentation.SASObjects
    SASDocumentation.SASAnalysis
+   SASDocumentation.SASBuildRules
   
 
 
