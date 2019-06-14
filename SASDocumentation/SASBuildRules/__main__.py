@@ -64,7 +64,7 @@ def runBuildRules(prj,mode='normal',ado=False,export=False):
 
     if export:
         md = "# SAS Build Tests\n"
-        md += '| Rule | Result | Errors(s) |\n'
+        md += '| Rule | Result | Error(s) |\n'
         md += '| --- | --- | --- |'
         for i,test in enumerate(testSuite):
             md += '\n| [{}](#id{}) | {} | {} |'.format(test.ruleName,i+1,test.result,test.errors)
