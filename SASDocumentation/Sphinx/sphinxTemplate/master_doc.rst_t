@@ -6,6 +6,7 @@
    code/_code
    code/_extcode
    code/_mindex
+   code/_sasTests
 
 
 {{ mastertoctree }}

@@ -14,6 +14,8 @@ import sphinx.cmd.build as build
 from .SASObjects.SASProject import SASProject
 from .SASAnalysis.SASFlowChart import SASFlowChart
 
+from .SASBuildRules.__main__ import runBuildRules
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
@@ -70,8 +72,15 @@ if __name__ == "__main__":
 
     os.remove(indexPath)
 
+    project = SASProject(path)
+    SASTestResult,SASTestMD = runBuildRules(project,export=True)
+
+    buildBadgeColor = {"Succeeded":"brightgreen",
+                       "SucceededWithIssues":"orange",
+                       "Failed":"red"}
+
     badges = [
-        '.. image:: https://img.shields.io/badge/SAS_Tests-Pass-brightgreen.svg',
+        '.. image:: https://img.shields.io/badge/SAS_Tests-{}-{}.svg'.format(SASTestResult,buildBadgeColor[SASTestResult]),
         '.. image:: https://img.shields.io/badge/Last_Built-{}-green.svg'.format(date),
         '.. image:: https://img.shields.io/badge/Author-{}-blue.svg'.format(author.replace(' ','_'))
         ]
@@ -80,7 +89,6 @@ if __name__ == "__main__":
     if projectREADME != '' and projectTitle != path: 
         _readMeTitle = re.findall('^(#[^#\n]+)', projectREADME)[0]
         _readMeText = re.findall('^#[^#\n]+(.*)',projectREADME,flags=re.DOTALL)[0]
-        print(_readMeText)
         if _readMeText == '':
             _readMeText = 'Stick a README.md file in the project folder to add text here.\n\n\n'
         
@@ -105,7 +113,10 @@ if __name__ == "__main__":
             sphinxResource, 'sphinxStatic'), os.path.join(
             out,'source', '_static'))
 
-    project = SASProject(path)
+    
     project.buildProject(out)
+
+    with open(os.path.join(out,'source','code','_sasTests.rst'),'w') as o:
+        o.write(m2r.convert(SASTestMD))
 
     build.main(['-M', 'html', os.path.join(out,'source'), os.path.join(out, 'build')])
