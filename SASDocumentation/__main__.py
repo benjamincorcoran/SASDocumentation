@@ -6,12 +6,15 @@ import shutil
 import m2r
 
 import argparse
+from datetime import datetime
 
 import sphinx.cmd.quickstart as quickstart
 import sphinx.cmd.build as build
 
 from .SASObjects.SASProject import SASProject
 from .SASAnalysis.SASFlowChart import SASFlowChart
+
+from .SASBuildRules.__main__ import runBuildRules
 
 if __name__ == "__main__":
 
@@ -24,6 +27,8 @@ if __name__ == "__main__":
     path = args.path
     out = args.outdir
     author = args.author
+
+    date = datetime.today().strftime('%d_%m_%Y')
 
     sphinxResource = pkg_resources.resource_filename(
         'SASDocumentation', 'Sphinx')
@@ -67,15 +72,40 @@ if __name__ == "__main__":
 
     os.remove(indexPath)
 
+    project = SASProject(path)
+    SASTestResult,SASTestMD = runBuildRules(project,export=True)
+
+    buildBadgeColor = {"Succeeded":"brightgreen",
+                       "SucceededWithIssues":"orange",
+                       "Failed":"red"}
+
+    badges = [
+        '.. image:: https://img.shields.io/badge/SAS_Tests-{}-{}.svg'.format(SASTestResult,buildBadgeColor[SASTestResult]),
+        '.. image:: https://img.shields.io/badge/Last_Built-{}-green.svg'.format(date),
+        '.. image:: https://img.shields.io/badge/Author-{}-blue.svg'.format(author.replace(' ','_'))
+        ]
+
+
+    if projectREADME != '' and projectTitle != path: 
+        _readMeTitle = re.findall('^(#[^#\n]+)', projectREADME)[0]
+        _readMeText = re.findall('^#[^#\n]+(.*)',projectREADME,flags=re.DOTALL)[0]
+        if _readMeText == '':
+            _readMeText = 'Stick a README.md file in the project folder to add text here.\n\n\n'
+        
+    elif projectTitle == path and projectREADME != '':
+        _readMeTitle = ''
+        _readMeText = projectREADME 
+    
+    else:
+        _readMeTitle = ''
+        _readMeText = '\n\nStick a README.md file in the project folder to add text here.\n\n\n'
+    
+    projectREADME = m2r.convert('\n'.join([_readMeTitle,'\n'.join(badges),_readMeText]))
+
+
     with open(indexPath, 'w') as o:
-        if projectREADME != '':
-            projectREADME = m2r.convert(projectREADME)
-            o.write(projectREADME)
-            o.write(defaultIndex)
-        else:
-            o.write(
-                'Stick a README.md file in the project folder to add text here.\n\n\n')
-            o.write(defaultIndex)
+        o.write(projectREADME)
+        o.write(defaultIndex)
 
     shutil.rmtree(os.path.join(out, 'source', '_static'))
     shutil.copytree(
@@ -83,7 +113,10 @@ if __name__ == "__main__":
             sphinxResource, 'sphinxStatic'), os.path.join(
             out,'source', '_static'))
 
-    project = SASProject(path)
+    
     project.buildProject(out)
+
+    with open(os.path.join(out,'source','code','_sasTests.rst'),'w') as o:
+        o.write(m2r.convert(SASTestMD))
 
     build.main(['-M', 'html', os.path.join(out,'source'), os.path.join(out, 'build')])
