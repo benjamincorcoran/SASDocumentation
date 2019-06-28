@@ -69,7 +69,8 @@ class SASProgram(SASBaseObject):
         except PermissionError:
             print("Do not have permissions to read {}".format(self.filePath))
             self.rawProgram="Do not have permissions to read {}".format(self.filePath)
-            
+
+
         self.rawComments = self.parse('commentBlock', self.rawProgram)
         if len(self.rawComments) > 0:
             self.about = re.sub(r'\*|\t|\/', '', self.rawComments[0])
