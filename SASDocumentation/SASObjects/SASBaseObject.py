@@ -41,7 +41,7 @@ class SASBaseObject(object):
                 r"include ['\"].*?['\"]",
                 self.regexFlags),
             'datastep': re.compile(
-                r"(?:\s*|;\s*)(data\s[^=].*?;.*?run;)",
+                r"(?:\s*|;\s*)([^A-Za-z0-9]data\s[^=].*?;.*?run;)",
                 self.regexFlags),
             'dataObject': re.compile(
                 r'\s*(.*?\(.*?[^(]*\))\s*;',
