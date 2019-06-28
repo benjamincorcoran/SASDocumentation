@@ -63,8 +63,13 @@ class SASProgram(SASBaseObject):
         self.inputs = []
         self.outputs = []
 
-        with open(self.filePath) as f:
-            self.rawProgram = f.read()
+        try:
+            with open(self.filePath) as f:
+                self.rawProgram = f.read()
+        except PermissionError:
+            print("Do not have permissions to read {}".format(self.filePath))
+            self.rawProgram="Do not have permissions to read {}".format(self.filePath)
+
 
         self.rawComments = self.parse('commentBlock', self.rawProgram)
         if len(self.rawComments) > 0:
