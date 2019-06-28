@@ -28,26 +28,34 @@ class SASDatastep(SASDataObjectParser):
 
         self.startLine = startLine
         self.endLine = rawStr.count('\n') + startLine
+        
+        try:
+            self.head = self.parse('datastepHead', rawStr)[0]
+            self.body = self.parse('datastepBody', rawStr)[0]
 
-        self.head = self.parse('datastepHead', rawStr)[0]
-        self.body = self.parse('datastepBody', rawStr)[0]
+        except IndexError:
+            print("Failed to read datastep on lines {}-{}".format(self.startLine,self.endLine))
+            self.head=''
+            self.body=''
 
         rawOutputs = re.findall(r'data (.*?;)', self.head, self.regexFlags)
         rawInputs = re.findall(r'(?:[\s]+set\s+|[;\s]+merge\s+)(.*?;)',
-                               self.body, self.regexFlags)
+                                self.body, self.regexFlags)
 
         if len(rawInputs) > 0:
             rawInputs = re.sub(r'end=.*?[\s;]', '',
-                               rawInputs[0], self.regexFlags)
+                            rawInputs[0], self.regexFlags)
             self.inputs = self.parseDataObjects(
                 rawInputs, startLine=self.startLine, endLine=self.endLine)
         else:
             self.inputs = []
         if len(rawOutputs) > 0:
             self.outputs = self.parseDataObjects(
-                rawOutputs[0], startLine=self.startLine, endLine=self.endLine)
+                rawOutputs, startLine=self.startLine, endLine=self.endLine)
         else:
-            self.inputs = []
+            self.outputs = []
+
+
 
     # def __str__(self):
     #     return ','.join([_.__str__ for _ in self.outputs])

@@ -63,18 +63,24 @@ class SASProgram(SASBaseObject):
         self.inputs = []
         self.outputs = []
 
-        with open(self.filePath) as f:
-            self.rawProgram = f.read()
+        try:
+            with open(self.filePath) as f:
+                self.rawProgram = f.read()
+        except PermissionError:
+            print("Do not have permissions to read {}".format(self.filePath))
+            self.rawProgram="Do not have permissions to read {}".format(self.filePath)
+
 
         self.rawComments = self.parse('commentBlock', self.rawProgram)
         if len(self.rawComments) > 0:
             self.about = re.sub(r'\*|\t|\/', '', self.rawComments[0])
-            self.about = re.sub('(?<!\n)\n(?!\n)', '\n\n', self.about)
         else:
             self.about = None
 
         self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub(
             '', self.rawProgram)
+        self.unCommentedProgram = self.SASRegexDict['commentLine'].sub(
+            '', self.unCommentedProgram)
         self.unCommentedProgram = self.SASRegexDict['putStatement'].sub(
             '', self.unCommentedProgram)
 

@@ -53,6 +53,11 @@ def setupLogs():
 def runBuildRules(prj,mode='normal',ado=False,export=False):
     loggers = setupLogs()
     testSuite = runRules(prj,loggers,mode=mode,adoLogging=ado)
+
+    badgeColor = {"Succeeded":"brightgreen",
+                       "SucceededWithIssues":"orange",
+                       "Failed":"red"}
+
     
     overall = 'Succeeded'
     for test in testSuite:
@@ -64,20 +69,27 @@ def runBuildRules(prj,mode='normal',ado=False,export=False):
 
     if export:
         md = "# SAS Build Tests\n"
-        md += '| Rule | Result | Error(s) |\n'
-        md += '| --- | --- | --- |'
+        md += "The following are a series of build tests based on [Andrew Breeze's SAS Coding Rules](file:///S:/Wiki/GUIDES/GDE0002-SAS-Coding-Rules.html). \
+They are currently in an experimental phase and should be used only as an indication of where better practices could be incorporated. For more information on these \
+rules see [SAS build rules explained](file://write-this-documentation)\n"
+        md += "## Project summary\n\n"
+        md += '| Rule | Result | Error(s) |'
+        md += '\n| --- | --- | --- |'
         for i,test in enumerate(testSuite):
-            md += '\n| [{}](#id{}) | {} | {} |'.format(test.ruleName,i+1,test.result,test.errors)
+            md += '\n| [{}](#id{}) | ![](https://img.shields.io/badge/{}-{}.svg) | {} |'.format(test.ruleName,i+1,test.result,badgeColor[test.result],test.errors)
         md += '\n\n'
-
+        md += "## Individual rules" 
         for test in testSuite:
-            md += '\n## {} \n *{} - {} error(s)*\n'.format(test.ruleName,test.result,test.errors)
+            md += '\n### {} \n![](https://img.shields.io/badge/{}-{}.svg) {} error(s)\n'.format(test.ruleName,test.result,badgeColor[test.result],test.errors)
             if test.errors>0:
                 if test.scope=="object":
                     for program,fails in test.failures.items():
                         md+='\n**{}:**\n\n'.format(program.name)
+                        md+='| Data Item | Line | \n'
+                        md+='| --- | --- |'
                         for fail in fails:
-                            md+='{} - {} - Line: {}\n\n'.format(program.name,fail.id,fail.startLine)
+                            md+='\n| {} | {} |'.format(fail.id,fail.startLine)
+                        md+='\n'
                 elif test.scope=="program":
                     for fail in test.failures:
                         md+='{}\n'.format(fail)
