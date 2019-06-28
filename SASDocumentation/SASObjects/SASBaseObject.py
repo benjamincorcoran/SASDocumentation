@@ -104,7 +104,7 @@ class SASBaseObject(object):
             else:
                 current += c
 
-        if len(current) > 0:
+        if len(current) > 0 and blev == 0 and mlev == 0:
             objects.append(current)
 
         validObjects = [

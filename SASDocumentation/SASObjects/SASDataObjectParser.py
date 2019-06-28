@@ -28,13 +28,17 @@ class SASDataObjectParser(SASBaseObject):
         '''
 
         rawObjectList = self.splitDataObjects(objectText)
-
+        
         objectList = []
 
         for dataObject in rawObjectList:
             library = dataObject[0]
             dataset = re.findall(
-                r'([^(]+)[.]*', dataObject[1], self.regexFlags)[0]
+                r'([^(]+)[.]*', dataObject[1], self.regexFlags)
+            if len(dataset) == 0:
+                dataset=''
+            else:
+                dataset=dataset[0]
             condition = re.findall(r'\((.*)\)', dataObject[1], self.regexFlags)
 
             if len(library) > 0:
