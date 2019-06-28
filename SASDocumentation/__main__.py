@@ -116,7 +116,7 @@ if __name__ == "__main__":
     
     project.buildProject(out)
 
-    with open(os.path.join(out,'source','code','_sasTests.rst'),'w') as o:
-        o.write(m2r.convert(SASTestMD))
+    with open(os.path.join(out,'source','code','_sasTests.md'),'w') as o:
+        o.write(SASTestMD)
 
     build.main(['-M', 'html', os.path.join(out,'source'), os.path.join(out, 'build')])
