@@ -69,7 +69,7 @@ def runBuildRules(prj,mode='normal',ado=False,export=False):
 
     if export:
         md = "# SAS Build Tests\n"
-        md += "The following are a series of build tests based on Andrew Breeze's [SAS Coding Rules](file:///S:/Wiki/GUIDES/GDE0002-SAS-Coding-Rules.html). \
+        md += "The following are a series of build tests based on [Andrew Breeze's SAS Coding Rules](file:///S:/Wiki/GUIDES/GDE0002-SAS-Coding-Rules.html). \
 They are currently in an experimental phase and should be used only as an indication of where better practices could be incorporated. For more information on these \
 rules see [SAS build rules explained](file://write-this-documentation)\n"
         md += "## Project summary\n\n"
