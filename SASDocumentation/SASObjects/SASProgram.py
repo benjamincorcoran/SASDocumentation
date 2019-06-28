@@ -74,6 +74,8 @@ class SASProgram(SASBaseObject):
 
         self.unCommentedProgram = self.SASRegexDict['commentBlock'].sub(
             '', self.rawProgram)
+        self.unCommentedProgram = self.SASRegexDict['commentLine'].sub(
+            '', self.unCommentedProgram)
         self.unCommentedProgram = self.SASRegexDict['putStatement'].sub(
             '', self.unCommentedProgram)
 

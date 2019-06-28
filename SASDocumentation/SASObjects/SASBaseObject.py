@@ -25,6 +25,8 @@ class SASBaseObject(object):
             'commentBlock': re.compile(
                 r'\/\*.*?\*\/(?!\s*[\/\*])',
                 self.regexFlags),
+            'commentLine': re.compile(
+                r'\s+\*.*?;', self.regexFlags),
             'putStatement': re.compile(
                 r'%put.*?;',
                 self.regexFlags),
