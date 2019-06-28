@@ -33,7 +33,7 @@ $ pip install ./
 * From anywhere call the following with your project root and output location
 
 ```shell
-$ python -m SASDocumentation  "<path-to-project-root>" "<output-location>"
+$ python -m SASDocumentation  -p "<path-to-project-root>" -o "<output-location default: ./docs/ >" -a "<author name>"
 ```
 
 ## Features
