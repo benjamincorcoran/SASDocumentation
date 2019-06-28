@@ -4,6 +4,7 @@ import re
 import pkg_resources
 import shutil
 import m2r
+import getpass
 
 import argparse
 from datetime import datetime
@@ -27,6 +28,9 @@ if __name__ == "__main__":
     path = args.path
     out = args.outdir
     author = args.author
+
+    if author == '':
+        author = getpass.getuser()
 
     date = datetime.today().strftime('%d_%m_%Y')
 
